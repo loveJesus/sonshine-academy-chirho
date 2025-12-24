@@ -114,8 +114,8 @@
 		</div>
 
 		<p class="mt-8 text-center text-sm text-slate-500 italic">
-			"Come to me, all you who are weary and burdened, and I will give you rest."
-			<br />— Matthew 11:28
+			"Come unto me, all ye that labour and are heavy laden, and I will give you rest."
+			<br />— Matthew 11:28 (KJV)
 		</p>
 	</div>
 </div>

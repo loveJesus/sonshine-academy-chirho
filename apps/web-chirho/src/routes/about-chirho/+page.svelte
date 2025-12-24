@@ -33,13 +33,13 @@
 		},
 		{
 			year: '2025',
-			title: 'Building the Foundation',
-			description: 'Developing curriculum, platform, and partnerships with churches and Christian organizations.'
+			title: 'Launch',
+			description: 'Sonshine Christian Code Academy goes live! Platform built, 141 quests ready, and doors open to students worldwide.'
 		},
 		{
 			year: '2026',
-			title: 'Launch',
-			description: 'Official launch of Sonshine Christian Code Academy, bringing faith-integrated coding education to students worldwide.'
+			title: 'Growing Together',
+			description: 'Expanding curriculum, adding new courses, and partnering with more churches and schools for His glory.'
 		}
 	];
 </script>
@@ -77,8 +77,8 @@
 					who will create applications, websites, and software that glorify God and serve others.
 				</p>
 				<blockquote class="scripture-quote mt-6">
-					"Whatever you do, work at it with all your heart, as working for the Lord, not for human masters."
-					<cite class="block mt-2 text-slate-500 not-italic">— Colossians 3:23 (NIV)</cite>
+					"And whatsoever ye do, do it heartily, as to the Lord, and not unto men."
+					<cite class="block mt-2 text-slate-500 not-italic">— Colossians 3:23 (KJV)</cite>
 				</blockquote>
 			</div>
 			<div class="bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl p-8 text-center">

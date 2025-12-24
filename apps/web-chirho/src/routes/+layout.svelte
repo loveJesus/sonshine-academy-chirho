@@ -6,6 +6,16 @@
 	import FeedbackBubbleChirho from '$lib/components/FeedbackBubbleChirho.svelte';
 
 	let { children, data } = $props();
+
+	let mobileMenuOpenChirho = $state(false);
+
+	function toggleMobileMenuChirho() {
+		mobileMenuOpenChirho = !mobileMenuOpenChirho;
+	}
+
+	function closeMobileMenuChirho() {
+		mobileMenuOpenChirho = false;
+	}
 </script>
 
 <svelte:head>
@@ -89,17 +99,53 @@
 				</div>
 
 				<!-- Mobile menu button -->
-				<button class="md:hidden p-2" aria-label="Open mobile menu">
-					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 6h16M4 12h16M4 18h16"
-						/>
-					</svg>
+				<button
+					class="md:hidden p-2"
+					aria-label={mobileMenuOpenChirho ? 'Close mobile menu' : 'Open mobile menu'}
+					aria-expanded={mobileMenuOpenChirho}
+					onclick={toggleMobileMenuChirho}
+				>
+					{#if mobileMenuOpenChirho}
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					{:else}
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					{/if}
 				</button>
 			</div>
+
+			<!-- Mobile Menu -->
+			{#if mobileMenuOpenChirho}
+				<div class="md:hidden border-t border-slate-200 bg-white">
+					<div class="px-4 py-4 space-y-3">
+						<a href="/about-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>About</a>
+						<a href="/courses-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Courses</a>
+						<a href="/pricing-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Pricing</a>
+
+						{#if data.userChirho}
+							<hr class="border-slate-200">
+							<a href="/dashboard-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Dashboard</a>
+							<a href="/quests-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Quests</a>
+							<a href="/leaderboard-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
+								<span>🏆</span> Leaderboard
+							</a>
+							<a href="/quest-coins-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
+								<span>🪙</span> Quest Coins ({data.userChirho.questCoinsBalance || 0})
+							</a>
+							<hr class="border-slate-200">
+							<a href="/settings-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Settings</a>
+							<a href="/auth-chirho/logout" class="block text-red-600 hover:text-red-700 no-underline py-2" onclick={closeMobileMenuChirho}>Logout</a>
+						{:else}
+							<hr class="border-slate-200">
+							<a href="/auth-chirho/login" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Login</a>
+							<a href="/auth-chirho/register" class="block bg-amber-500 text-white text-center font-semibold py-3 rounded-lg no-underline" onclick={closeMobileMenuChirho}>Get Started</a>
+						{/if}
+					</div>
+				</div>
+			{/if}
 		</nav>
 	</header>
 
