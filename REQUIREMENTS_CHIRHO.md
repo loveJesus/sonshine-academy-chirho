@@ -160,8 +160,8 @@
 - [x] Quest detail (/quests-chirho/[id]) - with code editor and test runner
 - [x] Leaderboard (/leaderboard-chirho) - top Quest Coin earners with podium
 - [x] Quest Coin Ledger (/quest-coins-chirho) - transaction history with filtering
-- [ ] Settings (/settings-chirho)
-- [ ] Help/Support (/help-chirho)
+- [x] Settings (/settings-chirho)
+- [x] Help/Support (/help-chirho)
 
 ## Cloudflare Resources (sonshinewarriors account)
 - **Account ID:** a2f7103a3a2ac299398d0f85e9977905

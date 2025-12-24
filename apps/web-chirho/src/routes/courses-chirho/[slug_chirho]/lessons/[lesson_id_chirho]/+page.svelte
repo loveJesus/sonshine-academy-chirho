@@ -2,12 +2,16 @@
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
 <script>
+	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+
 	let { data } = $props();
 
 	// Video state
 	let videoCompletedChirho = $state(false);
 	let videoProgressChirho = $state(0);
 	let showChaptersChirho = $state(false);
+	let isMarkingCompleteChirho = $state(false);
 
 	// Parse video chapters if available
 	let chaptersChirho = $derived(() => {
@@ -19,6 +23,25 @@
 			}
 		}
 		return [];
+	});
+
+	// Track lesson view on mount
+	onMount(async () => {
+		// Mark lesson as in_progress when viewed (if not already completed)
+		if (data.progressChirho?.status !== 'completed') {
+			try {
+				await fetch('/api/progress-chirho', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						lessonId: data.lessonChirho.lessonId,
+						status: 'in_progress'
+					})
+				});
+			} catch (errorChirho) {
+				console.error('Failed to track lesson progress:', errorChirho);
+			}
+		}
 	});
 
 	function getLessonIconChirho(lessonTypeChirho) {
@@ -45,9 +68,31 @@
 		return `${minsChirho}:${secsChirho.toString().padStart(2, '0')}`;
 	}
 
-	function markAsCompleteChirho() {
-		// TODO: Save progress to database
-		videoCompletedChirho = true;
+	async function markAsCompleteChirho() {
+		if (isMarkingCompleteChirho) return;
+		isMarkingCompleteChirho = true;
+
+		try {
+			const responseChirho = await fetch('/api/progress-chirho', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					lessonId: data.lessonChirho.lessonId,
+					status: 'completed',
+					completionPercentage: 100,
+					videoCompleted: data.lessonChirho.lessonType === 'video'
+				})
+			});
+
+			if (responseChirho.ok) {
+				videoCompletedChirho = true;
+				await invalidateAll();
+			}
+		} catch (errorChirho) {
+			console.error('Failed to mark lesson as complete:', errorChirho);
+		} finally {
+			isMarkingCompleteChirho = false;
+		}
 	}
 </script>
 
@@ -124,9 +169,18 @@
 						{#if !videoCompletedChirho && data.progressChirho?.status !== 'completed'}
 							<button
 								onclick={markAsCompleteChirho}
-								class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+								disabled={isMarkingCompleteChirho}
+								class="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
 							>
-								Mark as Complete
+								{#if isMarkingCompleteChirho}
+									<svg class="animate-spin h-4 w-4" viewBox="0 0 24 24">
+										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+									</svg>
+									Saving...
+								{:else}
+									Mark as Complete
+								{/if}
 							</button>
 						{/if}
 					</div>
