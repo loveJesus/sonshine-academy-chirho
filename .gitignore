@@ -1,0 +1,50 @@
+# For God so loved the world, that he gave his only begotten Son,
+# that whosoever believeth in him should not perish, but have everlasting life.
+# John 3:16 (KJV)
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+.output
+.vercel
+.netlify
+.wrangler
+.svelte-kit
+.cloudflare
+build
+dist
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Bun
+bun.lockb
+
+# Turbo
+.turbo

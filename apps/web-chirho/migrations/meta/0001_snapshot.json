@@ -1,0 +1,2902 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "cf5f29c4-1900-4bb9-ad30-588319323c3d",
+  "prevId": "2c4504d7-0659-4b79-9fe8-154faf7aeef7",
+  "tables": {
+    "announcements_chirho": {
+      "name": "announcements_chirho",
+      "columns": {
+        "announcement_id_chirho": {
+          "name": "announcement_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_chirho": {
+          "name": "title_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content_chirho": {
+          "name": "content_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "scope_chirho": {
+          "name": "scope_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'global'"
+        },
+        "organization_id_chirho": {
+          "name": "organization_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cohort_id_chirho": {
+          "name": "cohort_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_id_chirho": {
+          "name": "author_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "announcements_chirho_author_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "announcements_chirho_author_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "announcements_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "author_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "cohorts_chirho": {
+      "name": "cohorts_chirho",
+      "columns": {
+        "cohort_id_chirho": {
+          "name": "cohort_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "organization_id_chirho": {
+          "name": "organization_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name_chirho": {
+          "name": "name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "start_date_chirho": {
+          "name": "start_date_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "end_date_chirho": {
+          "name": "end_date_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "course_id_chirho": {
+          "name": "course_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "max_students_chirho": {
+          "name": "max_students_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 30
+        },
+        "current_enrollment_chirho": {
+          "name": "current_enrollment_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "primary_instructor_id_chirho": {
+          "name": "primary_instructor_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'upcoming'"
+        },
+        "is_accepting_enrollment_chirho": {
+          "name": "is_accepting_enrollment_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "vps_pool_id_chirho": {
+          "name": "vps_pool_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "cohorts_chirho_organization_id_chirho_organizations_chirho_organization_id_chirho_fk": {
+          "name": "cohorts_chirho_organization_id_chirho_organizations_chirho_organization_id_chirho_fk",
+          "tableFrom": "cohorts_chirho",
+          "tableTo": "organizations_chirho",
+          "columnsFrom": [
+            "organization_id_chirho"
+          ],
+          "columnsTo": [
+            "organization_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "courses_chirho": {
+      "name": "courses_chirho",
+      "columns": {
+        "course_id_chirho": {
+          "name": "course_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_chirho": {
+          "name": "title_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug_chirho": {
+          "name": "slug_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnail_url_chirho": {
+          "name": "thumbnail_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "total_weeks_chirho": {
+          "name": "total_weeks_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 18
+        },
+        "sessions_per_week_chirho": {
+          "name": "sessions_per_week_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 3
+        },
+        "is_published_chirho": {
+          "name": "is_published_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "courses_chirho_slug_chirho_unique": {
+          "name": "courses_chirho_slug_chirho_unique",
+          "columns": [
+            "slug_chirho"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "course_modules_chirho": {
+      "name": "course_modules_chirho",
+      "columns": {
+        "module_id_chirho": {
+          "name": "module_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "course_id_chirho": {
+          "name": "course_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_chirho": {
+          "name": "title_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "week_number_chirho": {
+          "name": "week_number_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "scripture_reference_chirho": {
+          "name": "scripture_reference_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "theological_theme_chirho": {
+          "name": "theological_theme_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "order_index_chirho": {
+          "name": "order_index_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "course_modules_chirho_course_id_chirho_courses_chirho_course_id_chirho_fk": {
+          "name": "course_modules_chirho_course_id_chirho_courses_chirho_course_id_chirho_fk",
+          "tableFrom": "course_modules_chirho",
+          "tableTo": "courses_chirho",
+          "columnsFrom": [
+            "course_id_chirho"
+          ],
+          "columnsTo": [
+            "course_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "course_sessions_chirho": {
+      "name": "course_sessions_chirho",
+      "columns": {
+        "session_id_chirho": {
+          "name": "session_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "module_id_chirho": {
+          "name": "module_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_chirho": {
+          "name": "title_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prayer_focus_chirho": {
+          "name": "prayer_focus_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "session_number_chirho": {
+          "name": "session_number_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "estimated_duration_minutes_chirho": {
+          "name": "estimated_duration_minutes_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 45
+        },
+        "order_index_chirho": {
+          "name": "order_index_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "course_sessions_chirho_module_id_chirho_course_modules_chirho_module_id_chirho_fk": {
+          "name": "course_sessions_chirho_module_id_chirho_course_modules_chirho_module_id_chirho_fk",
+          "tableFrom": "course_sessions_chirho",
+          "tableTo": "course_modules_chirho",
+          "columnsFrom": [
+            "module_id_chirho"
+          ],
+          "columnsTo": [
+            "module_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "feedback_chirho": {
+      "name": "feedback_chirho",
+      "columns": {
+        "feedback_id_chirho": {
+          "name": "feedback_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "feedback_type_chirho": {
+          "name": "feedback_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "feedback_text_chirho": {
+          "name": "feedback_text_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "page_url_chirho": {
+          "name": "page_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "user_agent_chirho": {
+          "name": "user_agent_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'new'"
+        },
+        "admin_notes_chirho": {
+          "name": "admin_notes_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reviewed_by_user_id_chirho": {
+          "name": "reviewed_by_user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reviewed_at_chirho": {
+          "name": "reviewed_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "feedback_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "feedback_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "feedback_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "lessons_chirho": {
+      "name": "lessons_chirho",
+      "columns": {
+        "lesson_id_chirho": {
+          "name": "lesson_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "session_id_chirho": {
+          "name": "session_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_chirho": {
+          "name": "title_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lesson_type_chirho": {
+          "name": "lesson_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content_chirho": {
+          "name": "content_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "order_index_chirho": {
+          "name": "order_index_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "estimated_duration_minutes_chirho": {
+          "name": "estimated_duration_minutes_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_required_chirho": {
+          "name": "is_required_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "lessons_chirho_session_id_chirho_course_sessions_chirho_session_id_chirho_fk": {
+          "name": "lessons_chirho_session_id_chirho_course_sessions_chirho_session_id_chirho_fk",
+          "tableFrom": "lessons_chirho",
+          "tableTo": "course_sessions_chirho",
+          "columnsFrom": [
+            "session_id_chirho"
+          ],
+          "columnsTo": [
+            "session_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "organizations_chirho": {
+      "name": "organizations_chirho",
+      "columns": {
+        "organization_id_chirho": {
+          "name": "organization_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name_chirho": {
+          "name": "name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug_chirho": {
+          "name": "slug_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "organization_type_chirho": {
+          "name": "organization_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "contact_name_chirho": {
+          "name": "contact_name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "contact_email_chirho": {
+          "name": "contact_email_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "contact_phone_chirho": {
+          "name": "contact_phone_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "address_line1_chirho": {
+          "name": "address_line1_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "city_chirho": {
+          "name": "city_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "state_chirho": {
+          "name": "state_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "postal_code_chirho": {
+          "name": "postal_code_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "country_chirho": {
+          "name": "country_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'US'"
+        },
+        "logo_url_chirho": {
+          "name": "logo_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "primary_color_chirho": {
+          "name": "primary_color_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'#3B82F6'"
+        },
+        "max_students_chirho": {
+          "name": "max_students_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 50
+        },
+        "vps_pool_id_chirho": {
+          "name": "vps_pool_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "is_verified_chirho": {
+          "name": "is_verified_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "organizations_chirho_slug_chirho_unique": {
+          "name": "organizations_chirho_slug_chirho_unique",
+          "columns": [
+            "slug_chirho"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "organization_invite_codes_chirho": {
+      "name": "organization_invite_codes_chirho",
+      "columns": {
+        "invite_code_id_chirho": {
+          "name": "invite_code_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "organization_id_chirho": {
+          "name": "organization_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "code_chirho": {
+          "name": "code_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "max_uses_chirho": {
+          "name": "max_uses_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 100
+        },
+        "current_uses_chirho": {
+          "name": "current_uses_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "expires_at_chirho": {
+          "name": "expires_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "cohort_id_chirho": {
+          "name": "cohort_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_by_user_id_chirho": {
+          "name": "created_by_user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "organization_invite_codes_chirho_code_chirho_unique": {
+          "name": "organization_invite_codes_chirho_code_chirho_unique",
+          "columns": [
+            "code_chirho"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "organization_invite_codes_chirho_organization_id_chirho_organizations_chirho_organization_id_chirho_fk": {
+          "name": "organization_invite_codes_chirho_organization_id_chirho_organizations_chirho_organization_id_chirho_fk",
+          "tableFrom": "organization_invite_codes_chirho",
+          "tableTo": "organizations_chirho",
+          "columnsFrom": [
+            "organization_id_chirho"
+          ],
+          "columnsTo": [
+            "organization_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "payloads_chirho": {
+      "name": "payloads_chirho",
+      "columns": {
+        "payload_id_chirho": {
+          "name": "payload_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lesson_id_chirho": {
+          "name": "lesson_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name_chirho": {
+          "name": "name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_chirho": {
+          "name": "version_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'1.0.0'"
+        },
+        "script_content_chirho": {
+          "name": "script_content_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "script_type_chirho": {
+          "name": "script_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'bash'"
+        },
+        "execution_command_chirho": {
+          "name": "execution_command_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "generates_html_chirho": {
+          "name": "generates_html_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "generates_css_chirho": {
+          "name": "generates_css_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "generates_js_chirho": {
+          "name": "generates_js_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "required_payloads_json_chirho": {
+          "name": "required_payloads_json_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "verification_type_chirho": {
+          "name": "verification_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "verification_config_json_chirho": {
+          "name": "verification_config_json_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "order_index_chirho": {
+          "name": "order_index_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "payloads_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk": {
+          "name": "payloads_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk",
+          "tableFrom": "payloads_chirho",
+          "tableTo": "lessons_chirho",
+          "columnsFrom": [
+            "lesson_id_chirho"
+          ],
+          "columnsTo": [
+            "lesson_id_chirho"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "payload_executions_chirho": {
+      "name": "payload_executions_chirho",
+      "columns": {
+        "execution_id_chirho": {
+          "name": "execution_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "payload_id_chirho": {
+          "name": "payload_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "container_id_chirho": {
+          "name": "container_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'started'"
+        },
+        "callback_received_chirho": {
+          "name": "callback_received_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "callback_at_chirho": {
+          "name": "callback_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "callback_data_json_chirho": {
+          "name": "callback_data_json_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "screenshot_url_chirho": {
+          "name": "screenshot_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "screenshot_verified_chirho": {
+          "name": "screenshot_verified_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "started_at_chirho": {
+          "name": "started_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "completed_at_chirho": {
+          "name": "completed_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "error_message_chirho": {
+          "name": "error_message_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "payload_executions_chirho_payload_id_chirho_payloads_chirho_payload_id_chirho_fk": {
+          "name": "payload_executions_chirho_payload_id_chirho_payloads_chirho_payload_id_chirho_fk",
+          "tableFrom": "payload_executions_chirho",
+          "tableTo": "payloads_chirho",
+          "columnsFrom": [
+            "payload_id_chirho"
+          ],
+          "columnsTo": [
+            "payload_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "payload_executions_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "payload_executions_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "payload_executions_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "payments_chirho": {
+      "name": "payments_chirho",
+      "columns": {
+        "payment_id_chirho": {
+          "name": "payment_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "stripe_payment_intent_id_chirho": {
+          "name": "stripe_payment_intent_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "stripe_checkout_session_id_chirho": {
+          "name": "stripe_checkout_session_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "stripe_customer_id_chirho": {
+          "name": "stripe_customer_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "amount_cents_chirho": {
+          "name": "amount_cents_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "currency_chirho": {
+          "name": "currency_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'usd'"
+        },
+        "payment_type_chirho": {
+          "name": "payment_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'pending'"
+        },
+        "is_anonymous_chirho": {
+          "name": "is_anonymous_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "donor_name_chirho": {
+          "name": "donor_name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "donor_email_chirho": {
+          "name": "donor_email_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "donor_message_chirho": {
+          "name": "donor_message_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cohort_id_chirho": {
+          "name": "cohort_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "payments_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "payments_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "payments_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "quests_chirho": {
+      "name": "quests_chirho",
+      "columns": {
+        "quest_id_chirho": {
+          "name": "quest_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lesson_id_chirho": {
+          "name": "lesson_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "title_chirho": {
+          "name": "title_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "instructions_chirho": {
+          "name": "instructions_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "starter_code_chirho": {
+          "name": "starter_code_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "solution_code_chirho": {
+          "name": "solution_code_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "difficulty_level_chirho": {
+          "name": "difficulty_level_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quest_type_chirho": {
+          "name": "quest_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'javascript'"
+        },
+        "header_verse_chirho": {
+          "name": "header_verse_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "coin_reward_chirho": {
+          "name": "coin_reward_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 10
+        },
+        "bonus_coin_no_solution_view_chirho": {
+          "name": "bonus_coin_no_solution_view_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 5
+        },
+        "order_index_chirho": {
+          "name": "order_index_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "quests_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk": {
+          "name": "quests_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk",
+          "tableFrom": "quests_chirho",
+          "tableTo": "lessons_chirho",
+          "columnsFrom": [
+            "lesson_id_chirho"
+          ],
+          "columnsTo": [
+            "lesson_id_chirho"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "quest_coin_transactions_chirho": {
+      "name": "quest_coin_transactions_chirho",
+      "columns": {
+        "transaction_id_chirho": {
+          "name": "transaction_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "from_username_chirho": {
+          "name": "from_username_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "to_username_chirho": {
+          "name": "to_username_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "amount_chirho": {
+          "name": "amount_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "transaction_hash_chirho": {
+          "name": "transaction_hash_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "previous_hash_chirho": {
+          "name": "previous_hash_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "transaction_type_chirho": {
+          "name": "transaction_type_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'transfer'"
+        },
+        "reference_id_chirho": {
+          "name": "reference_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "memo_chirho": {
+          "name": "memo_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "quest_solution_views_chirho": {
+      "name": "quest_solution_views_chirho",
+      "columns": {
+        "solution_view_id_chirho": {
+          "name": "solution_view_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quest_id_chirho": {
+          "name": "quest_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "viewed_at_chirho": {
+          "name": "viewed_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "viewed_before_pass_chirho": {
+          "name": "viewed_before_pass_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "quest_solution_views_chirho_quest_id_chirho_quests_chirho_quest_id_chirho_fk": {
+          "name": "quest_solution_views_chirho_quest_id_chirho_quests_chirho_quest_id_chirho_fk",
+          "tableFrom": "quest_solution_views_chirho",
+          "tableTo": "quests_chirho",
+          "columnsFrom": [
+            "quest_id_chirho"
+          ],
+          "columnsTo": [
+            "quest_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "quest_solution_views_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "quest_solution_views_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "quest_solution_views_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "quest_submissions_chirho": {
+      "name": "quest_submissions_chirho",
+      "columns": {
+        "submission_id_chirho": {
+          "name": "submission_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quest_id_chirho": {
+          "name": "quest_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "submitted_code_chirho": {
+          "name": "submitted_code_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_correct_chirho": {
+          "name": "is_correct_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "test_results_json_chirho": {
+          "name": "test_results_json_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "execution_time_ms_chirho": {
+          "name": "execution_time_ms_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "error_message_chirho": {
+          "name": "error_message_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "viewed_solution_before_pass_chirho": {
+          "name": "viewed_solution_before_pass_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "coins_awarded_chirho": {
+          "name": "coins_awarded_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "submitted_at_chirho": {
+          "name": "submitted_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "quest_submissions_chirho_quest_id_chirho_quests_chirho_quest_id_chirho_fk": {
+          "name": "quest_submissions_chirho_quest_id_chirho_quests_chirho_quest_id_chirho_fk",
+          "tableFrom": "quest_submissions_chirho",
+          "tableTo": "quests_chirho",
+          "columnsFrom": [
+            "quest_id_chirho"
+          ],
+          "columnsTo": [
+            "quest_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "quest_submissions_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "quest_submissions_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "quest_submissions_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "quest_tests_chirho": {
+      "name": "quest_tests_chirho",
+      "columns": {
+        "test_id_chirho": {
+          "name": "test_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quest_id_chirho": {
+          "name": "quest_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "test_name_chirho": {
+          "name": "test_name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "test_code_chirho": {
+          "name": "test_code_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_visible_chirho": {
+          "name": "is_visible_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "test_order_chirho": {
+          "name": "test_order_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "quest_tests_chirho_quest_id_chirho_quests_chirho_quest_id_chirho_fk": {
+          "name": "quest_tests_chirho_quest_id_chirho_quests_chirho_quest_id_chirho_fk",
+          "tableFrom": "quest_tests_chirho",
+          "tableTo": "quests_chirho",
+          "columnsFrom": [
+            "quest_id_chirho"
+          ],
+          "columnsTo": [
+            "quest_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "scholarships_chirho": {
+      "name": "scholarships_chirho",
+      "columns": {
+        "scholarship_id_chirho": {
+          "name": "scholarship_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reason_chirho": {
+          "name": "reason_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "approved_by_user_id_chirho": {
+          "name": "approved_by_user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'active'"
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "scholarships_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "scholarships_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "scholarships_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "sessions_chirho": {
+      "name": "sessions_chirho",
+      "columns": {
+        "session_id_chirho": {
+          "name": "session_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at_chirho": {
+          "name": "expires_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_agent_chirho": {
+          "name": "user_agent_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ip_address_chirho": {
+          "name": "ip_address_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "sessions_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "sessions_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "sessions_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "student_progress_chirho": {
+      "name": "student_progress_chirho",
+      "columns": {
+        "progress_id_chirho": {
+          "name": "progress_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cohort_id_chirho": {
+          "name": "cohort_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "lesson_id_chirho": {
+          "name": "lesson_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'not_started'"
+        },
+        "completion_percentage_chirho": {
+          "name": "completion_percentage_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "video_watched_seconds_chirho": {
+          "name": "video_watched_seconds_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "video_completed_chirho": {
+          "name": "video_completed_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "started_at_chirho": {
+          "name": "started_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "completed_at_chirho": {
+          "name": "completed_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "last_accessed_at_chirho": {
+          "name": "last_accessed_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "user_lesson_idx_chirho": {
+          "name": "user_lesson_idx_chirho",
+          "columns": [
+            "user_id_chirho",
+            "lesson_id_chirho"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "student_progress_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "student_progress_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "student_progress_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "student_progress_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk": {
+          "name": "student_progress_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk",
+          "tableFrom": "student_progress_chirho",
+          "tableTo": "lessons_chirho",
+          "columnsFrom": [
+            "lesson_id_chirho"
+          ],
+          "columnsTo": [
+            "lesson_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "terminal_containers_chirho": {
+      "name": "terminal_containers_chirho",
+      "columns": {
+        "container_id_chirho": {
+          "name": "container_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "node_id_chirho": {
+          "name": "node_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "container_name_chirho": {
+          "name": "container_name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "docker_container_id_chirho": {
+          "name": "docker_container_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ttyd_port_chirho": {
+          "name": "ttyd_port_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ttyd_url_chirho": {
+          "name": "ttyd_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ttyd_token_chirho": {
+          "name": "ttyd_token_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "memory_limit_mb_chirho": {
+          "name": "memory_limit_mb_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 512
+        },
+        "cpu_limit_percent_chirho": {
+          "name": "cpu_limit_percent_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 25
+        },
+        "disk_limit_mb_chirho": {
+          "name": "disk_limit_mb_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 1024
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'creating'"
+        },
+        "error_message_chirho": {
+          "name": "error_message_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "last_activity_at_chirho": {
+          "name": "last_activity_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "auto_stop_after_minutes_chirho": {
+          "name": "auto_stop_after_minutes_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 30
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "terminal_containers_chirho_node_id_chirho_vps_nodes_chirho_node_id_chirho_fk": {
+          "name": "terminal_containers_chirho_node_id_chirho_vps_nodes_chirho_node_id_chirho_fk",
+          "tableFrom": "terminal_containers_chirho",
+          "tableTo": "vps_nodes_chirho",
+          "columnsFrom": [
+            "node_id_chirho"
+          ],
+          "columnsTo": [
+            "node_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "terminal_containers_chirho_user_id_chirho_users_chirho_user_id_chirho_fk": {
+          "name": "terminal_containers_chirho_user_id_chirho_users_chirho_user_id_chirho_fk",
+          "tableFrom": "terminal_containers_chirho",
+          "tableTo": "users_chirho",
+          "columnsFrom": [
+            "user_id_chirho"
+          ],
+          "columnsTo": [
+            "user_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "users_chirho": {
+      "name": "users_chirho",
+      "columns": {
+        "user_id_chirho": {
+          "name": "user_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "username_chirho": {
+          "name": "username_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "email_chirho": {
+          "name": "email_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "password_hash_chirho": {
+          "name": "password_hash_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "display_name_chirho": {
+          "name": "display_name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "avatar_url_chirho": {
+          "name": "avatar_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "role_chirho": {
+          "name": "role_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'student'"
+        },
+        "organization_id_chirho": {
+          "name": "organization_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cohort_id_chirho": {
+          "name": "cohort_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "terminal_container_id_chirho": {
+          "name": "terminal_container_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "payment_status_chirho": {
+          "name": "payment_status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'free'"
+        },
+        "donation_amount_cents_chirho": {
+          "name": "donation_amount_cents_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "quest_coins_balance_chirho": {
+          "name": "quest_coins_balance_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "github_username_chirho": {
+          "name": "github_username_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "background_color_chirho": {
+          "name": "background_color_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'#3B82F6'"
+        },
+        "dismissed_announcement_id_chirho": {
+          "name": "dismissed_announcement_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "email_verified_chirho": {
+          "name": "email_verified_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "email_verification_token_chirho": {
+          "name": "email_verification_token_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "last_login_at_chirho": {
+          "name": "last_login_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "users_chirho_username_chirho_unique": {
+          "name": "users_chirho_username_chirho_unique",
+          "columns": [
+            "username_chirho"
+          ],
+          "isUnique": true
+        },
+        "users_chirho_email_chirho_unique": {
+          "name": "users_chirho_email_chirho_unique",
+          "columns": [
+            "email_chirho"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "video_lessons_chirho": {
+      "name": "video_lessons_chirho",
+      "columns": {
+        "video_id_chirho": {
+          "name": "video_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lesson_id_chirho": {
+          "name": "lesson_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "youtube_video_id_chirho": {
+          "name": "youtube_video_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "youtube_url_chirho": {
+          "name": "youtube_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_unlisted_chirho": {
+          "name": "is_unlisted_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "title_chirho": {
+          "name": "title_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "duration_seconds_chirho": {
+          "name": "duration_seconds_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnail_url_chirho": {
+          "name": "thumbnail_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "chapters_json_chirho": {
+          "name": "chapters_json_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "transcript_chirho": {
+          "name": "transcript_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "video_lessons_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk": {
+          "name": "video_lessons_chirho_lesson_id_chirho_lessons_chirho_lesson_id_chirho_fk",
+          "tableFrom": "video_lessons_chirho",
+          "tableTo": "lessons_chirho",
+          "columnsFrom": [
+            "lesson_id_chirho"
+          ],
+          "columnsTo": [
+            "lesson_id_chirho"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "vps_nodes_chirho": {
+      "name": "vps_nodes_chirho",
+      "columns": {
+        "node_id_chirho": {
+          "name": "node_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "pool_id_chirho": {
+          "name": "pool_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hetzner_server_id_chirho": {
+          "name": "hetzner_server_id_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hetzner_server_name_chirho": {
+          "name": "hetzner_server_name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hetzner_datacenter_chirho": {
+          "name": "hetzner_datacenter_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hostname_chirho": {
+          "name": "hostname_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ip_address_chirho": {
+          "name": "ip_address_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "internal_ip_chirho": {
+          "name": "internal_ip_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cpu_cores_chirho": {
+          "name": "cpu_cores_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "memory_mb_chirho": {
+          "name": "memory_mb_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "disk_gb_chirho": {
+          "name": "disk_gb_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "max_containers_chirho": {
+          "name": "max_containers_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 20
+        },
+        "current_containers_chirho": {
+          "name": "current_containers_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "ssl_certificate_chirho": {
+          "name": "ssl_certificate_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ssl_expires_at_chirho": {
+          "name": "ssl_expires_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status_chirho": {
+          "name": "status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'provisioning'"
+        },
+        "health_check_url_chirho": {
+          "name": "health_check_url_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "last_health_check_at_chirho": {
+          "name": "last_health_check_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "health_status_chirho": {
+          "name": "health_status_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'unknown'"
+        },
+        "monthly_cost_cents_chirho": {
+          "name": "monthly_cost_cents_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at_chirho": {
+          "name": "updated_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "vps_nodes_chirho_pool_id_chirho_vps_pools_chirho_pool_id_chirho_fk": {
+          "name": "vps_nodes_chirho_pool_id_chirho_vps_pools_chirho_pool_id_chirho_fk",
+          "tableFrom": "vps_nodes_chirho",
+          "tableTo": "vps_pools_chirho",
+          "columnsFrom": [
+            "pool_id_chirho"
+          ],
+          "columnsTo": [
+            "pool_id_chirho"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "vps_pools_chirho": {
+      "name": "vps_pools_chirho",
+      "columns": {
+        "pool_id_chirho": {
+          "name": "pool_id_chirho",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name_chirho": {
+          "name": "name_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description_chirho": {
+          "name": "description_chirho",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "default_max_containers_chirho": {
+          "name": "default_max_containers_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 20
+        },
+        "is_active_chirho": {
+          "name": "is_active_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at_chirho": {
+          "name": "created_at_chirho",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

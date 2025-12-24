@@ -1,0 +1,120 @@
+/* For God so loved the world that he gave his only begotten Son,
+   that whosoever believeth in him should not perish, but have everlasting life.
+   John 3:16 (KJV) */
+
+@import 'tailwindcss';
+
+/* Custom Sonshine Christian Code Academy theme */
+@theme {
+	--color-sonshine-gold: #f59e0b;
+	--color-sonshine-blue: #3b82f6;
+	--color-sonshine-purple: #8b5cf6;
+	--color-sonshine-dark: #1e293b;
+	--color-sonshine-light: #f8fafc;
+}
+
+/* Base styles */
+html {
+	font-family:
+		system-ui,
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		Roboto,
+		sans-serif;
+}
+
+body {
+	@apply bg-slate-50 text-slate-900;
+	@apply antialiased;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+	@apply outline-2 outline-offset-2 outline-amber-500;
+}
+
+/* Enhanced focus for interactive elements */
+a:focus-visible,
+button:focus-visible {
+	@apply outline-2 outline-offset-2 outline-amber-500 rounded;
+}
+
+/* Reduced motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	:focus-visible {
+		outline-width: 3px;
+	}
+}
+
+/* Link styles */
+a {
+	@apply text-blue-600 hover:text-blue-800 underline-offset-2;
+}
+
+/* Code styles */
+code {
+	@apply bg-slate-100 px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+pre code {
+	@apply bg-transparent p-0;
+}
+
+/* Form elements */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+textarea,
+select {
+	@apply border border-slate-300 rounded-lg px-4 py-2;
+	@apply focus:border-blue-500 focus:ring-2 focus:ring-blue-200;
+	@apply transition-colors duration-200;
+}
+
+button {
+	@apply cursor-pointer transition-all duration-200;
+}
+
+/* Primary button */
+.btn-primary {
+	@apply bg-blue-600 text-white px-6 py-2 rounded-lg;
+	@apply hover:bg-blue-700 active:bg-blue-800;
+	@apply focus:ring-2 focus:ring-blue-300;
+	@apply disabled:bg-slate-400 disabled:cursor-not-allowed;
+}
+
+/* Secondary button */
+.btn-secondary {
+	@apply bg-slate-200 text-slate-800 px-6 py-2 rounded-lg;
+	@apply hover:bg-slate-300 active:bg-slate-400;
+	@apply focus:ring-2 focus:ring-slate-300;
+}
+
+/* Card component */
+.card {
+	@apply bg-white rounded-xl shadow-sm border border-slate-200;
+	@apply p-6;
+}
+
+/* Sonshine branding gradient */
+.sonshine-gradient {
+	@apply bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500;
+}
+
+/* Scripture quote styling */
+.scripture-quote {
+	@apply italic text-slate-600 border-l-4 border-amber-500 pl-4 my-4;
+}

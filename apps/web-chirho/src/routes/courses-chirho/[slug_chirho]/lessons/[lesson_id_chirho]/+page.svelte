@@ -1,0 +1,328 @@
+<!-- For God so loved the world, that he gave his only begotten Son,
+     that whosoever believeth in him should not perish, but have everlasting life.
+     John 3:16 (KJV) -->
+<script>
+	let { data } = $props();
+
+	// Video state
+	let videoCompletedChirho = $state(false);
+	let videoProgressChirho = $state(0);
+	let showChaptersChirho = $state(false);
+
+	// Parse video chapters if available
+	let chaptersChirho = $derived(() => {
+		if (data.videoChirho?.chaptersJson) {
+			try {
+				return JSON.parse(data.videoChirho.chaptersJson);
+			} catch {
+				return [];
+			}
+		}
+		return [];
+	});
+
+	function getLessonIconChirho(lessonTypeChirho) {
+		switch (lessonTypeChirho) {
+			case 'video':
+				return '🎬';
+			case 'reading':
+				return '📖';
+			case 'quest':
+				return '⚔️';
+			case 'payload':
+				return '💻';
+			case 'exercise':
+				return '✏️';
+			default:
+				return '📄';
+		}
+	}
+
+	function formatTimeChirho(secondsChirho) {
+		if (!secondsChirho) return '0:00';
+		const minsChirho = Math.floor(secondsChirho / 60);
+		const secsChirho = secondsChirho % 60;
+		return `${minsChirho}:${secsChirho.toString().padStart(2, '0')}`;
+	}
+
+	function markAsCompleteChirho() {
+		// TODO: Save progress to database
+		videoCompletedChirho = true;
+	}
+</script>
+
+<svelte:head>
+	<title>{data.lessonChirho.title} - {data.courseChirho.title} - Sonshine Christian Code Academy</title>
+</svelte:head>
+
+<div class="min-h-screen bg-slate-900">
+	<!-- Top Navigation Bar -->
+	<nav class="bg-slate-800 border-b border-slate-700 px-4 py-3">
+		<div class="max-w-6xl mx-auto flex items-center justify-between">
+			<div class="flex items-center gap-4">
+				<a
+					href="/courses-chirho/{data.courseChirho.slug}"
+					class="text-slate-400 hover:text-white flex items-center gap-2 no-underline text-sm"
+				>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+					</svg>
+					Back to Course
+				</a>
+				<span class="text-slate-600">|</span>
+				<span class="text-slate-300 text-sm">{data.courseChirho.title}</span>
+			</div>
+
+			<!-- Progress indicator -->
+			<div class="flex items-center gap-4">
+				{#if data.progressChirho?.status === 'completed' || videoCompletedChirho}
+					<span class="text-green-400 flex items-center gap-1 text-sm">
+						<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+						</svg>
+						Completed
+					</span>
+				{/if}
+			</div>
+		</div>
+	</nav>
+
+	<div class="max-w-6xl mx-auto">
+		<div class="grid lg:grid-cols-3 gap-0">
+			<!-- Main Content Area -->
+			<main class="lg:col-span-2">
+				<!-- Video Player -->
+				{#if data.lessonChirho.lessonType === 'video' && data.videoChirho}
+					<div class="aspect-video bg-black">
+						<iframe
+							src="https://www.youtube.com/embed/{data.videoChirho.youtubeVideoId}?rel=0&modestbranding=1"
+							title={data.videoChirho.title || data.lessonChirho.title}
+							class="w-full h-full"
+							frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen
+						></iframe>
+					</div>
+				{/if}
+
+				<!-- Lesson Content -->
+				<div class="p-6 bg-slate-800">
+					<!-- Lesson Header -->
+					<div class="flex items-start justify-between mb-6">
+						<div>
+							<div class="flex items-center gap-2 text-slate-400 text-sm mb-2">
+								<span>{getLessonIconChirho(data.lessonChirho.lessonType)}</span>
+								<span class="capitalize">{data.lessonChirho.lessonType}</span>
+								{#if data.lessonChirho.estimatedDurationMinutes}
+									<span>•</span>
+									<span>{data.lessonChirho.estimatedDurationMinutes} min</span>
+								{/if}
+							</div>
+							<h1 class="text-2xl font-bold text-white">{data.lessonChirho.title}</h1>
+						</div>
+
+						{#if !videoCompletedChirho && data.progressChirho?.status !== 'completed'}
+							<button
+								onclick={markAsCompleteChirho}
+								class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+							>
+								Mark as Complete
+							</button>
+						{/if}
+					</div>
+
+					<!-- Video Chapters -->
+					{#if data.lessonChirho.lessonType === 'video' && chaptersChirho().length > 0}
+						<div class="mb-6">
+							<button
+								onclick={() => showChaptersChirho = !showChaptersChirho}
+								class="flex items-center gap-2 text-amber-400 hover:text-amber-300 text-sm"
+							>
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+								</svg>
+								{showChaptersChirho ? 'Hide' : 'Show'} Chapters ({chaptersChirho().length})
+							</button>
+
+							{#if showChaptersChirho}
+								<div class="mt-3 bg-slate-700 rounded-lg p-4">
+									<ul class="space-y-2">
+										{#each chaptersChirho() as chapterChirho}
+											<li class="flex items-center gap-3 text-slate-300 text-sm">
+												<span class="text-amber-400 font-mono">{formatTimeChirho(chapterChirho.time)}</span>
+												<span>{chapterChirho.title}</span>
+											</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
+						</div>
+					{/if}
+
+					<!-- Reading Content (Markdown) -->
+					{#if data.lessonChirho.lessonType === 'reading' && data.lessonChirho.content}
+						<div class="prose prose-invert prose-amber max-w-none">
+							{@html data.lessonChirho.content.replace(/\n/g, '<br>')}
+						</div>
+					{/if}
+
+					<!-- Quest Link -->
+					{#if data.lessonChirho.lessonType === 'quest' && data.questChirho}
+						<div class="bg-slate-700 rounded-xl p-6 text-center">
+							<div class="text-4xl mb-4">⚔️</div>
+							<h2 class="text-xl font-bold text-white mb-2">Quest Challenge</h2>
+							<p class="text-slate-300 mb-6">{data.lessonChirho.content}</p>
+							<a
+								href="/quests-chirho/{data.questChirho.questId}"
+								class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors no-underline"
+							>
+								Start Quest
+							</a>
+						</div>
+					{:else if data.lessonChirho.lessonType === 'quest'}
+						<div class="bg-slate-700 rounded-xl p-6 text-center">
+							<div class="text-4xl mb-4">⚔️</div>
+							<h2 class="text-xl font-bold text-white mb-2">Quest Challenge</h2>
+							<p class="text-slate-300 mb-4">{data.lessonChirho.content}</p>
+							<p class="text-amber-400 text-sm">Quest coming soon...</p>
+						</div>
+					{/if}
+
+					<!-- Payload/Terminal Link -->
+					{#if data.lessonChirho.lessonType === 'payload'}
+						<div class="bg-slate-700 rounded-xl p-6 text-center">
+							<div class="text-4xl mb-4">💻</div>
+							<h2 class="text-xl font-bold text-white mb-2">Hands-On Exercise</h2>
+							<p class="text-slate-300 mb-6">{data.lessonChirho.content}</p>
+							<button
+								class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+							>
+								Launch Terminal
+							</button>
+							<p class="text-slate-500 text-sm mt-3">
+								Terminal environment coming soon!
+							</p>
+						</div>
+					{/if}
+
+					<!-- Exercise Content -->
+					{#if data.lessonChirho.lessonType === 'exercise'}
+						<div class="bg-slate-700 rounded-xl p-6">
+							<div class="text-4xl mb-4 text-center">✏️</div>
+							<h2 class="text-xl font-bold text-white mb-4 text-center">Practice Exercise</h2>
+							<div class="prose prose-invert prose-amber max-w-none">
+								{@html data.lessonChirho.content?.replace(/\n/g, '<br>') || 'Exercise content coming soon...'}
+							</div>
+						</div>
+					{/if}
+				</div>
+			</main>
+
+			<!-- Sidebar -->
+			<aside class="bg-slate-800 border-l border-slate-700 lg:min-h-screen">
+				<div class="p-6">
+					<h2 class="text-lg font-semibold text-white mb-4">Lesson Navigation</h2>
+
+					<!-- Navigation Buttons -->
+					<div class="space-y-3">
+						{#if data.prevLessonChirho}
+							<a
+								href="/courses-chirho/{data.courseChirho.slug}/lessons/{data.prevLessonChirho.lessonId}"
+								class="flex items-center gap-3 p-3 bg-slate-700 hover:bg-slate-600 rounded-lg no-underline transition-colors"
+							>
+								<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+								</svg>
+								<div>
+									<div class="text-xs text-slate-400">Previous</div>
+									<div class="text-sm text-white">{data.prevLessonChirho.title}</div>
+								</div>
+							</a>
+						{/if}
+
+						{#if data.nextLessonChirho}
+							<a
+								href="/courses-chirho/{data.courseChirho.slug}/lessons/{data.nextLessonChirho.lessonId}"
+								class="flex items-center justify-between p-3 bg-amber-600 hover:bg-amber-700 rounded-lg no-underline transition-colors"
+							>
+								<div>
+									<div class="text-xs text-amber-200">Next Up</div>
+									<div class="text-sm text-white font-medium">{data.nextLessonChirho.title}</div>
+								</div>
+								<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+								</svg>
+							</a>
+						{:else}
+							<a
+								href="/courses-chirho/{data.courseChirho.slug}"
+								class="flex items-center justify-between p-3 bg-green-600 hover:bg-green-700 rounded-lg no-underline transition-colors"
+							>
+								<div>
+									<div class="text-xs text-green-200">Finished!</div>
+									<div class="text-sm text-white font-medium">Back to Course</div>
+								</div>
+								<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+								</svg>
+							</a>
+						{/if}
+					</div>
+
+					<!-- Video Info -->
+					{#if data.lessonChirho.lessonType === 'video' && data.videoChirho}
+						<div class="mt-8 pt-6 border-t border-slate-700">
+							<h3 class="text-sm font-medium text-slate-400 mb-3">Video Info</h3>
+							<div class="space-y-2 text-sm">
+								{#if data.videoChirho.durationSeconds}
+									<div class="flex justify-between">
+										<span class="text-slate-500">Duration</span>
+										<span class="text-slate-300">{formatTimeChirho(data.videoChirho.durationSeconds)}</span>
+									</div>
+								{/if}
+								<div class="flex justify-between">
+									<span class="text-slate-500">Platform</span>
+									<span class="text-slate-300">YouTube</span>
+								</div>
+							</div>
+						</div>
+					{/if}
+
+					<!-- Playback Settings -->
+					{#if data.lessonChirho.lessonType === 'video'}
+						<div class="mt-6 pt-6 border-t border-slate-700">
+							<h3 class="text-sm font-medium text-slate-400 mb-3">Playback Tips</h3>
+							<ul class="text-sm text-slate-500 space-y-2">
+								<li class="flex items-start gap-2">
+									<span>⌨️</span>
+									<span>Press <kbd class="bg-slate-700 px-1 rounded">K</kbd> to pause/play</span>
+								</li>
+								<li class="flex items-start gap-2">
+									<span>⏩</span>
+									<span>Press <kbd class="bg-slate-700 px-1 rounded">L</kbd> to skip forward</span>
+								</li>
+								<li class="flex items-start gap-2">
+									<span>⏪</span>
+									<span>Press <kbd class="bg-slate-700 px-1 rounded">J</kbd> to skip back</span>
+								</li>
+							</ul>
+						</div>
+					{/if}
+
+					<!-- Help Link -->
+					<div class="mt-8 pt-6 border-t border-slate-700">
+						<a
+							href="/help-chirho"
+							class="flex items-center gap-2 text-slate-400 hover:text-white text-sm no-underline"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg>
+							Need help? Contact support
+						</a>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</div>
+</div>

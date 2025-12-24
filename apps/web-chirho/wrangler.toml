@@ -1,0 +1,38 @@
+# For God so loved the world, that he gave his only begotten Son,
+# that whosoever believeth in him should not perish, but have everlasting life.
+# John 3:16 (KJV)
+
+name = "sonshine-coding-school-chirho"
+account_id = "a2f7103a3a2ac299398d0f85e9977905"
+main = "./.cloudflare/worker.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./.cloudflare/public"
+binding = "ASSETS_CHIRHO"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB_CHIRHO"
+database_name = "sonshine-coding-school-chirho"
+database_id = "8b1c1a56-6028-4408-8df8-3c2c61dc381c"
+migrations_dir = "./migrations"
+
+[[r2_buckets]]
+binding = "R2_CHIRHO"
+bucket_name = "sonshine-coding-school-chirho"
+
+[vars]
+ENVIRONMENT = "production"
+
+# Custom domain (configure after registering sonshinecoders.org)
+# [[routes]]
+# pattern = "sonshinecoders.org/*"
+# custom_domain = true
+
+# [[routes]]
+# pattern = "www.sonshinecoders.org/*"
+# custom_domain = true

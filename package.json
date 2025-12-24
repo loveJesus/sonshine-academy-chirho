@@ -1,0 +1,22 @@
+{
+  "name": "sonshine-academy-chirho",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Christian programming e-learning platform - John 3:16",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run --filter @sonshine/web-chirho dev",
+    "build": "bun run --filter @sonshine/web-chirho build",
+    "preview": "bun run --filter @sonshine/web-chirho preview",
+    "db:generate": "bun run --filter @sonshine/web-chirho db:generate",
+    "db:migrate": "bun run --filter @sonshine/web-chirho db:migrate",
+    "lint": "bun run --filter '*' lint",
+    "format": "bun run --filter '*' format"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
