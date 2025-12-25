@@ -13,6 +13,7 @@ import {
 	setSessionTokenCookieChirho,
 	hashPasswordChirho
 } from '$lib/server/auth_chirho';
+import { getEmailConfigChirho, sendWelcomeEmailChirho } from '$lib/server/email_chirho';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	// Redirect if already logged in
@@ -242,6 +243,15 @@ export const actions: Actions = {
 
 		// Set cookie
 		setSessionTokenCookieChirho(event, token);
+
+		// Send welcome email (non-blocking)
+		const emailConfigChirho = getEmailConfigChirho(event.platform?.env ?? {});
+		if (emailConfigChirho) {
+			// Fire and forget - don't block registration on email
+			sendWelcomeEmailChirho(emailConfigChirho, email, displayName || username).catch((errChirho) => {
+				console.error('Failed to send welcome email:', errChirho);
+			});
+		}
 
 		// Redirect to dashboard
 		redirect(302, '/dashboard-chirho');

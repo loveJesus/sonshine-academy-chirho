@@ -13,7 +13,8 @@ import {
 	questChirho,
 	payloadExecutionChirho,
 	studentProgressChirho,
-	announcementChirho
+	announcementChirho,
+	lessonChirho
 } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -100,6 +101,22 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.orderBy(desc(payloadExecutionChirho.startedAt))
 		.limit(5);
 
+	// Get lesson progress for curriculum visualization
+	const lessonProgressChirho = await locals.dbChirho
+		.select()
+		.from(studentProgressChirho)
+		.where(eq(studentProgressChirho.userId, userChirhoData.userId));
+
+	// Get total lesson count
+	const totalLessonsChirho = await locals.dbChirho.select().from(lessonChirho);
+
+	const completedLessonsChirho = lessonProgressChirho.filter(
+		(pChirho) => pChirho.status === 'completed'
+	).length;
+	const inProgressLessonsChirho = lessonProgressChirho.filter(
+		(pChirho) => pChirho.status === 'in_progress'
+	).length;
+
 	// Get announcements for user
 	const announcementsChirho = await locals.dbChirho
 		.select()
@@ -154,7 +171,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 			questCoins: userChirhoData.questCoinsBalance || 0,
 			completedQuests: uniqueCompletedQuestIdsChirho.size,
 			totalQuests: totalQuestsChirho.length,
-			payloadsRun: recentPayloadsChirho.length
+			payloadsRun: recentPayloadsChirho.length,
+			completedLessons: completedLessonsChirho,
+			inProgressLessons: inProgressLessonsChirho,
+			totalLessons: totalLessonsChirho.length
 		},
 		recentQuestSubmissionsChirho,
 		announcementsChirho: relevantAnnouncementsChirho

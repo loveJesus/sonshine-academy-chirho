@@ -52,15 +52,15 @@ export function getWelcomeEmailChirho(usernameChirho: string): { subject: string
   <div style="background: linear-gradient(135deg, #f59e0b, #f97316); border-radius: 12px; padding: 20px; margin: 20px 0; color: white;">
     <h2 style="margin: 0 0 10px 0;">🚀 Here's what you can do now:</h2>
     <ul style="margin: 0; padding-left: 20px;">
-      <li>Explore our <strong>131 coding quests</strong></li>
+      <li>Explore our <strong>141 coding quests</strong></li>
       <li>Earn <strong>Quest Coins</strong> as you learn</li>
       <li>Join our <strong>Discord community</strong></li>
-      <li>Work through our <strong>main projects</strong></li>
+      <li>Work through our <strong>18-week curriculum</strong></li>
     </ul>
   </div>
 
   <p style="text-align: center;">
-    <a href="https://sonshinecodingschool.org/dashboard-chirho" style="display: inline-block; background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+    <a href="https://sonshinecoders.org/dashboard-chirho" style="display: inline-block; background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
       Go to Your Dashboard
     </a>
   </p>
@@ -113,7 +113,7 @@ export function getQuestCompletionEmailChirho(
   </div>
 
   <p style="text-align: center;">
-    <a href="https://sonshinecodingschool.org/quests-chirho" style="display: inline-block; background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+    <a href="https://sonshinecoders.org/quests-chirho" style="display: inline-block; background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
       Continue to Next Quest
     </a>
   </p>

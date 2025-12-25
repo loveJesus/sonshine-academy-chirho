@@ -7,6 +7,13 @@ import { blogPostChirho, userChirho } from '$lib/server/db/schema';
 import { eq, desc } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
+	if (!locals.dbChirho) {
+		return {
+			postsChirho: [],
+			categoryChirho: ''
+		};
+	}
+
 	const dbChirho = locals.dbChirho;
 
 	const categoryChirho = url.searchParams.get('category') || '';

@@ -17,6 +17,7 @@ import {
 	generateSessionTokenChirho,
 	setSessionTokenCookieChirho
 } from '$lib/server/auth_chirho';
+import { getEmailConfigChirho, sendWelcomeEmailChirho } from '$lib/server/email_chirho';
 
 const OAUTH_STATE_COOKIE = 'google-oauth-state-chirho';
 
@@ -78,6 +79,7 @@ export const load: PageServerLoad = async ({ url, cookies, platform, locals, req
 			.limit(1);
 
 		let userId: string;
+		let isNewUserChirho = false;
 
 		if (existingOAuthAccounts.length > 0) {
 			// User already has a linked Google account - log them in
@@ -109,6 +111,7 @@ export const load: PageServerLoad = async ({ url, cookies, platform, locals, req
 				// Create a new user
 				userId = crypto.randomUUID();
 				const username = generateUsernameFromEmailChirho(googleUser.email);
+				isNewUserChirho = true;
 
 				await dbChirho.insert(userChirho).values({
 					userId,
@@ -119,6 +122,18 @@ export const load: PageServerLoad = async ({ url, cookies, platform, locals, req
 					emailVerified: true, // Google already verified the email
 					role: 'student'
 				});
+
+				// Send welcome email for new users (non-blocking)
+				const emailConfigChirho = getEmailConfigChirho(env);
+				if (emailConfigChirho) {
+					sendWelcomeEmailChirho(
+						emailConfigChirho,
+						googleUser.email,
+						googleUser.name || username
+					).catch((errChirho) => {
+						console.error('Failed to send welcome email:', errChirho);
+					});
+				}
 			}
 
 			// Create OAuth account link

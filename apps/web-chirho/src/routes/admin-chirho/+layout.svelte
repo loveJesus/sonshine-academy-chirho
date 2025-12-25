@@ -15,7 +15,8 @@
 		{ href: '/admin-chirho/payloads-chirho', label: 'Payloads', icon: '📦' },
 		{ href: '/admin-chirho/vps-chirho', label: 'VPS Nodes', icon: '🖥️' },
 		{ href: '/admin-chirho/payments-chirho', label: 'Payments', icon: '💳' },
-		{ href: '/admin-chirho/announcements-chirho', label: 'Announcements', icon: '📢' }
+		{ href: '/admin-chirho/announcements-chirho', label: 'Announcements', icon: '📢' },
+		{ href: '/admin-chirho/blog-chirho', label: 'Blog Posts', icon: '📝' }
 	];
 
 	const currentPathChirho = $derived(page.url.pathname);

@@ -34,6 +34,17 @@
 			? Math.round((data.statsChirho.completedQuests / data.statsChirho.totalQuests) * 100)
 			: 0
 	);
+
+	const lessonProgressPercentChirho = $derived(
+		data.statsChirho.totalLessons > 0
+			? Math.round((data.statsChirho.completedLessons / data.statsChirho.totalLessons) * 100)
+			: 0
+	);
+
+	// Estimate current week based on lesson progress (54 lessons / 18 weeks = 3 lessons per week)
+	const currentWeekChirho = $derived(
+		Math.min(18, Math.floor(data.statsChirho.completedLessons / 3) + 1)
+	);
 </script>
 
 <svelte:head>
@@ -253,6 +264,37 @@
 						Edit Profile →
 					</a>
 				</div>
+			</div>
+
+			<!-- Curriculum Progress -->
+			<div class="card">
+				<h3 class="font-semibold text-slate-900 mb-3">18-Week Curriculum</h3>
+				<div class="text-center mb-4">
+					<div class="text-4xl font-bold text-amber-500">Week {currentWeekChirho}</div>
+					<p class="text-sm text-slate-500">of 18 weeks</p>
+				</div>
+				<div class="mb-3">
+					<div class="flex justify-between text-sm mb-1">
+						<span class="text-slate-600">Lessons Completed</span>
+						<span class="font-medium">
+							{data.statsChirho.completedLessons}/{data.statsChirho.totalLessons || 54}
+						</span>
+					</div>
+					<div class="w-full bg-slate-200 rounded-full h-2">
+						<div
+							class="bg-amber-500 h-2 rounded-full transition-all duration-500"
+							style="width: {lessonProgressPercentChirho}%"
+						></div>
+					</div>
+				</div>
+				{#if data.statsChirho.inProgressLessons > 0}
+					<p class="text-xs text-blue-600">
+						{data.statsChirho.inProgressLessons} lesson{data.statsChirho.inProgressLessons > 1 ? 's' : ''} in progress
+					</p>
+				{/if}
+				<a href="/courses-chirho/sonshine-coders-fundamentals" class="text-blue-600 hover:underline text-sm mt-3 inline-block">
+					View Full Curriculum →
+				</a>
 			</div>
 
 			<!-- Quest Progress -->
