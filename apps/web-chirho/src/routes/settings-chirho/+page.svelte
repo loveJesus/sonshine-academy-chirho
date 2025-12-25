@@ -257,7 +257,7 @@
 						</span>
 					{:else}
 						<a
-							href="/auth-chirho/google"
+							href="/auth-chirho/google-chirho"
 							class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors no-underline"
 						>
 							Connect

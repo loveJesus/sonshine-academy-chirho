@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ cookies, url, platform }) => {
 	});
 
 	// Build redirect URI
-	const redirectUri = `${url.origin}/auth-chirho/google/callback`;
+	const redirectUri = `${url.origin}/auth-chirho/google-chirho/callback-chirho`;
 
 	// Generate authorization URL
 	const authUrl = getGoogleAuthUrlChirho(config, redirectUri, state);

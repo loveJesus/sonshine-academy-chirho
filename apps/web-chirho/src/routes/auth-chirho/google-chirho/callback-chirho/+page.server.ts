@@ -56,7 +56,7 @@ export const load: PageServerLoad = async ({ url, cookies, platform, locals, req
 
 	try {
 		// Exchange code for tokens
-		const redirectUri = `${url.origin}/auth-chirho/google/callback`;
+		const redirectUri = `${url.origin}/auth-chirho/google-chirho/callback-chirho`;
 		const tokens = await exchangeCodeForTokensChirho(config, code, redirectUri);
 
 		// Get user info from Google

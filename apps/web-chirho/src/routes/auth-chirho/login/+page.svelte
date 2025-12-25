@@ -49,7 +49,7 @@
 
 			<!-- Google Sign In -->
 			<a
-				href="/auth-chirho/google"
+				href="/auth-chirho/google-chirho"
 				class="flex items-center justify-center gap-3 w-full py-3 px-4 border border-slate-300 rounded-lg bg-white hover:bg-slate-50 transition-colors no-underline text-slate-700 font-medium"
 			>
 				<svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
