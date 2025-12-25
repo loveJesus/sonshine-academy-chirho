@@ -20,6 +20,27 @@
 
 <svelte:head>
 	<link rel="icon" type="image/png" href="/favicon-chirho.png" />
+
+	<!-- Default Open Graph tags for social sharing -->
+	<meta property="og:site_name" content="Sonshine Christian Code Academy" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="https://sonshinecoders.org/og-image-chirho.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="Sonshine Christian Code Academy - Learn to Code, Grow in Faith" />
+
+	<!-- Twitter Card tags -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@sonshinecoders" />
+	<meta name="twitter:image" content="https://sonshinecoders.org/og-image-chirho.png" />
+
+	<!-- Theme color for browsers -->
+	<meta name="theme-color" content="#f59e0b" />
+
+	<!-- Additional SEO -->
+	<meta name="author" content="Sonshine Christian Code Academy" />
+	<meta name="robots" content="index, follow" />
+	<link rel="canonical" href="https://sonshinecoders.org" />
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">

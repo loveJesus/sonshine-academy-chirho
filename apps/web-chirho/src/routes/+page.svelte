@@ -11,6 +11,12 @@
 		name="description"
 		content="A Christian programming course for high schoolers. Learn HTML, CSS, JavaScript, databases, and real-time apps while growing in your faith."
 	/>
+	<!-- Page-specific Open Graph tags -->
+	<meta property="og:title" content="Sonshine Christian Code Academy - Learn to Code, Grow in Faith" />
+	<meta property="og:description" content="A fun, faith-filled programming adventure for teens. Build real projects, earn Quest Coins, and discover how coding connects to Scripture." />
+	<meta property="og:url" content="https://sonshinecoders.org" />
+	<meta name="twitter:title" content="Sonshine Christian Code Academy - Learn to Code, Grow in Faith" />
+	<meta name="twitter:description" content="A fun, faith-filled programming adventure for teens. Build real projects, earn Quest Coins, and discover how coding connects to Scripture." />
 </svelte:head>
 
 <!-- Hero Section -->
