@@ -3,6 +3,8 @@
      John 3:16 (KJV) -->
 <script>
 	import { invalidateAll } from '$app/navigation';
+	import MarkdownTextChirho from '$lib/components/MarkdownTextChirho.svelte';
+	import CodeEditorChirho from '$lib/components/CodeEditorChirho.svelte';
 
 	let { data } = $props();
 
@@ -272,13 +274,13 @@
 				<!-- Description -->
 				<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
 					<h2 class="text-lg font-semibold text-slate-900 mb-3">Description</h2>
-					<p class="text-slate-600 whitespace-pre-line">{data.questChirho.description}</p>
+					<MarkdownTextChirho text={data.questChirho.description} class="text-slate-600" />
 				</div>
 
 				<!-- Instructions -->
 				<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
 					<h2 class="text-lg font-semibold text-slate-900 mb-3">Instructions</h2>
-					<div class="text-slate-600 whitespace-pre-line">{data.questChirho.instructions}</div>
+					<MarkdownTextChirho text={data.questChirho.instructions} class="text-slate-600" />
 				</div>
 
 				<!-- Visible Tests -->
@@ -340,14 +342,13 @@
 							</button>
 						</div>
 					</div>
-					<textarea
-						bind:value={codeChirho}
-						onkeydown={handleKeydownChirho}
-						class="w-full h-80 p-4 font-mono text-sm bg-slate-900 text-green-400 resize-none focus:outline-none border-0"
-						spellcheck="false"
-						autocomplete="off"
-						autocapitalize="off"
-					></textarea>
+					<div onkeydown={handleKeydownChirho}>
+						<CodeEditorChirho
+							code={codeChirho}
+							onchange={(newCodeChirho) => { codeChirho = newCodeChirho; }}
+							height="320px"
+						/>
+					</div>
 				</div>
 
 				<!-- Run Button -->
