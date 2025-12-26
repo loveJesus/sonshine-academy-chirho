@@ -151,8 +151,8 @@
 				onclick={() => { categoryFilterChirho = 'scroll'; }}
 				class="py-4 px-6 font-semibold border-b-2 transition-colors {categoryFilterChirho === 'scroll' ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-600 hover:text-slate-900'}"
 			>
-				<span class="text-xl mr-2">📜</span>
-				Scrolls
+				<span class="text-xl mr-2">📖</span>
+				Learn
 				<span class="ml-2 text-sm font-normal text-slate-500">
 					{#if completedScrollsCountChirho > 0}
 						<span class="text-green-600">{completedScrollsCountChirho}</span>/{scrollsChirho.length}
@@ -160,14 +160,14 @@
 						{scrollsChirho.length}
 					{/if}
 				</span>
-				<span class="block text-xs font-normal text-slate-400 mt-0.5">Learn step-by-step</span>
+				<span class="block text-xs font-normal text-slate-400 mt-0.5">Guided quests</span>
 			</button>
 			<button
 				onclick={() => { categoryFilterChirho = 'trial'; }}
 				class="py-4 px-6 font-semibold border-b-2 transition-colors {categoryFilterChirho === 'trial' ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-600 hover:text-slate-900'}"
 			>
 				<span class="text-xl mr-2">⚔️</span>
-				Trials
+				Practice
 				<span class="ml-2 text-sm font-normal text-slate-500">
 					{#if completedTrialsCountChirho > 0}
 						<span class="text-green-600">{completedTrialsCountChirho}</span>/{trialsChirho.length}
@@ -209,7 +209,7 @@
 			</select>
 
 			<span class="text-sm text-slate-500 ml-auto">
-				Showing {paginatedQuestsChirho.length} of {filteredQuestsChirho.length} {categoryFilterChirho === 'scroll' ? 'scrolls' : 'trials'}
+				Showing {paginatedQuestsChirho.length} of {filteredQuestsChirho.length} quests
 			</span>
 		</div>
 	</div>
@@ -221,7 +221,7 @@
 		{#if filteredQuestsChirho.length === 0}
 			<div class="text-center py-12">
 				<span class="text-5xl block mb-4">🔍</span>
-				<h3 class="text-xl font-semibold text-slate-900 mb-2">No {categoryFilterChirho === 'scroll' ? 'scrolls' : 'trials'} found</h3>
+				<h3 class="text-xl font-semibold text-slate-900 mb-2">No quests found</h3>
 				<p class="text-slate-600">Try adjusting your filters to see more.</p>
 			</div>
 		{:else}
@@ -271,7 +271,7 @@
 								{#if completedChirho}
 									Review Again
 								{:else}
-									{categoryFilterChirho === 'scroll' ? 'Read Scroll' : 'Begin Trial'}
+									{categoryFilterChirho === 'scroll' ? 'Start Quest' : 'Begin Quest'}
 								{/if}
 							</a>
 						</div>
