@@ -65,11 +65,14 @@ const greetings = [
 
 let clickCount = 0;
 
+console.log('Workshop loaded! Click the button to see greetings.');
+
 button.addEventListener('click', () => {
   clickCount++;
   const greeting = greetings[clickCount % greetings.length];
   output.textContent = greeting;
   output.style.color = '#059669';
+  console.log('Click #' + clickCount + ':', greeting);
 });`;
 
 	function handleChangeChirho(codeChirho) {
@@ -149,6 +152,7 @@ button.addEventListener('click', () => {
 				<li>• <strong>CSS tab:</strong> Change colors, sizes, and layout</li>
 				<li>• <strong>JavaScript tab:</strong> Add interactivity and logic</li>
 				<li>• <strong>Preview tab:</strong> See your creation in action!</li>
+				<li>• <strong>Console tab:</strong> View console.log() output and errors</li>
 			</ul>
 		</div>
 	</div>

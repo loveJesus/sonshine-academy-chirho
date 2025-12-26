@@ -16,13 +16,15 @@
 		initialJsChirho = '',
 		onchange = () => {},
 		height = '400px',
-		showPreviewChirho = true
+		showPreviewChirho = true,
+		showConsoleChirho = true
 	} = $props();
 
 	let htmlCodeChirho = $state(initialHtmlChirho);
 	let cssCodeChirho = $state(initialCssChirho);
 	let jsCodeChirho = $state(initialJsChirho);
 	let activeTabChirho = $state('html');
+	let consoleLogsChirho = $state([]);
 
 	let htmlEditorContainerChirho;
 	let cssEditorContainerChirho;
@@ -90,6 +92,18 @@
 			}
 		);
 
+		// Listen for console messages from iframe
+		function handleMessageChirho(eventChirho) {
+			if (eventChirho.data && eventChirho.data.typeChirho === 'console') {
+				consoleLogsChirho = [...consoleLogsChirho, {
+					level: eventChirho.data.level,
+					args: eventChirho.data.args,
+					timestamp: new Date().toLocaleTimeString()
+				}];
+			}
+		}
+		window.addEventListener('message', handleMessageChirho);
+
 		// Initial preview
 		updatePreviewChirho();
 
@@ -97,11 +111,15 @@
 			htmlEditorViewChirho?.destroy();
 			cssEditorViewChirho?.destroy();
 			jsEditorViewChirho?.destroy();
+			window.removeEventListener('message', handleMessageChirho);
 		};
 	});
 
 	function updatePreviewChirho() {
 		if (!previewIframeChirho) return;
+
+		// Clear console on each update
+		consoleLogsChirho = [];
 
 		const docContentChirho = `
 <!DOCTYPE html>
@@ -118,10 +136,61 @@
 <body>
 	${htmlCodeChirho}
 	<script>
+		// Override console methods to send to parent
+		(function() {
+			const originalConsole = {
+				log: console.log,
+				error: console.error,
+				warn: console.warn,
+				info: console.info
+			};
+
+			function sendToParent(level, args) {
+				try {
+					const serialized = Array.from(args).map(function(arg) {
+						if (arg === null) return 'null';
+						if (arg === undefined) return 'undefined';
+						if (typeof arg === 'object') {
+							try { return JSON.stringify(arg, null, 2); }
+							catch (e) { return String(arg); }
+						}
+						return String(arg);
+					});
+					window.parent.postMessage({
+						typeChirho: 'console',
+						level: level,
+						args: serialized
+					}, '*');
+				} catch (e) {}
+			}
+
+			console.log = function() {
+				sendToParent('log', arguments);
+				originalConsole.log.apply(console, arguments);
+			};
+			console.error = function() {
+				sendToParent('error', arguments);
+				originalConsole.error.apply(console, arguments);
+			};
+			console.warn = function() {
+				sendToParent('warn', arguments);
+				originalConsole.warn.apply(console, arguments);
+			};
+			console.info = function() {
+				sendToParent('info', arguments);
+				originalConsole.info.apply(console, arguments);
+			};
+
+			// Catch errors
+			window.onerror = function(msg, url, line, col, error) {
+				sendToParent('error', [msg + ' (line ' + line + ')']);
+			};
+		})();
+
 		try {
 			${jsCodeChirho}
 		} catch (e) {
-			console.error('Script error:', e);
+			console.error('Script error:', e.message);
 		}
 	<\/script>
 </body>
@@ -132,6 +201,28 @@
 
 	function setTabChirho(tabChirho) {
 		activeTabChirho = tabChirho;
+	}
+
+	function clearConsoleChirho() {
+		consoleLogsChirho = [];
+	}
+
+	function getLogColorChirho(level) {
+		switch (level) {
+			case 'error': return 'text-red-400';
+			case 'warn': return 'text-yellow-400';
+			case 'info': return 'text-blue-400';
+			default: return 'text-slate-300';
+		}
+	}
+
+	function getLogIconChirho(level) {
+		switch (level) {
+			case 'error': return '✕';
+			case 'warn': return '⚠';
+			case 'info': return 'ℹ';
+			default: return '›';
+		}
 	}
 </script>
 
@@ -172,8 +263,22 @@
 				class:active-chirho={activeTabChirho === 'preview'}
 				onclick={() => setTabChirho('preview')}
 			>
-				<span class="tab-icon-chirho">&#9654;</span>
+				<span class="tab-icon-chirho">▶</span>
 				Preview
+			</button>
+		{/if}
+		{#if showConsoleChirho}
+			<button
+				type="button"
+				class="tab-chirho"
+				class:active-chirho={activeTabChirho === 'console'}
+				onclick={() => setTabChirho('console')}
+			>
+				<span class="tab-icon-chirho">$</span>
+				Console
+				{#if consoleLogsChirho.length > 0}
+					<span class="console-badge-chirho">{consoleLogsChirho.length}</span>
+				{/if}
 			</button>
 		{/if}
 	</div>
@@ -199,6 +304,36 @@
 				></iframe>
 			</div>
 		{/if}
+		{#if showConsoleChirho}
+			<div class="console-panel-chirho" class:hidden-chirho={activeTabChirho !== 'console'}>
+				<div class="console-header-chirho">
+					<span class="text-xs text-slate-400">Console Output</span>
+					<button
+						type="button"
+						class="clear-btn-chirho"
+						onclick={clearConsoleChirho}
+					>
+						Clear
+					</button>
+				</div>
+				<div class="console-output-chirho">
+					{#if consoleLogsChirho.length === 0}
+						<div class="console-empty-chirho">
+							<span class="text-slate-500">No console output yet.</span>
+							<span class="text-slate-600 text-xs mt-1">Use console.log() in your JavaScript to see output here.</span>
+						</div>
+					{:else}
+						{#each consoleLogsChirho as logChirho, idx}
+							<div class="console-line-chirho {getLogColorChirho(logChirho.level)}">
+								<span class="console-icon-chirho">{getLogIconChirho(logChirho.level)}</span>
+								<span class="console-time-chirho">{logChirho.timestamp}</span>
+								<span class="console-message-chirho">{logChirho.args.join(' ')}</span>
+							</div>
+						{/each}
+					{/if}
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
 
@@ -214,6 +349,7 @@
 		display: flex;
 		background: #21252b;
 		border-bottom: 1px solid #3e4451;
+		flex-wrap: wrap;
 	}
 
 	.tab-chirho {
@@ -248,13 +384,25 @@
 		opacity: 0.7;
 	}
 
+	.console-badge-chirho {
+		background: #f59e0b;
+		color: #1e1e1e;
+		font-size: 0.625rem;
+		padding: 0.125rem 0.375rem;
+		border-radius: 9999px;
+		font-weight: 600;
+		min-width: 1.25rem;
+		text-align: center;
+	}
+
 	.panels-chirho {
 		height: var(--editor-height);
 		position: relative;
 	}
 
 	.editor-panel-chirho,
-	.preview-panel-chirho {
+	.preview-panel-chirho,
+	.console-panel-chirho {
 		position: absolute;
 		inset: 0;
 		overflow: hidden;
@@ -295,5 +443,85 @@
 		width: 100%;
 		height: 100%;
 		border: none;
+	}
+
+	.console-panel-chirho {
+		background: #1e1e1e;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.console-header-chirho {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem 1rem;
+		background: #252526;
+		border-bottom: 1px solid #3e4451;
+	}
+
+	.clear-btn-chirho {
+		font-size: 0.75rem;
+		padding: 0.25rem 0.5rem;
+		background: transparent;
+		border: 1px solid #4b5563;
+		border-radius: 4px;
+		color: #9ca3af;
+		cursor: pointer;
+		transition: all 0.15s;
+	}
+
+	.clear-btn-chirho:hover {
+		background: #374151;
+		color: #e5e7eb;
+	}
+
+	.console-output-chirho {
+		flex: 1;
+		overflow-y: auto;
+		padding: 0.5rem;
+		font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+		font-size: 13px;
+	}
+
+	.console-empty-chirho {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		text-align: center;
+	}
+
+	.console-line-chirho {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		padding: 0.25rem 0.5rem;
+		border-bottom: 1px solid #2d2d2d;
+	}
+
+	.console-line-chirho:hover {
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.console-icon-chirho {
+		flex-shrink: 0;
+		width: 1rem;
+		text-align: center;
+		opacity: 0.7;
+	}
+
+	.console-time-chirho {
+		flex-shrink: 0;
+		font-size: 0.7rem;
+		color: #6b7280;
+		padding-top: 0.125rem;
+	}
+
+	.console-message-chirho {
+		flex: 1;
+		white-space: pre-wrap;
+		word-break: break-word;
 	}
 </style>
