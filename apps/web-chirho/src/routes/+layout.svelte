@@ -80,6 +80,11 @@
 							class="text-slate-600 hover:text-slate-900 no-underline">Quests</a
 						>
 						<a
+							href="/workshop-chirho"
+							class="text-slate-600 hover:text-slate-900 no-underline flex items-center gap-1">
+							<span class="text-sm">🛠️</span> Workshop
+						</a>
+						<a
 							href="/leaderboard-chirho"
 							class="text-slate-600 hover:text-slate-900 no-underline flex items-center gap-1">
 							<span class="text-sm">🏆</span> Leaderboard
@@ -150,6 +155,9 @@
 							<hr class="border-slate-200">
 							<a href="/dashboard-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Dashboard</a>
 							<a href="/quests-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Quests</a>
+							<a href="/workshop-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
+								<span>🛠️</span> Workshop
+							</a>
 							<a href="/leaderboard-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
 								<span>🏆</span> Leaderboard
 							</a>
