@@ -81,6 +81,20 @@
 				return '💻';
 		}
 	}
+
+	// Check if a quest is completed by the user
+	const completedSetChirho = $derived(new Set(data.completedQuestIdsChirho || []));
+	function isCompletedChirho(questIdChirho) {
+		return completedSetChirho.has(questIdChirho);
+	}
+
+	// Count completed quests in current view
+	const completedScrollsCountChirho = $derived(
+		scrollsChirho.filter(function(q) { return completedSetChirho.has(q.questId); }).length
+	);
+	const completedTrialsCountChirho = $derived(
+		trialsChirho.filter(function(q) { return completedSetChirho.has(q.questId); }).length
+	);
 </script>
 
 <svelte:head>
@@ -139,7 +153,13 @@
 			>
 				<span class="text-xl mr-2">📜</span>
 				Scrolls
-				<span class="ml-2 text-sm font-normal text-slate-500">({scrollsChirho.length})</span>
+				<span class="ml-2 text-sm font-normal text-slate-500">
+					{#if completedScrollsCountChirho > 0}
+						<span class="text-green-600">{completedScrollsCountChirho}</span>/{scrollsChirho.length}
+					{:else}
+						{scrollsChirho.length}
+					{/if}
+				</span>
 				<span class="block text-xs font-normal text-slate-400 mt-0.5">Learn step-by-step</span>
 			</button>
 			<button
@@ -148,7 +168,13 @@
 			>
 				<span class="text-xl mr-2">⚔️</span>
 				Trials
-				<span class="ml-2 text-sm font-normal text-slate-500">({trialsChirho.length})</span>
+				<span class="ml-2 text-sm font-normal text-slate-500">
+					{#if completedTrialsCountChirho > 0}
+						<span class="text-green-600">{completedTrialsCountChirho}</span>/{trialsChirho.length}
+					{:else}
+						{trialsChirho.length}
+					{/if}
+				</span>
 				<span class="block text-xs font-normal text-slate-400 mt-0.5">Test your skills</span>
 			</button>
 		</div>
@@ -201,12 +227,13 @@
 		{:else}
 			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{#each paginatedQuestsChirho as questChirho, idx}
-					<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+					{@const completedChirho = isCompletedChirho(questChirho.questId)}
+					<div class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition-shadow {completedChirho ? 'border-green-300 ring-1 ring-green-200' : 'border-slate-200'}">
 						<!-- Quest Header -->
-						<div class="p-4 border-b border-slate-100">
+						<div class="p-4 border-b {completedChirho ? 'border-green-100 bg-green-50/50' : 'border-slate-100'}">
 							<div class="flex items-start justify-between">
 								<div class="flex items-center gap-2">
-									<span class="text-2xl">{getTypeIconChirho(questChirho.questType)}</span>
+									<span class="text-2xl">{completedChirho ? '✅' : getTypeIconChirho(questChirho.questType)}</span>
 									<div>
 										<div class="text-xs text-slate-400 mb-0.5">#{questChirho.orderIndex + 1}</div>
 										<h3 class="font-bold text-slate-900">{questChirho.title}</h3>
@@ -239,9 +266,13 @@
 							<!-- CTA -->
 							<a
 								href="/quests-chirho/{questChirho.questId}"
-								class="block w-full text-center py-2 px-4 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors no-underline"
+								class="block w-full text-center py-2 px-4 font-medium rounded-lg transition-colors no-underline {completedChirho ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-slate-900 text-white hover:bg-slate-800'}"
 							>
-								{categoryFilterChirho === 'scroll' ? 'Read Scroll' : 'Begin Trial'}
+								{#if completedChirho}
+									Review Again
+								{:else}
+									{categoryFilterChirho === 'scroll' ? 'Read Scroll' : 'Begin Trial'}
+								{/if}
 							</a>
 						</div>
 					</div>

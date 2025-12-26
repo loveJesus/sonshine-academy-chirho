@@ -1,15 +1,15 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script lang="ts">
+<script>
 	import { enhance } from '$app/forms';
 
 	let { data, form } = $props();
 
 	let showCreateFormChirho = $state(false);
-	let selectedScopeChirho = $state<'global' | 'organization' | 'cohort'>('global');
+	let selectedScopeChirho = $state('global');
 
-	function formatDateChirho(dateChirho: Date | null) {
+	function formatDateChirho(dateChirho) {
 		if (!dateChirho) return 'N/A';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			month: 'short',
@@ -20,7 +20,7 @@
 		});
 	}
 
-	function getScopeColorChirho(scope: string) {
+	function getScopeColorChirho(scope) {
 		switch (scope) {
 			case 'global':
 				return 'bg-blue-100 text-blue-800';

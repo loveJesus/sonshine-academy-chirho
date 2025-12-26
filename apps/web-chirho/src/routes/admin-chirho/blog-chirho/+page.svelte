@@ -1,14 +1,14 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script lang="ts">
+<script>
 	import { enhance } from '$app/forms';
 
 	let { data, form } = $props();
 
 	let showCreateFormChirho = $state(false);
 
-	function formatDateChirho(dateChirho: Date | null) {
+	function formatDateChirho(dateChirho) {
 		if (!dateChirho) return 'Draft';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			month: 'short',
@@ -17,8 +17,8 @@
 		});
 	}
 
-	function getCategoryColorChirho(category: string) {
-		const colors: Record<string, string> = {
+	function getCategoryColorChirho(category) {
+		const colors = {
 			announcement: 'bg-purple-100 text-purple-800',
 			tutorial: 'bg-blue-100 text-blue-800',
 			devotional: 'bg-amber-100 text-amber-800',
@@ -28,7 +28,7 @@
 		return colors[category] || colors.news;
 	}
 
-	function generateSlugChirho(title: string) {
+	function generateSlugChirho(title) {
 		return title
 			.toLowerCase()
 			.replace(/[^a-z0-9]+/g, '-')

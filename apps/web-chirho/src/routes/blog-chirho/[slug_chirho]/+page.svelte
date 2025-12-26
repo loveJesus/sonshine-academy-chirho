@@ -1,12 +1,12 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script lang="ts">
+<script>
 	let { data } = $props();
 
 	const postChirho = data.postChirho;
 
-	function formatDateChirho(date: Date | null) {
+	function formatDateChirho(date) {
 		if (!date) return '';
 		return new Date(date).toLocaleDateString('en-US', {
 			year: 'numeric',
@@ -15,8 +15,8 @@
 		});
 	}
 
-	function getCategoryColorChirho(category: string) {
-		const colors: Record<string, string> = {
+	function getCategoryColorChirho(category) {
+		const colors = {
 			announcement: 'bg-purple-100 text-purple-800',
 			tutorial: 'bg-blue-100 text-blue-800',
 			devotional: 'bg-amber-100 text-amber-800',
@@ -27,7 +27,7 @@
 	}
 
 	// Simple markdown-like rendering (basic)
-	function renderContentChirho(content: string) {
+	function renderContentChirho(content) {
 		if (!content) return '';
 		return content
 			// Headers

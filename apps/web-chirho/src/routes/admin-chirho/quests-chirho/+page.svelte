@@ -1,9 +1,10 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script lang="ts">
+<script>
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
+	import CodeEditorChirho from '$lib/components/CodeEditorChirho.svelte';
 
 	let { data, form } = $props();
 
@@ -115,11 +116,11 @@
 					<label for="questJsonChirho" class="block text-sm font-medium text-slate-700 mb-1">
 						Quest JSON
 					</label>
-					<textarea
-						id="questJsonChirho"
-						name="questJsonChirho"
-						rows="10"
-						class="w-full font-mono text-sm"
+					<input type="hidden" name="questJsonChirho" value={questJsonChirho} />
+					<CodeEditorChirho
+						code={questJsonChirho}
+						onchange={(newCodeChirho) => { questJsonChirho = newCodeChirho; }}
+						height="400px"
 						placeholder={`{
   "title": "The Narrow Gate",
   "description": "Filter an array to find elements meeting a condition",
@@ -134,8 +135,7 @@
     { "name": "filters positive numbers", "code": "assert(narrowGate([1,-2,3]).length === 2)", "visible": true }
   ]
 }`}
-						bind:value={questJsonChirho}
-					></textarea>
+					/>
 				</div>
 				<div class="flex gap-2">
 					<button type="submit" class="btn-primary">Import Quest</button>

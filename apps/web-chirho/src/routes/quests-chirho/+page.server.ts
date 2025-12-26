@@ -2,15 +2,16 @@
 // that whosoever believeth in him should not perish, but have everlasting life.
 // John 3:16 (KJV)
 
-import { asc, eq } from 'drizzle-orm';
+import { asc, eq, and } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
-import { questChirho } from '$lib/server/db/schema';
+import { questChirho, questSubmissionChirho } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (!locals.dbChirho) {
 		return {
 			questsChirho: [],
-			totalCountChirho: 0
+			totalCountChirho: 0,
+			completedQuestIdsChirho: []
 		};
 	}
 
@@ -30,8 +31,24 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.where(eq(questChirho.isActive, true))
 		.orderBy(asc(questChirho.orderIndex));
 
+	// If user is logged in, fetch their completed quests
+	let completedQuestIdsChirho: string[] = [];
+	if (locals.userChirho) {
+		const completionsChirho = await locals.dbChirho
+			.select({ questId: questSubmissionChirho.questId })
+			.from(questSubmissionChirho)
+			.where(
+				and(
+					eq(questSubmissionChirho.userId, locals.userChirho.userId),
+					eq(questSubmissionChirho.isCorrect, true)
+				)
+			);
+		completedQuestIdsChirho = completionsChirho.map((c) => c.questId);
+	}
+
 	return {
 		questsChirho,
-		totalCountChirho: questsChirho.length
+		totalCountChirho: questsChirho.length,
+		completedQuestIdsChirho
 	};
 };
