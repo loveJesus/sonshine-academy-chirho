@@ -1,12 +1,13 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import CodeEditorChirho from '$lib/components/CodeEditorChirho.svelte';
 
-	let { data, form } = $props();
+	let { data, form }: { data: any; form: any } = $props();
 
 	let showImportChirho = $state(false);
 	let questJsonChirho = $state('');
@@ -27,7 +28,7 @@
 		goto(`/admin-chirho/quests-chirho?${paramsChirho.toString()}`);
 	}
 
-	function getDifficultyColorChirho(difficultyChirho) {
+	function getDifficultyColorChirho(difficultyChirho: string): string {
 		switch (difficultyChirho) {
 			case 'beginner':
 				return 'bg-green-100 text-green-800';
@@ -40,15 +41,15 @@
 		}
 	}
 
-	function handleImportEnhanceChirho() {
-		return async function (eventChirho) {
-			await eventChirho.update();
-			if (eventChirho.result.type === 'success') {
+	const handleImportEnhanceChirho: SubmitFunction = () => {
+		return async ({ update, result }) => {
+			await update();
+			if (result.type === 'success') {
 				questJsonChirho = '';
 				showImportChirho = false;
 			}
 		};
-	}
+	};
 </script>
 
 <svelte:head>
@@ -119,7 +120,7 @@
 					<input type="hidden" name="questJsonChirho" value={questJsonChirho} />
 					<CodeEditorChirho
 						code={questJsonChirho}
-						onchange={(newCodeChirho) => { questJsonChirho = newCodeChirho; }}
+						onchange={(newCodeChirho: string) => { questJsonChirho = newCodeChirho; }}
 						height="400px"
 						placeholder={`{
   "title": "The Narrow Gate",

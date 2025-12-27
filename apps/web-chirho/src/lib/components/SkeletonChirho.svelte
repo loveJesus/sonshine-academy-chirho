@@ -1,11 +1,17 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	/**
-	 * @type {'text' | 'title' | 'avatar' | 'card' | 'button' | 'image' | 'custom'}
-	 */
-	let { variant = 'text', width = 'full', height = 'auto', lines = 1, className = '' } = $props();
+<script lang="ts">
+	type VariantType = 'text' | 'title' | 'avatar' | 'card' | 'button' | 'image' | 'custom';
+	type WidthType = 'full' | '3/4' | '2/3' | '1/2' | '1/3' | '1/4' | 'auto';
+
+	let {
+		variant = 'text' as VariantType,
+		width = 'full' as WidthType,
+		height = 'auto',
+		lines = 1,
+		className = ''
+	} = $props();
 
 	const variantClassesChirho = {
 		text: 'h-4 rounded',

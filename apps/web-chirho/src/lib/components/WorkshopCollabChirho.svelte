@@ -1,10 +1,10 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	import { onMount, onDestroy } from 'svelte';
+<script lang="ts">
+	import { onMount } from 'svelte';
 	import { EditorView, basicSetup } from 'codemirror';
-	import { EditorState } from '@codemirror/state';
+	import { EditorState, type Extension } from '@codemirror/state';
 	import { html } from '@codemirror/lang-html';
 	import { css } from '@codemirror/lang-css';
 	import { javascript } from '@codemirror/lang-javascript';
@@ -16,6 +16,38 @@
 	 * Uses Durable Objects for WebSocket-based synchronization
 	 */
 
+	type TabType = 'html' | 'css' | 'js' | 'preview' | 'console';
+
+	interface ConsoleLogChirho {
+		level: string;
+		args: string[];
+		timestamp: string;
+	}
+
+	interface UserChirho {
+		userIdChirho: string;
+		displayNameChirho: string;
+		colorChirho: string;
+	}
+
+	interface CursorInfoChirho {
+		colorChirho: string;
+		tabChirho: string;
+		cursorChirho: { lineChirho: number; columnChirho: number };
+	}
+
+	interface CodeChangeChirho {
+		html: string;
+		css: string;
+		js: string;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	interface WebSocketMessageChirho {
+		typeChirho: string;
+		[key: string]: unknown;
+	}
+
 	let {
 		sessionIdChirho = '',
 		userIdChirho = '',
@@ -23,7 +55,7 @@
 		initialHtmlChirho = '',
 		initialCssChirho = '',
 		initialJsChirho = '',
-		onchange = () => {},
+		onchange = (_code: CodeChangeChirho) => {},
 		height = '400px',
 		showPreviewChirho = true,
 		showConsoleChirho = true,
@@ -33,32 +65,38 @@
 	let htmlCodeChirho = $state(initialHtmlChirho);
 	let cssCodeChirho = $state(initialCssChirho);
 	let jsCodeChirho = $state(initialJsChirho);
-	let activeTabChirho = $state('html');
-	let consoleLogsChirho = $state([]);
+	let activeTabChirho = $state<TabType>('html');
+	let consoleLogsChirho = $state<ConsoleLogChirho[]>([]);
 
 	// Collaboration state
-	let wsChirho = $state(null);
+	let wsChirho = $state<WebSocket | null>(null);
 	let isConnectedChirho = $state(false);
-	let connectedUsersChirho = $state([]);
-	let remoteCursorsChirho = $state(new Map());
-	let connectionStatusChirho = $state('disconnected');
+	let connectedUsersChirho = $state<UserChirho[]>([]);
+	let remoteCursorsChirho = $state<Map<string, CursorInfoChirho>>(new Map());
+	let connectionStatusChirho = $state<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
 
-	let htmlEditorContainerChirho;
-	let cssEditorContainerChirho;
-	let jsEditorContainerChirho;
-	let previewIframeChirho;
+	let htmlEditorContainerChirho: HTMLDivElement;
+	let cssEditorContainerChirho: HTMLDivElement;
+	let jsEditorContainerChirho: HTMLDivElement;
+	let previewIframeChirho: HTMLIFrameElement;
 
-	let htmlEditorViewChirho;
-	let cssEditorViewChirho;
-	let jsEditorViewChirho;
+	let htmlEditorViewChirho: EditorView | null = null;
+	let cssEditorViewChirho: EditorView | null = null;
+	let jsEditorViewChirho: EditorView | null = null;
 
 	// Flag to prevent update loops when receiving remote changes
 	let isRemoteUpdateChirho = false;
 
 	// Debounce timer for sending updates
-	let updateTimerChirho = null;
+	let updateTimerChirho: ReturnType<typeof setTimeout> | null = null;
 
-	function createEditorChirho(containerChirho, langChirho, initialCodeChirho, tabNameChirho, onUpdateChirho) {
+	function createEditorChirho(
+		containerChirho: HTMLDivElement,
+		langChirho: Extension,
+		initialCodeChirho: string,
+		tabNameChirho: string,
+		onUpdateChirho: (code: string) => void
+	): EditorView {
 		const extensionsChirho = [
 			basicSetup,
 			langChirho,
@@ -96,7 +134,7 @@
 		});
 	}
 
-	function connectWebSocketChirho() {
+	function connectWebSocketChirho(): void {
 		if (!sessionIdChirho || !collaborativeChirho) return;
 
 		connectionStatusChirho = 'connecting';
@@ -148,13 +186,13 @@
 		}
 	}
 
-	function sendMessageChirho(messageChirho) {
+	function sendMessageChirho(messageChirho: WebSocketMessageChirho): void {
 		if (wsChirho && wsChirho.readyState === WebSocket.OPEN) {
 			wsChirho.send(JSON.stringify(messageChirho));
 		}
 	}
 
-	function sendUpdateChirho(tabChirho, contentChirho) {
+	function sendUpdateChirho(tabChirho: string, contentChirho: string): void {
 		// Debounce updates to avoid flooding
 		if (updateTimerChirho) {
 			clearTimeout(updateTimerChirho);
@@ -168,7 +206,7 @@
 		}, 100);
 	}
 
-	function sendCursorChirho(tabChirho, lineChirho, columnChirho) {
+	function sendCursorChirho(tabChirho: string, lineChirho: number, columnChirho: number): void {
 		sendMessageChirho({
 			typeChirho: 'cursor',
 			tabChirho,
@@ -176,7 +214,8 @@
 		});
 	}
 
-	function handleWebSocketMessageChirho(dataChirho) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	function handleWebSocketMessageChirho(dataChirho: any): void {
 		switch (dataChirho.typeChirho) {
 			case 'state':
 				// Received full state from server
@@ -267,7 +306,7 @@
 				// Updated user list
 				if (dataChirho.usersChirho) {
 					connectedUsersChirho = dataChirho.usersChirho.filter(
-						(u) => u.userIdChirho !== userIdChirho
+						(u: UserChirho) => u.userIdChirho !== userIdChirho
 					);
 				}
 				break;
@@ -349,7 +388,7 @@
 		);
 
 		// Listen for console messages from iframe
-		function handleMessageChirho(eventChirho) {
+		function handleMessageChirho(eventChirho: MessageEvent): void {
 			if (eventChirho.data && eventChirho.data.typeChirho === 'console') {
 				consoleLogsChirho = [
 					...consoleLogsChirho,
@@ -382,7 +421,7 @@
 		};
 	});
 
-	function updatePreviewChirho() {
+	function updatePreviewChirho(): void {
 		if (!previewIframeChirho) return;
 
 		// Clear console on each update
@@ -466,15 +505,15 @@
 		previewIframeChirho.srcdoc = docContentChirho;
 	}
 
-	function setTabChirho(tabChirho) {
+	function setTabChirho(tabChirho: TabType): void {
 		activeTabChirho = tabChirho;
 	}
 
-	function clearConsoleChirho() {
+	function clearConsoleChirho(): void {
 		consoleLogsChirho = [];
 	}
 
-	function getLogColorChirho(level) {
+	function getLogColorChirho(level: string): string {
 		switch (level) {
 			case 'error':
 				return 'text-red-400';
@@ -487,7 +526,7 @@
 		}
 	}
 
-	function getLogIconChirho(level) {
+	function getLogIconChirho(level: string): string {
 		switch (level) {
 			case 'error':
 				return 'X';
@@ -500,7 +539,7 @@
 		}
 	}
 
-	function getConnectionStatusColorChirho() {
+	function getConnectionStatusColorChirho(): string {
 		switch (connectionStatusChirho) {
 			case 'connected':
 				return 'bg-green-500';

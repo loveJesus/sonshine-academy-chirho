@@ -1,12 +1,32 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	let { data } = $props();
+<script lang="ts">
+	interface LessonChirho {
+		lessonId: string;
+		title: string;
+		lessonType: string;
+		durationMinutes?: number;
+	}
+
+	interface SessionChirho {
+		sessionId: string;
+		title: string;
+		lessons?: LessonChirho[];
+	}
+
+	interface ModuleChirho {
+		moduleId: string;
+		title: string;
+		orderIndex: number;
+		sessions: SessionChirho[];
+	}
+
+	let { data }: { data: any } = $props();
 
 	let expandedModulesChirho = $state(new Set());
 
-	function toggleModuleChirho(moduleIdChirho) {
+	function toggleModuleChirho(moduleIdChirho: string): void {
 		if (expandedModulesChirho.has(moduleIdChirho)) {
 			expandedModulesChirho.delete(moduleIdChirho);
 			expandedModulesChirho = new Set(expandedModulesChirho);
@@ -16,7 +36,7 @@
 		}
 	}
 
-	function getLevelColorChirho(levelChirho) {
+	function getLevelColorChirho(levelChirho: string): string {
 		switch (levelChirho) {
 			case 'Beginner':
 				return 'bg-green-100 text-green-800';
@@ -29,7 +49,7 @@
 		}
 	}
 
-	function getLessonIconChirho(lessonTypeChirho) {
+	function getLessonIconChirho(lessonTypeChirho: string): string {
 		switch (lessonTypeChirho) {
 			case 'video':
 				return '🎬';
@@ -46,7 +66,7 @@
 		}
 	}
 
-	function formatDurationChirho(minutesChirho) {
+	function formatDurationChirho(minutesChirho: number | null): string {
 		if (!minutesChirho) return '';
 		if (minutesChirho < 60) return `${minutesChirho} min`;
 		const hoursChirho = Math.floor(minutesChirho / 60);
@@ -57,15 +77,15 @@
 
 	// Calculate total lessons and duration
 	let totalLessonsChirho = $derived(
-		data.modulesChirho.reduce((accChirho, modChirho) => {
-			return accChirho + modChirho.sessions.reduce((sAccChirho, sesChirho) => {
+		(data.modulesChirho as ModuleChirho[]).reduce((accChirho: number, modChirho: ModuleChirho) => {
+			return accChirho + modChirho.sessions.reduce((sAccChirho: number, sesChirho: SessionChirho) => {
 				return sAccChirho + (sesChirho.lessons?.length || 0);
 			}, 0);
 		}, 0)
 	);
 
 	let totalSessionsChirho = $derived(
-		data.modulesChirho.reduce((accChirho, modChirho) => accChirho + (modChirho.sessions?.length || 0), 0)
+		(data.modulesChirho as ModuleChirho[]).reduce((accChirho: number, modChirho: ModuleChirho) => accChirho + (modChirho.sessions?.length || 0), 0)
 	);
 </script>
 

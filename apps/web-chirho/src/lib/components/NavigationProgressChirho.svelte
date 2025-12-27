@@ -1,13 +1,12 @@
 <!-- For God so loved the world that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { navigating } from '$app/state';
 
 	let progressChirho = $state(0);
 	let visibleChirho = $state(false);
-	/** @type {ReturnType<typeof setInterval> | null} */
-	let intervalChirho = $state(null);
+	let intervalChirho = $state<ReturnType<typeof setInterval> | null>(null);
 
 	$effect(() => {
 		if (navigating.to) {
@@ -25,7 +24,7 @@
 			// Navigation complete
 			if (visibleChirho) {
 				progressChirho = 100;
-				clearInterval(intervalChirho);
+				if (intervalChirho) clearInterval(intervalChirho);
 
 				// Hide after animation completes
 				setTimeout(() => {

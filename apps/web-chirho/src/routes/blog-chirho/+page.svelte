@@ -1,10 +1,10 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 
-	let { data } = $props();
+	let { data }: { data: any } = $props();
 
 	const categoriesChirho = [
 		{ value: '', label: 'All Posts', icon: '📚' },
@@ -81,8 +81,8 @@
 		})
 	);
 
-	function getCategoryColorChirho(category) {
-		const colorsChirho = {
+	function getCategoryColorChirho(category: string): string {
+		const colorsChirho: Record<string, string> = {
 			announcement: 'bg-purple-100 text-purple-800',
 			tutorial: 'bg-blue-100 text-blue-800',
 			devotional: 'bg-amber-100 text-amber-800',
@@ -92,7 +92,7 @@
 		return colorsChirho[category] || colorsChirho.news;
 	}
 
-	function formatDateChirho(date) {
+	function formatDateChirho(date: Date | string | null): string {
 		if (!date) return '';
 		const d = new Date(date);
 		return d.toLocaleDateString('en-US', {
@@ -102,7 +102,7 @@
 		});
 	}
 
-	function filterByCategoryChirho(category) {
+	function filterByCategoryChirho(category: string): void {
 		if (category) {
 			goto('/blog-chirho?category=' + category);
 		} else {

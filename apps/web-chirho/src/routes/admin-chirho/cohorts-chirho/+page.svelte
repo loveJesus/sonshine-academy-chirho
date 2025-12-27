@@ -1,15 +1,21 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 
-	let { data, form } = $props();
+	interface CohortChirho {
+		cohortId: string;
+		name: string;
+		status: string;
+		currentEnrollment?: number;
+	}
+
+	let { data, form }: { data: any; form: any } = $props();
 
 	let showCreateFormChirho = $state(false);
 
-	/** @param {string} statusChirho */
-	function getStatusColorChirho(statusChirho) {
+	function getStatusColorChirho(statusChirho: string): string {
 		switch (statusChirho) {
 			case 'upcoming':
 				return 'bg-blue-100 text-blue-700';
@@ -24,8 +30,7 @@
 		}
 	}
 
-	/** @param {Date | string | null} dateChirho */
-	function formatDateChirho(dateChirho) {
+	function formatDateChirho(dateChirho: Date | string | null): string {
 		if (!dateChirho) return '-';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			year: 'numeric',
@@ -217,19 +222,19 @@
 		</div>
 		<div class="bg-blue-50 rounded-lg shadow-sm border border-blue-200 p-4">
 			<div class="text-2xl font-bold text-blue-700">
-				{data.cohortsChirho.filter((c) => c.status === 'upcoming').length}
+				{(data.cohortsChirho as CohortChirho[]).filter((cChirho: CohortChirho) => cChirho.status === 'upcoming').length}
 			</div>
 			<div class="text-sm text-blue-600">Upcoming</div>
 		</div>
 		<div class="bg-green-50 rounded-lg shadow-sm border border-green-200 p-4">
 			<div class="text-2xl font-bold text-green-700">
-				{data.cohortsChirho.filter((c) => c.status === 'active').length}
+				{(data.cohortsChirho as CohortChirho[]).filter((cChirho: CohortChirho) => cChirho.status === 'active').length}
 			</div>
 			<div class="text-sm text-green-600">Active</div>
 		</div>
 		<div class="bg-slate-50 rounded-lg shadow-sm border border-slate-200 p-4">
 			<div class="text-2xl font-bold text-slate-700">
-				{data.cohortsChirho.reduce((sum, c) => sum + (c.currentEnrollment || 0), 0)}
+				{(data.cohortsChirho as CohortChirho[]).reduce((sumChirho: number, cChirho: CohortChirho) => sumChirho + (cChirho.currentEnrollment || 0), 0)}
 			</div>
 			<div class="text-sm text-slate-600">Total Students</div>
 		</div>
@@ -297,7 +302,7 @@
 											<select
 												name="status"
 												class="text-xs border border-slate-300 rounded px-2 py-1"
-												onchange={(e) => /** @type {HTMLFormElement} */ (e.target?.closest('form'))?.requestSubmit()}
+												onchange={(e: Event) => (e.target as HTMLElement)?.closest('form')?.requestSubmit()}
 											>
 												<option value="upcoming" selected={cohortItemChirho.status === 'upcoming'}>Upcoming</option>
 												<option value="active" selected={cohortItemChirho.status === 'active'}>Active</option>

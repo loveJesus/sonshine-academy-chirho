@@ -1,7 +1,7 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import LampPlayerChirho from '$lib/components/LampPlayerChirho.svelte';
 
 	// Demo video - using a public domain Bible video
@@ -23,12 +23,12 @@
 	let progressChirho = $state(0);
 	let isCompletedChirho = $state(false);
 
-	function handleProgressChirho(dataChirho) {
+	function handleProgressChirho(dataChirho: { percent: number }): void {
 		progressChirho = dataChirho.percent;
 		console.log('Video progress:', Math.round(dataChirho.percent) + '%');
 	}
 
-	function handleCompleteChirho() {
+	function handleCompleteChirho(): void {
 		isCompletedChirho = true;
 		console.log('Video completed! User has watched 90% or more.');
 	}

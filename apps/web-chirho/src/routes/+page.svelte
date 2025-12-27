@@ -1,8 +1,10 @@
 <!-- For God so loved the world that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	let { data } = $props();
+<script lang="ts">
+	// HomePage has no data from server currently, but we include PageData for future-proofing
+	// and to maintain consistency with TypeScript route pattern
+	// let { data }: { data: PageData } = $props();
 </script>
 
 <svelte:head>

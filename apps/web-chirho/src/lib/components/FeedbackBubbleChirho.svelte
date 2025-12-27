@@ -1,7 +1,7 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
 
@@ -14,10 +14,10 @@
 	const currentUrlChirho = $derived(page.url.pathname);
 
 	const feedbackTypesChirho = [
-		{ value: 'bug', label: 'Bug Report', icon: '🐛', color: 'red' },
-		{ value: 'suggestion', label: 'Suggestion', icon: '💡', color: 'amber' },
-		{ value: 'question', label: 'Question', icon: '❓', color: 'blue' },
-		{ value: 'praise', label: 'Praise', icon: '🙏', color: 'green' }
+		{ value: 'bug', label: 'Bug Report', icon: '🐛', color: 'red' as const },
+		{ value: 'suggestion', label: 'Suggestion', icon: '💡', color: 'amber' as const },
+		{ value: 'question', label: 'Question', icon: '❓', color: 'blue' as const },
+		{ value: 'praise', label: 'Praise', icon: '🙏', color: 'green' as const }
 	];
 
 	function toggleBubbleChirho() {
@@ -29,7 +29,7 @@
 	}
 
 	function handleSubmitChirho() {
-		return async function (eventChirho) {
+		return async function (eventChirho: { update: () => Promise<void>; result: { type: string } }) {
 			isSubmittingChirho = true;
 			await eventChirho.update();
 			isSubmittingChirho = false;
@@ -45,7 +45,7 @@
 		};
 	}
 
-	function getTypeColorChirho(colorChirho) {
+	function getTypeColorChirho(colorChirho: 'red' | 'amber' | 'blue' | 'green'): string {
 		const colorsChirho = {
 			red: 'bg-red-100 text-red-700 border-red-200',
 			amber: 'bg-amber-100 text-amber-700 border-amber-200',
@@ -55,7 +55,7 @@
 		return colorsChirho[colorChirho] || colorsChirho.blue;
 	}
 
-	function selectTypeChirho(value) {
+	function selectTypeChirho(value: string) {
 		feedbackTypeChirho = value;
 	}
 </script>

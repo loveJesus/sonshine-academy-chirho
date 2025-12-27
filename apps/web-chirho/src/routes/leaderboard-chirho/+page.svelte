@@ -1,10 +1,15 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	let { data } = $props();
+<script lang="ts">
+	let { data }: { data: any } = $props();
 
-	function getRankBadgeChirho(rankChirho) {
+	interface RankBadgeChirho {
+		emoji: string;
+		class: string;
+	}
+
+	function getRankBadgeChirho(rankChirho: number): RankBadgeChirho {
 		switch (rankChirho) {
 			case 1:
 				return { emoji: '🥇', class: 'from-yellow-400 to-amber-500' };
@@ -17,14 +22,14 @@
 		}
 	}
 
-	function formatNumberChirho(numChirho) {
+	function formatNumberChirho(numChirho: number): string {
 		if (numChirho >= 1000) {
 			return (numChirho / 1000).toFixed(1) + 'k';
 		}
 		return numChirho.toString();
 	}
 
-	function getInitialsChirho(nameChirho) {
+	function getInitialsChirho(nameChirho: string | null | undefined): string {
 		if (!nameChirho) return '?';
 		const wordsChirho = nameChirho.split(' ');
 		if (wordsChirho.length >= 2) {

@@ -1,7 +1,7 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { EditorView, basicSetup } from 'codemirror';
 	import { EditorState } from '@codemirror/state';
@@ -12,14 +12,14 @@
 
 	let {
 		code = '',
-		onchange = () => {},
+		onchange = (_value: string) => {},
 		readonly = false,
 		height = '320px',
 		placeholder = ''
 	} = $props();
 
-	let editorContainerChirho;
-	let editorViewChirho;
+	let editorContainerChirho: HTMLDivElement;
+	let editorViewChirho: EditorView | null = null;
 	let currentValueChirho = $state(code ?? '');
 
 	onMount(() => {

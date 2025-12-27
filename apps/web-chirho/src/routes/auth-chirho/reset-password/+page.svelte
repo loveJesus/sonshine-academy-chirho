@@ -1,10 +1,10 @@
 <!-- For God so loved the world that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 
-	let { form, data } = $props();
+	let { form, data }: { form: any; data: any } = $props();
 	let isSubmittingChirho = $state(false);
 	let showPasswordChirho = $state(false);
 	let showConfirmPasswordChirho = $state(false);

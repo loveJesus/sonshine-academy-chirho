@@ -1,8 +1,18 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	const faqsChirho = [
+<script lang="ts">
+	interface QuestionChirho {
+		q: string;
+		a: string;
+	}
+
+	interface FaqCategoryChirho {
+		category: string;
+		questions: QuestionChirho[];
+	}
+
+	const faqsChirho: FaqCategoryChirho[] = [
 		{
 			category: 'Getting Started',
 			questions: [
@@ -77,9 +87,9 @@
 		}
 	];
 
-	let expandedQuestionsChirho = $state(new Set());
+	let expandedQuestionsChirho = $state<Set<string>>(new Set());
 
-	function toggleQuestionChirho(keyChirho) {
+	function toggleQuestionChirho(keyChirho: string): void {
 		if (expandedQuestionsChirho.has(keyChirho)) {
 			expandedQuestionsChirho.delete(keyChirho);
 			expandedQuestionsChirho = new Set(expandedQuestionsChirho);

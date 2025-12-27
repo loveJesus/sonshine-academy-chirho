@@ -1,10 +1,10 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	let { data } = $props();
+<script lang="ts">
+	let { data }: { data: any } = $props();
 
-	function getTransactionColorChirho(typeChirho) {
+	function getTransactionColorChirho(typeChirho: string): string {
 		switch (typeChirho) {
 			case 'quest_reward':
 				return 'from-green-500 to-emerald-500';
@@ -17,7 +17,7 @@
 		}
 	}
 
-	function getTransactionIconChirho(typeChirho) {
+	function getTransactionIconChirho(typeChirho: string): string {
 		switch (typeChirho) {
 			case 'quest_reward':
 				return '⚔️';
@@ -30,7 +30,7 @@
 		}
 	}
 
-	function getTransactionLabelChirho(typeChirho) {
+	function getTransactionLabelChirho(typeChirho: string): string {
 		switch (typeChirho) {
 			case 'quest_reward':
 				return 'Quest Reward';
@@ -43,7 +43,7 @@
 		}
 	}
 
-	function formatTimeAgoChirho(dateChirho) {
+	function formatTimeAgoChirho(dateChirho: Date | string): string {
 		const nowChirho = new Date();
 		const thenChirho = new Date(dateChirho);
 		const diffMsChirho = nowChirho.getTime() - thenChirho.getTime();
@@ -58,13 +58,13 @@
 		return thenChirho.toLocaleDateString();
 	}
 
-	function shortenHashChirho(hashChirho) {
+	function shortenHashChirho(hashChirho: string | null | undefined): string {
 		if (!hashChirho) return '';
 		if (hashChirho.length <= 12) return hashChirho;
 		return hashChirho.slice(0, 6) + '...' + hashChirho.slice(-6);
 	}
 
-	function formatNumberChirho(numChirho) {
+	function formatNumberChirho(numChirho: number): string {
 		return numChirho.toLocaleString();
 	}
 </script>

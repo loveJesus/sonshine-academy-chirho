@@ -1,10 +1,15 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import PathwayChirho from '$lib/components/PathwayChirho.svelte';
 
-	const demoCellsChirho = [
+	const demoCellsChirho: Array<{
+		type: 'markdown' | 'code';
+		content: string;
+		expectedOutput?: string | null;
+		hint?: string;
+	}> = [
 		{
 			type: 'markdown',
 			content: `# Welcome to JavaScript Basics
@@ -133,11 +138,11 @@ Keep coding for His glory!`
 
 	let isCompleteChirho = $state(false);
 
-	function handleChangeChirho(cellsChirho) {
+	function handleChangeChirho(cellsChirho: typeof demoCellsChirho): void {
 		console.log('Cells changed:', cellsChirho);
 	}
 
-	function handleCompleteChirho() {
+	function handleCompleteChirho(): void {
 		isCompleteChirho = true;
 		console.log('All cells completed!');
 	}

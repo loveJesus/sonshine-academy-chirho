@@ -1,13 +1,20 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { page } from '$app/state';
+
+	interface ErrorInfoChirho {
+		title: string;
+		description: string;
+		icon: string;
+		suggestion: string;
+	}
 
 	const statusChirho = $derived(page.status);
 	const messageChirho = $derived(page.error?.message || 'Something went wrong');
 
-	function getErrorInfoChirho(status) {
+	function getErrorInfoChirho(status: number): ErrorInfoChirho {
 		switch (status) {
 			case 404:
 				return {

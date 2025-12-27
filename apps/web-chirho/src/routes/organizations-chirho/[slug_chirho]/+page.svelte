@@ -1,10 +1,10 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	let { data } = $props();
+<script lang="ts">
+	let { data }: { data: any } = $props();
 
-	function formatDateChirho(dateChirho) {
+	function formatDateChirho(dateChirho: Date | string | null): string {
 		if (!dateChirho) return 'TBD';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			year: 'numeric',
@@ -13,8 +13,10 @@
 		});
 	}
 
-	function getOrgTypeDisplayChirho(typeChirho) {
-		const typesChirho = {
+	type OrgTypeChirho = 'church' | 'school' | 'homeschool' | 'other';
+
+	function getOrgTypeDisplayChirho(typeChirho: OrgTypeChirho | string): string {
+		const typesChirho: Record<string, string> = {
 			church: 'Church',
 			school: 'School',
 			homeschool: 'Homeschool Co-op',

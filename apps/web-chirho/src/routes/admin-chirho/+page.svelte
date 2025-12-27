@@ -1,10 +1,12 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	let { data } = $props();
+<script lang="ts">
+	import type { PageData } from './$types';
 
-	function formatDateChirho(dateChirho) {
+	let { data }: { data: PageData } = $props();
+
+	function formatDateChirho(dateChirho: Date | string | null | undefined): string {
 		if (!dateChirho) return 'N/A';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			month: 'short',

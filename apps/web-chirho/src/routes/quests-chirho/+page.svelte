@@ -1,10 +1,20 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { page } from '$app/state';
 
-	let { data } = $props();
+	let { data }: { data: any } = $props();
+
+	interface QuestChirho {
+		questId: string;
+		title: string;
+		description: string;
+		orderIndex: number;
+		difficultyLevel: string;
+		questType: string;
+		baseCoins: number;
+	}
 
 	// Pagination
 	const QUESTS_PER_PAGE = 12;
@@ -16,18 +26,18 @@
 	let typeFilterChirho = $state('all');
 
 	// Separate quests into Scrolls (instructional, 0-95) and Trials (practice, 96+)
-	const scrollsChirho = $derived((data.questsChirho || []).filter(function(q) { return q.orderIndex < 96; }));
-	const trialsChirho = $derived((data.questsChirho || []).filter(function(q) { return q.orderIndex >= 96; }));
+	const scrollsChirho = $derived((data.questsChirho || []).filter((q: QuestChirho) => q.orderIndex < 96));
+	const trialsChirho = $derived((data.questsChirho || []).filter((q: QuestChirho) => q.orderIndex >= 96));
 
-	const filteredQuestsChirho = $derived.by(function() {
+	const filteredQuestsChirho = $derived.by(() => {
 		let filtered = categoryFilterChirho === 'scroll' ? scrollsChirho : trialsChirho;
 
 		if (difficultyFilterChirho !== 'all') {
-			filtered = filtered.filter(function(q) { return q.difficultyLevel === difficultyFilterChirho; });
+			filtered = filtered.filter((q: QuestChirho) => q.difficultyLevel === difficultyFilterChirho);
 		}
 
 		if (typeFilterChirho !== 'all') {
-			filtered = filtered.filter(function(q) { return q.questType === typeFilterChirho; });
+			filtered = filtered.filter((q: QuestChirho) => q.questType === typeFilterChirho);
 		}
 
 		return filtered;
@@ -49,12 +59,12 @@
 		}
 	});
 
-	function setPageChirho(pageNum) {
+	function setPageChirho(pageNum: number): void {
 		currentPageChirho = Math.max(1, Math.min(pageNum, totalPagesChirho));
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
 
-	function getDifficultyColorChirho(difficulty) {
+	function getDifficultyColorChirho(difficulty: string): string {
 		switch (difficulty) {
 			case 'beginner':
 				return 'bg-green-100 text-green-800';
@@ -67,7 +77,7 @@
 		}
 	}
 
-	function getTypeIconChirho(type) {
+	function getTypeIconChirho(type: string): string {
 		switch (type) {
 			case 'javascript':
 				return '📜';
@@ -84,16 +94,16 @@
 
 	// Check if a quest is completed by the user
 	const completedSetChirho = $derived(new Set(data.completedQuestIdsChirho || []));
-	function isCompletedChirho(questIdChirho) {
+	function isCompletedChirho(questIdChirho: string): boolean {
 		return completedSetChirho.has(questIdChirho);
 	}
 
 	// Count completed quests in current view
 	const completedScrollsCountChirho = $derived(
-		scrollsChirho.filter(function(q) { return completedSetChirho.has(q.questId); }).length
+		scrollsChirho.filter((q: QuestChirho) => completedSetChirho.has(q.questId)).length
 	);
 	const completedTrialsCountChirho = $derived(
-		trialsChirho.filter(function(q) { return completedSetChirho.has(q.questId); }).length
+		trialsChirho.filter((q: QuestChirho) => completedSetChirho.has(q.questId)).length
 	);
 </script>
 

@@ -1,23 +1,23 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import MarkdownTextChirho from '$lib/components/MarkdownTextChirho.svelte';
 	import CodeEditorChirho from '$lib/components/CodeEditorChirho.svelte';
 
-	let { data } = $props();
+	let { data }: { data: any } = $props();
 
 	// Track current quest to reset state when navigating between quests
 	let currentQuestIdChirho = $state('');
 	let codeChirho = $state('');
 	let isRunningChirho = $state(false);
-	let testResultsChirho = $state([]);
+	let testResultsChirho = $state<any[]>([]);
 	let showSolutionChirho = $state(false);
 	let viewedSolutionChirho = $state(false);
 	let allTestsPassedChirho = $state(false);
 	let errorMessageChirho = $state('');
-	let submissionResultChirho = $state(null);
+	let submissionResultChirho = $state<any>(null);
 	let isSubmittingChirho = $state(false);
 
 	// Reset state when quest changes (handles navigation)
@@ -35,7 +35,7 @@
 		}
 	});
 
-	function getDifficultyColorChirho(difficulty) {
+	function getDifficultyColorChirho(difficulty: string): string {
 		switch (difficulty) {
 			case 'beginner':
 				return 'bg-green-100 text-green-800';
@@ -48,14 +48,14 @@
 		}
 	}
 
-	function resetCodeChirho() {
+	function resetCodeChirho(): void {
 		codeChirho = data.questChirho.starterCode || '';
 		testResultsChirho = [];
 		errorMessageChirho = '';
 		allTestsPassedChirho = false;
 	}
 
-	async function toggleSolutionChirho() {
+	async function toggleSolutionChirho(): Promise<void> {
 		showSolutionChirho = !showSolutionChirho;
 		if (showSolutionChirho && !viewedSolutionChirho) {
 			viewedSolutionChirho = true;
@@ -72,7 +72,7 @@
 		}
 	}
 
-	async function runTestsChirho() {
+	async function runTestsChirho(): Promise<void> {
 		isRunningChirho = true;
 		errorMessageChirho = '';
 		testResultsChirho = [];
@@ -91,7 +91,7 @@
 					return { ${extractFunctionNamesChirho(codeChirho).join(', ')} };
 				`;
 				userFunctionChirho = new Function(wrappedCodeChirho)();
-			} catch (syntaxErrorChirho) {
+			} catch (syntaxErrorChirho: any) {
 				errorMessageChirho = `Syntax Error: ${syntaxErrorChirho.message}`;
 				isRunningChirho = false;
 				return;
@@ -102,22 +102,22 @@
 				try {
 					// Create a simple assert object
 					const assertChirho = {
-						strictEqual: function(actual, expected) {
+						strictEqual: function(actual: any, expected: any): void {
 							if (actual !== expected) {
 								throw new Error(`Expected ${JSON.stringify(expected)} but got ${JSON.stringify(actual)}`);
 							}
 						},
-						deepStrictEqual: function(actual, expected) {
+						deepStrictEqual: function(actual: any, expected: any): void {
 							if (JSON.stringify(actual) !== JSON.stringify(expected)) {
 								throw new Error(`Expected ${JSON.stringify(expected)} but got ${JSON.stringify(actual)}`);
 							}
 						},
-						ok: function(value, message) {
+						ok: function(value: any, message?: string): void {
 							if (!value) {
 								throw new Error(message || 'Assertion failed');
 							}
 						},
-						throws: function(fn, expectedError) {
+						throws: function(fn: () => any, expectedError?: any): void {
 							let threwChirho = false;
 							try {
 								fn();
@@ -151,7 +151,7 @@
 						isVisible: testChirho.isVisible,
 						error: null
 					});
-				} catch (testErrorChirho) {
+				} catch (testErrorChirho: any) {
 					allPassedChirho = false;
 					resultsChirho.push({
 						testId: testChirho.testId,
@@ -176,11 +176,11 @@
 						body: JSON.stringify({
 							questId: data.questChirho.questId,
 							submittedCode: codeChirho,
-							testResults: resultsChirho.map(function(r) { return { testId: r.testId, passed: r.passed }; }),
+							testResults: resultsChirho.map(function(r: any) { return { testId: r.testId, passed: r.passed }; }),
 							viewedSolution: viewedSolutionChirho
 						})
 					});
-					const resultDataChirho = await responseChirho.json();
+					const resultDataChirho: any = await responseChirho.json();
 					if (responseChirho.ok) {
 						submissionResultChirho = resultDataChirho;
 						// Refresh layout data to update coin balance in header
@@ -190,22 +190,22 @@
 					} else {
 						console.error('Submission error:', resultDataChirho.error);
 					}
-				} catch (submitErrChirho) {
+				} catch (submitErrChirho: any) {
 					console.error('Failed to submit quest:', submitErrChirho);
 				}
 				isSubmittingChirho = false;
 			}
-		} catch (globalErrorChirho) {
+		} catch (globalErrorChirho: any) {
 			errorMessageChirho = `Error: ${globalErrorChirho.message}`;
 		}
 
 		isRunningChirho = false;
 	}
 
-	function extractFunctionNamesChirho(codeChirho) {
+	function extractFunctionNamesChirho(codeChirho: string): string[] {
 		// Simple regex to find function names
 		const matchesChirho = codeChirho.matchAll(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g);
-		const namesChirho = [];
+		const namesChirho: string[] = [];
 		for (const matchChirho of matchesChirho) {
 			namesChirho.push(matchChirho[1]);
 		}
@@ -217,11 +217,11 @@
 		return namesChirho;
 	}
 
-	function handleKeydownChirho(eventChirho) {
+	function handleKeydownChirho(eventChirho: KeyboardEvent): void {
 		// Handle Tab key for indentation
 		if (eventChirho.key === 'Tab') {
 			eventChirho.preventDefault();
-			const targetChirho = eventChirho.target;
+			const targetChirho = eventChirho.target as HTMLTextAreaElement;
 			const startChirho = targetChirho.selectionStart;
 			const endChirho = targetChirho.selectionEnd;
 			codeChirho = codeChirho.substring(0, startChirho) + '  ' + codeChirho.substring(endChirho);
@@ -274,13 +274,13 @@
 				<!-- Description -->
 				<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
 					<h2 class="text-lg font-semibold text-slate-900 mb-3">Description</h2>
-					<MarkdownTextChirho text={data.questChirho.description} class="text-slate-600" />
+					<MarkdownTextChirho textChirho={data.questChirho.description} class="text-slate-600" />
 				</div>
 
 				<!-- Instructions -->
 				<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
 					<h2 class="text-lg font-semibold text-slate-900 mb-3">Instructions</h2>
-					<MarkdownTextChirho text={data.questChirho.instructions} class="text-slate-600" />
+					<MarkdownTextChirho textChirho={data.questChirho.instructions} class="text-slate-600" />
 				</div>
 
 				<!-- Visible Tests -->
@@ -342,10 +342,11 @@
 							</button>
 						</div>
 					</div>
-					<div onkeydown={handleKeydownChirho}>
+					<!-- svelte-ignore a11y_no_noninteractive_element_interactions a11y_no_noninteractive_tabindex -->
+					<div role="textbox" tabindex="0" onkeydown={handleKeydownChirho}>
 						<CodeEditorChirho
 							code={codeChirho}
-							onchange={(newCodeChirho) => { codeChirho = newCodeChirho; }}
+							onchange={(newCodeChirho: string) => { codeChirho = newCodeChirho; }}
 							height="320px"
 						/>
 					</div>

@@ -1,21 +1,23 @@
 <!-- For God so loved the world that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	/**
-	 * Reusable loading spinner component
-	 * @type {{ size?: 'sm' | 'md' | 'lg' | 'xl', label?: string, fullPage?: boolean }}
-	 */
-	let { size = 'md', label = 'Loading...', fullPage = false } = $props();
+<script lang="ts">
+	type SizeType = 'sm' | 'md' | 'lg' | 'xl';
 
-	const sizesChirho = {
+	let {
+		size = 'md' as SizeType,
+		label = 'Loading...',
+		fullPage = false
+	} = $props();
+
+	const sizesChirho: Record<SizeType, string> = {
 		sm: 'w-4 h-4 border-2',
 		md: 'w-8 h-8 border-3',
 		lg: 'w-12 h-12 border-4',
 		xl: 'w-16 h-16 border-4'
 	};
 
-	const textSizesChirho = {
+	const textSizesChirho: Record<SizeType, string> = {
 		sm: 'text-xs',
 		md: 'text-sm',
 		lg: 'text-base',

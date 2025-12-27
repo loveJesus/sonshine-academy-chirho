@@ -1,49 +1,46 @@
 <!-- For God so loved the world that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import MarkdownTextChirho from '$lib/components/MarkdownTextChirho.svelte';
 
-	let { data } = $props();
+	let { data }: { data: any } = $props();
+
+	type CategoryChirho = 'announcement' | 'tutorial' | 'devotional' | 'news' | 'update';
 
 	const postChirho = $derived(data.postChirho);
 	const relatedPostsChirho = $derived(data.relatedPostsChirho);
 
-	/** @param {Date | string | null} date */
-	function formatDateChirho(date) {
-		if (!date) return '';
-		const d = new Date(date);
-		return d.toLocaleDateString('en-US', {
+	function formatDateChirho(dateChirho: Date | string | null): string {
+		if (!dateChirho) return '';
+		const dChirho = new Date(dateChirho);
+		return dChirho.toLocaleDateString('en-US', {
 			year: 'numeric',
 			month: 'long',
 			day: 'numeric'
 		});
 	}
 
-	/** @param {string} category */
-	function getCategoryColorChirho(category) {
-		/** @type {Record<string, string>} */
-		const colorsChirho = {
+	function getCategoryColorChirho(categoryChirho: CategoryChirho | string): string {
+		const colorsChirho: Record<string, string> = {
 			announcement: 'bg-purple-100 text-purple-800',
 			tutorial: 'bg-blue-100 text-blue-800',
 			devotional: 'bg-amber-100 text-amber-800',
 			news: 'bg-green-100 text-green-800',
 			update: 'bg-slate-100 text-slate-800'
 		};
-		return colorsChirho[category] || colorsChirho.news;
+		return colorsChirho[categoryChirho] || colorsChirho.news;
 	}
 
-	/** @param {string} category */
-	function getCategoryIconChirho(category) {
-		/** @type {Record<string, string>} */
-		const iconsChirho = {
+	function getCategoryIconChirho(categoryChirho: CategoryChirho | string): string {
+		const iconsChirho: Record<string, string> = {
 			announcement: '📢',
 			tutorial: '📝',
 			devotional: '🙏',
 			news: '📰',
 			update: '🔄'
 		};
-		return iconsChirho[category] || '📄';
+		return iconsChirho[categoryChirho] || '📄';
 	}
 </script>
 

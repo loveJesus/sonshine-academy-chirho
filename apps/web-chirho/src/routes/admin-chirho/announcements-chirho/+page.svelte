@@ -1,15 +1,15 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 
-	let { data, form } = $props();
+	let { data, form }: { data: any; form: any } = $props();
 
 	let showCreateFormChirho = $state(false);
 	let selectedScopeChirho = $state('global');
 
-	function formatDateChirho(dateChirho) {
+	function formatDateChirho(dateChirho: Date | string | null | undefined): string {
 		if (!dateChirho) return 'N/A';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			month: 'short',
@@ -20,7 +20,7 @@
 		});
 	}
 
-	function getScopeColorChirho(scope) {
+	function getScopeColorChirho(scope: string): string {
 		switch (scope) {
 			case 'global':
 				return 'bg-blue-100 text-blue-800';
@@ -219,7 +219,7 @@
 										<button
 											type="submit"
 											class="text-sm px-3 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50"
-											onclick={(e) => {
+											onclick={(e: Event) => {
 												if (!confirm('Are you sure you want to delete this announcement?')) {
 													e.preventDefault();
 												}

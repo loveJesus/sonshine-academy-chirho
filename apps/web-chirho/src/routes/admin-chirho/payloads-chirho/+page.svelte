@@ -1,16 +1,26 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import CodeEditorChirho from '$lib/components/CodeEditorChirho.svelte';
 
-	let { data, form } = $props();
+	interface PayloadChirho {
+		payloadId: string;
+		name: string;
+		weekNumber: number;
+		sessionNumber: number;
+		isActive: boolean;
+		description?: string;
+	}
+
+	let { data, form }: { data: any; form: any } = $props();
 
 	let showCreateChirho = $state(false);
 	let selectedWeekChirho = $state('');
 	let selectedSessionChirho = $state('');
-	let payloadFilesChirho = $state([]);
+	let payloadFilesChirho = $state<File[]>([]);
 	let shellScriptChirho = $state('#!/bin/bash\n# Manna payload setup script\n\necho "Setting up your development environment..."\n\n# Your setup commands here');
 	let payloadNameChirho = $state('');
 	let payloadDescriptionChirho = $state('');
@@ -19,12 +29,12 @@
 	const weeksChirho = Array.from({ length: 17 }, (_, i) => i + 2); // Weeks 2-18
 	const sessionsChirho = [1, 2, 3];
 
-	function handleFileSelectChirho(eventChirho) {
-		const filesChirho = Array.from(eventChirho.target.files || []);
+	function handleFileSelectChirho(eventChirho: Event): void {
+		const filesChirho = Array.from((eventChirho.target as HTMLInputElement).files || []);
 		payloadFilesChirho = filesChirho;
 	}
 
-	function formatBytesChirho(bytesChirho) {
+	function formatBytesChirho(bytesChirho: number): string {
 		if (bytesChirho === 0) return '0 B';
 		const kChirho = 1024;
 		const sizesChirho = ['B', 'KB', 'MB', 'GB'];
@@ -32,8 +42,8 @@
 		return parseFloat((bytesChirho / Math.pow(kChirho, iChirho)).toFixed(2)) + ' ' + sizesChirho[iChirho];
 	}
 
-	function getWeekNameChirho(weekChirho) {
-		const namesChirho = {
+	function getWeekNameChirho(weekChirho: number): string {
+		const namesChirho: Record<number, string> = {
 			2: 'Let There Be Light (CSS)',
 			3: 'The Word Became Code (JS)',
 			4: 'Truth & Logic',
@@ -55,10 +65,10 @@
 		return namesChirho[weekChirho] || `Week ${weekChirho}`;
 	}
 
-	function handleSubmitEnhanceChirho() {
-		return async function (eventChirho) {
-			await eventChirho.update();
-			if (eventChirho.result.type === 'success') {
+	const handleSubmitEnhanceChirho: SubmitFunction = () => {
+		return async ({ update, result }) => {
+			await update();
+			if (result.type === 'success') {
 				showCreateChirho = false;
 				payloadNameChirho = '';
 				payloadDescriptionChirho = '';
@@ -68,7 +78,7 @@
 				selectedSessionChirho = '';
 			}
 		};
-	}
+	};
 </script>
 
 <svelte:head>
@@ -209,23 +219,24 @@
 				</div>
 
 				<div class="mb-4">
-					<label class="block text-sm font-medium text-slate-700 mb-1">
+					<span id="shellScriptLabelChirho" class="block text-sm font-medium text-slate-700 mb-1">
 						Shell Script (payload.sh)
-					</label>
+					</span>
 					<p class="text-xs text-slate-500 mb-2">
 						This script will {autoExecuteChirho ? 'auto-execute' : 'be available for download'} when students access this Manna.
 					</p>
 					<input type="hidden" name="shellScriptChirho" value={shellScriptChirho} />
-					<CodeEditorChirho
-						code={shellScriptChirho}
-						onchange={(newCodeChirho) => { shellScriptChirho = newCodeChirho; }}
-						height="200px"
-						language="shell"
-					/>
+					<div aria-labelledby="shellScriptLabelChirho">
+						<CodeEditorChirho
+							code={shellScriptChirho}
+							onchange={(newCodeChirho: string) => { shellScriptChirho = newCodeChirho; }}
+							height="200px"
+						/>
+					</div>
 				</div>
 
 				<div class="mb-4">
-					<label class="block text-sm font-medium text-slate-700 mb-1">
+					<label for="fileInputChirho" class="block text-sm font-medium text-slate-700 mb-1">
 						Files to Include
 					</label>
 					<div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center">
@@ -320,7 +331,7 @@
 		{:else}
 			<div class="divide-y">
 				{#each weeksChirho as weekChirho}
-					{@const weekPayloadsChirho = (data.payloadsChirho || []).filter(p => p.weekNumber === weekChirho)}
+					{@const weekPayloadsChirho = (data.payloadsChirho || []).filter((p: PayloadChirho) => p.weekNumber === weekChirho)}
 					{#if weekPayloadsChirho.length > 0}
 						<div class="p-4">
 							<div class="flex items-center justify-between mb-3">

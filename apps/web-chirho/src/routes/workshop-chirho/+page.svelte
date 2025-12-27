@@ -1,7 +1,7 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { page } from '$app/state';
 	import WorkshopChirho from '$lib/components/WorkshopChirho.svelte';
 	import WorkshopCollabChirho from '$lib/components/WorkshopCollabChirho.svelte';
@@ -11,7 +11,7 @@
 	const sessionIdChirho = $derived(
 		page.url.searchParams.get('session') || 'demo-' + Math.random().toString(36).substring(2, 8)
 	);
-	const userIdChirho = 'user-' + Math.random().toString(36).substring(2, 8);
+	const userIdChirho: string = 'user-' + Math.random().toString(36).substring(2, 8);
 
 	const exampleHtmlChirho = `<div class="card">
   <h1>Welcome to the Workshop!</h1>
@@ -84,7 +84,7 @@ button.addEventListener('click', () => {
   console.log('Click #' + clickCount + ':', greeting);
 });`;
 
-	function handleChangeChirho(codeChirho) {
+	function handleChangeChirho(codeChirho: any): void {
 		console.log('Code changed:', codeChirho);
 	}
 </script>

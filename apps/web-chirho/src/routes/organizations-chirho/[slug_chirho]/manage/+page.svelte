@@ -1,16 +1,28 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 
-	let { data, form } = $props();
+	interface CohortChirho {
+		cohortId: string;
+		name: string;
+		status: string;
+	}
+
+	interface InviteCodeChirho {
+		codeId: string;
+		code: string;
+		isActive: boolean;
+	}
+
+	let { data, form }: { data: any; form: any } = $props();
 
 	let showCreateInviteCodeChirho = $state(false);
 	let showCreateCohortChirho = $state(false);
 
-	function formatDateChirho(date) {
+	function formatDateChirho(date: Date | string | null): string {
 		if (!date) return 'N/A';
 		return new Date(date).toLocaleDateString('en-US', {
 			year: 'numeric',
@@ -19,12 +31,12 @@
 		});
 	}
 
-	function copyInviteCodeChirho(codeChirho) {
+	function copyInviteCodeChirho(codeChirho: string): void {
 		navigator.clipboard.writeText(codeChirho);
 	}
 
-	function handleCreateInviteCodeEnhanceChirho() {
-		return async function (eventChirho) {
+	function handleCreateInviteCodeEnhanceChirho(): (eventChirho: { update: () => Promise<void>; result: { type: string } }) => Promise<void> {
+		return async function (eventChirho: { update: () => Promise<void>; result: { type: string } }): Promise<void> {
 			await eventChirho.update();
 			if (eventChirho.result.type === 'success') {
 				showCreateInviteCodeChirho = false;
@@ -32,8 +44,8 @@
 		};
 	}
 
-	function handleCreateCohortEnhanceChirho() {
-		return async function (eventChirho) {
+	function handleCreateCohortEnhanceChirho(): (eventChirho: { update: () => Promise<void>; result: { type: string } }) => Promise<void> {
+		return async function (eventChirho: { update: () => Promise<void>; result: { type: string } }): Promise<void> {
 			await eventChirho.update();
 			if (eventChirho.result.type === 'success') {
 				showCreateCohortChirho = false;
@@ -389,11 +401,11 @@
 					</div>
 					<div class="flex justify-between">
 						<span class="text-slate-600">Active Cohorts</span>
-						<span class="font-medium">{data.cohortsChirho.filter((c) => c.status === 'active').length}</span>
+						<span class="font-medium">{(data.cohortsChirho as CohortChirho[]).filter((cChirho: CohortChirho) => cChirho.status === 'active').length}</span>
 					</div>
 					<div class="flex justify-between">
 						<span class="text-slate-600">Active Invite Codes</span>
-						<span class="font-medium">{data.inviteCodesChirho.filter((c) => c.isActive).length}</span>
+						<span class="font-medium">{(data.inviteCodesChirho as InviteCodeChirho[]).filter((cChirho: InviteCodeChirho) => cChirho.isActive).length}</span>
 					</div>
 				</div>
 			</div>

@@ -1,14 +1,16 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 
-	let { data, form } = $props();
+	let { data, form }: { data: any; form: any } = $props();
 
 	let showCreateFormChirho = $state(false);
 
-	function formatDateChirho(dateChirho) {
+	type CategoryType = 'announcement' | 'tutorial' | 'devotional' | 'news' | 'update';
+
+	function formatDateChirho(dateChirho: Date | string | null | undefined): string {
 		if (!dateChirho) return 'Draft';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			month: 'short',
@@ -17,18 +19,18 @@
 		});
 	}
 
-	function getCategoryColorChirho(category) {
-		const colors = {
+	function getCategoryColorChirho(category: string): string {
+		const colors: Record<CategoryType, string> = {
 			announcement: 'bg-purple-100 text-purple-800',
 			tutorial: 'bg-blue-100 text-blue-800',
 			devotional: 'bg-amber-100 text-amber-800',
 			news: 'bg-green-100 text-green-800',
 			update: 'bg-slate-100 text-slate-800'
 		};
-		return colors[category] || colors.news;
+		return colors[category as CategoryType] || colors.news;
 	}
 
-	function generateSlugChirho(title) {
+	function generateSlugChirho(title: string): string {
 		return title
 			.toLowerCase()
 			.replace(/[^a-z0-9]+/g, '-')
@@ -264,7 +266,7 @@
 										<button
 											type="submit"
 											class="text-sm px-3 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50"
-											onclick={(e) => {
+											onclick={(e: Event) => {
 												if (!confirm('Are you sure you want to delete this post?')) {
 													e.preventDefault();
 												}

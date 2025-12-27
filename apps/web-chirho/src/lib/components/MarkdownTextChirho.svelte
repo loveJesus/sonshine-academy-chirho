@@ -1,8 +1,8 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
-	let { text = '', class: classNameChirho = '' } = $props();
+<script lang="ts">
+	let { textChirho = '', class: classNameChirho = '' } = $props();
 
 	/**
 	 * Parse basic markdown-like syntax:
@@ -11,7 +11,7 @@
 	 * - *italic* -> <em>italic</em>
 	 * - [text](url) -> <a href="url">text</a>
 	 */
-	function parseMarkdownChirho(inputChirho) {
+	function parseMarkdownChirho(inputChirho: string): string {
 		if (!inputChirho) return '';
 
 		let resultChirho = inputChirho;
@@ -63,7 +63,7 @@
 		return resultChirho;
 	}
 
-	let htmlChirho = $derived(parseMarkdownChirho(text));
+	let htmlChirho = $derived(parseMarkdownChirho(textChirho));
 </script>
 
 <div class="markdown-content-chirho {classNameChirho}">

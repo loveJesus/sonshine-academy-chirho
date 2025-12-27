@@ -1,41 +1,52 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	type YTWindow = Window & typeof globalThis & { YT: any; onYouTubeIframeAPIReady: () => void };
+
+	interface ChapterChirho {
+		title: string;
+		startTime: number;
+	}
 
 	let {
 		videoIdChirho = '',
 		titleChirho = '',
 		descriptionChirho = '',
-		chaptersChirho = [],
-		onprogressChirho = () => {},
+		chaptersChirho = [] as ChapterChirho[],
+		onprogressChirho = (_progress: { currentTime: number; duration: number; percent: number }) => {},
 		oncompleteChirho = () => {},
 		initialProgressChirho = 0
 	} = $props();
 
-	let playerContainerChirho;
-	let playerChirho;
+	let playerContainerChirho: HTMLDivElement;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let playerChirho: any = null;
 	let isPlayingChirho = $state(false);
 	let currentTimeChirho = $state(0);
 	let durationChirho = $state(0);
 	let progressPercentChirho = $state(initialProgressChirho);
 	let isCompletedChirho = $state(initialProgressChirho >= 90);
 	let showChaptersChirho = $state(false);
-	let currentChapterChirho = $state(null);
+	let currentChapterChirho = $state<ChapterChirho | null>(null);
 
 	// YouTube IFrame API
 	let ytApiReadyChirho = $state(false);
 
 	onMount(() => {
+		const ytWindow = window as YTWindow;
+
 		// Load YouTube IFrame API if not already loaded
-		if (!window.YT) {
+		if (!ytWindow.YT) {
 			const tagChirho = document.createElement('script');
 			tagChirho.src = 'https://www.youtube.com/iframe_api';
 			const firstScriptTagChirho = document.getElementsByTagName('script')[0];
-			firstScriptTagChirho.parentNode.insertBefore(tagChirho, firstScriptTagChirho);
+			firstScriptTagChirho.parentNode?.insertBefore(tagChirho, firstScriptTagChirho);
 
-			window.onYouTubeIframeAPIReady = () => {
+			ytWindow.onYouTubeIframeAPIReady = () => {
 				ytApiReadyChirho = true;
 				initPlayerChirho();
 			};
@@ -52,9 +63,10 @@
 	});
 
 	function initPlayerChirho() {
-		if (!ytApiReadyChirho || !playerContainerChirho) return;
+		const ytWindow = window as YTWindow;
+		if (!ytApiReadyChirho || !playerContainerChirho || !ytWindow.YT) return;
 
-		playerChirho = new window.YT.Player(playerContainerChirho, {
+		playerChirho = new ytWindow.YT.Player(playerContainerChirho, {
 			videoId: videoIdChirho,
 			playerVars: {
 				autoplay: 0,
@@ -69,16 +81,19 @@
 		});
 	}
 
-	function onPlayerReadyChirho(eventChirho) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	function onPlayerReadyChirho(eventChirho: any) {
 		durationChirho = eventChirho.target.getDuration();
 		// Start progress tracking
 		setInterval(updateProgressChirho, 1000);
 	}
 
-	function onPlayerStateChangeChirho(eventChirho) {
-		isPlayingChirho = eventChirho.data === window.YT.PlayerState.PLAYING;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	function onPlayerStateChangeChirho(eventChirho: any) {
+		const ytWindow = window as YTWindow;
+		isPlayingChirho = eventChirho.data === ytWindow.YT.PlayerState.PLAYING;
 
-		if (eventChirho.data === window.YT.PlayerState.ENDED) {
+		if (eventChirho.data === ytWindow.YT.PlayerState.ENDED) {
 			if (!isCompletedChirho) {
 				isCompletedChirho = true;
 				oncompleteChirho();
@@ -118,13 +133,13 @@
 		}
 	}
 
-	function seekToChirho(timeChirho) {
+	function seekToChirho(timeChirho: number) {
 		if (playerChirho && playerChirho.seekTo) {
 			playerChirho.seekTo(timeChirho, true);
 		}
 	}
 
-	function formatTimeChirho(secondsChirho) {
+	function formatTimeChirho(secondsChirho: number): string {
 		const minsChirho = Math.floor(secondsChirho / 60);
 		const secsChirho = Math.floor(secondsChirho % 60);
 		return `${minsChirho}:${secsChirho.toString().padStart(2, '0')}`;

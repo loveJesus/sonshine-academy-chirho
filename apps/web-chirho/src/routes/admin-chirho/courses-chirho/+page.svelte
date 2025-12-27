@@ -1,10 +1,11 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
-	let { data, form } = $props();
+	let { data, form }: { data: any; form: any } = $props();
 
 	let showCreateChirho = $state(false);
 	let courseNameChirho = $state('');
@@ -13,7 +14,7 @@
 	let totalWeeksChirho = $state(18);
 	let sessionsPerWeekChirho = $state(3);
 
-	function generateSlugChirho(titleChirho) {
+	function generateSlugChirho(titleChirho: string): string {
 		return titleChirho
 			.toLowerCase()
 			.replace(/[^a-z0-9]+/g, '-')
@@ -26,16 +27,16 @@
 		}
 	});
 
-	function handleSubmitEnhanceChirho() {
-		return async function (eventChirho) {
-			await eventChirho.update();
-			if (eventChirho.result.type === 'success') {
+	const handleSubmitEnhanceChirho: SubmitFunction = () => {
+		return async ({ update, result }) => {
+			await update();
+			if (result.type === 'success') {
 				showCreateChirho = false;
 				courseNameChirho = '';
 				courseDescriptionChirho = '';
 			}
 		};
-	}
+	};
 </script>
 
 <svelte:head>

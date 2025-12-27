@@ -1,7 +1,7 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { EditorView, basicSetup } from 'codemirror';
 	import { EditorState } from '@codemirror/state';
@@ -9,18 +9,43 @@
 	import { oneDark } from '@codemirror/theme-one-dark';
 	import MarkdownTextChirho from './MarkdownTextChirho.svelte';
 
+	interface CellInputChirho {
+		type?: 'code' | 'markdown' | 'output';
+		content?: string;
+		expectedOutput?: string | null;
+		hint?: string | null;
+	}
+
+	interface OutputItemChirho {
+		type: 'log' | 'error' | 'warn' | 'info' | 'result';
+		args?: string[];
+		value?: string;
+	}
+
+	interface CellStateChirho {
+		id: number;
+		type: 'code' | 'markdown' | 'output';
+		content: string;
+		output: OutputItemChirho[] | null;
+		error: string | null;
+		isRunning: boolean;
+		isComplete: boolean;
+		expectedOutput: string | null;
+		hint: string | null;
+	}
+
 	let {
-		cellsChirho = [],
-		onchangeChirho = () => {},
+		cellsChirho = [] as CellInputChirho[],
+		onchangeChirho = (_cells: CellStateChirho[]) => {},
 		oncompleteChirho = () => {},
 		readonlyChirho = false
 	} = $props();
 
 	// Internal state for cells
-	let cellStatesChirho = $state(
+	let cellStatesChirho = $state<CellStateChirho[]>(
 		cellsChirho.map((cellChirho, idxChirho) => ({
 			id: idxChirho,
-			type: cellChirho.type || 'code', // 'code' | 'markdown' | 'output'
+			type: cellChirho.type || 'code',
 			content: cellChirho.content || '',
 			output: null,
 			error: null,
@@ -31,8 +56,8 @@
 		}))
 	);
 
-	let editorViewsChirho = [];
-	let editorContainersChirho = [];
+	let editorViewsChirho: (EditorView | null)[] = [];
+	let editorContainersChirho: (HTMLDivElement | null)[] = [];
 
 	onMount(() => {
 		// Initialize code editors for code cells
@@ -52,7 +77,7 @@
 		};
 	});
 
-	function createEditorChirho(containerChirho, initialCodeChirho, cellIndexChirho) {
+	function createEditorChirho(containerChirho: HTMLDivElement, initialCodeChirho: string, cellIndexChirho: number): EditorView {
 		const extensionsChirho = [
 			basicSetup,
 			javascript(),
@@ -77,7 +102,7 @@
 		});
 	}
 
-	function runCellChirho(cellIndexChirho) {
+	function runCellChirho(cellIndexChirho: number): void {
 		const cellChirho = cellStatesChirho[cellIndexChirho];
 		if (cellChirho.type !== 'code') return;
 
@@ -86,7 +111,7 @@
 		cellChirho.error = null;
 
 		// Create a safe execution environment
-		const outputsChirho = [];
+		const outputsChirho: OutputItemChirho[] = [];
 
 		try {
 			// Create a custom console that captures output
@@ -158,7 +183,7 @@
 				cellChirho.isComplete = true;
 			}
 		} catch (errChirho) {
-			cellChirho.error = errChirho.message;
+			cellChirho.error = errChirho instanceof Error ? errChirho.message : String(errChirho);
 			cellChirho.isComplete = false;
 		}
 
@@ -166,7 +191,8 @@
 		cellStatesChirho = [...cellStatesChirho]; // Trigger reactivity
 	}
 
-	function formatValueChirho(valueChirho) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	function formatValueChirho(valueChirho: any): string {
 		if (valueChirho === null) return 'null';
 		if (valueChirho === undefined) return 'undefined';
 		if (typeof valueChirho === 'object') {
@@ -179,7 +205,7 @@
 		return String(valueChirho);
 	}
 
-	function runAllCellsChirho() {
+	function runAllCellsChirho(): void {
 		cellStatesChirho.forEach((cellChirho, idxChirho) => {
 			if (cellChirho.type === 'code') {
 				runCellChirho(idxChirho);
@@ -187,7 +213,7 @@
 		});
 	}
 
-	function checkAllCompleteChirho() {
+	function checkAllCompleteChirho(): void {
 		const allCompleteChirho = cellStatesChirho
 			.filter((cChirho) => cChirho.type === 'code')
 			.every((cChirho) => cChirho.isComplete);
@@ -197,7 +223,7 @@
 		}
 	}
 
-	function resetCellChirho(cellIndexChirho) {
+	function resetCellChirho(cellIndexChirho: number): void {
 		const originalChirho = cellsChirho[cellIndexChirho];
 		cellStatesChirho[cellIndexChirho].content = originalChirho.content || '';
 		cellStatesChirho[cellIndexChirho].output = null;
@@ -216,7 +242,7 @@
 		}
 	}
 
-	function getOutputColorChirho(typeChirho) {
+	function getOutputColorChirho(typeChirho: string): string {
 		switch (typeChirho) {
 			case 'error':
 				return 'text-red-400';
@@ -364,7 +390,7 @@
 										<span class="output-value-chirho">{outputLineChirho.value}</span>
 									{:else}
 										<span class="output-prefix-chirho">›</span>
-										<span class="output-value-chirho">{outputLineChirho.args.join(' ')}</span>
+										<span class="output-value-chirho">{outputLineChirho.args?.join(' ') ?? ''}</span>
 									{/if}
 								</div>
 							{/each}

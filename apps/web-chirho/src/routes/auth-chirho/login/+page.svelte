@@ -1,17 +1,17 @@
 <!-- For God so loved the world that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
 
-	let { form } = $props();
+	let { form }: { form: any } = $props();
 
 	// Get OAuth error from URL if present
 	const oauthErrorChirho = $derived(page.url.searchParams.get('error'));
 
-	function getErrorMessageChirho(errorCode) {
-		const errorsChirho = {
+	function getErrorMessageChirho(errorCode: string): string {
+		const errorsChirho: Record<string, string> = {
 			oauth_not_configured: 'Google sign-in is not configured. Please use email login.',
 			invalid_state: 'Session expired. Please try again.',
 			email_not_verified: 'Your Google email is not verified.',

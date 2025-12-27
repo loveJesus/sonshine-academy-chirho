@@ -1,20 +1,32 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { EditorView, basicSetup } from 'codemirror';
-	import { EditorState } from '@codemirror/state';
+	import { EditorState, type Extension } from '@codemirror/state';
 	import { html } from '@codemirror/lang-html';
 	import { css } from '@codemirror/lang-css';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { oneDark } from '@codemirror/theme-one-dark';
 
+	interface ConsoleLogChirho {
+		level: string;
+		args: string[];
+		timestamp: string;
+	}
+
+	interface CodeChangeChirho {
+		html: string;
+		css: string;
+		js: string;
+	}
+
 	let {
 		initialHtmlChirho = '',
 		initialCssChirho = '',
 		initialJsChirho = '',
-		onchange = () => {},
+		onchange = (_code: CodeChangeChirho) => {},
 		height = '400px',
 		showPreviewChirho = true,
 		showConsoleChirho = true
@@ -23,19 +35,25 @@
 	let htmlCodeChirho = $state(initialHtmlChirho);
 	let cssCodeChirho = $state(initialCssChirho);
 	let jsCodeChirho = $state(initialJsChirho);
-	let activeTabChirho = $state('html');
-	let consoleLogsChirho = $state([]);
+	type TabTypeChirho = 'html' | 'css' | 'js' | 'preview' | 'console';
+	let activeTabChirho = $state<TabTypeChirho>('html');
+	let consoleLogsChirho = $state<ConsoleLogChirho[]>([]);
 
-	let htmlEditorContainerChirho;
-	let cssEditorContainerChirho;
-	let jsEditorContainerChirho;
-	let previewIframeChirho;
+	let htmlEditorContainerChirho: HTMLDivElement;
+	let cssEditorContainerChirho: HTMLDivElement;
+	let jsEditorContainerChirho: HTMLDivElement;
+	let previewIframeChirho: HTMLIFrameElement;
 
-	let htmlEditorViewChirho;
-	let cssEditorViewChirho;
-	let jsEditorViewChirho;
+	let htmlEditorViewChirho: EditorView | null = null;
+	let cssEditorViewChirho: EditorView | null = null;
+	let jsEditorViewChirho: EditorView | null = null;
 
-	function createEditorChirho(containerChirho, langChirho, initialCodeChirho, onUpdateChirho) {
+	function createEditorChirho(
+		containerChirho: HTMLDivElement,
+		langChirho: Extension,
+		initialCodeChirho: string,
+		onUpdateChirho: (code: string) => void
+	): EditorView {
 		const extensionsChirho = [
 			basicSetup,
 			langChirho,
@@ -93,11 +111,11 @@
 		);
 
 		// Listen for console messages from iframe
-		function handleMessageChirho(eventChirho) {
+		function handleMessageChirho(eventChirho: MessageEvent) {
 			if (eventChirho.data && eventChirho.data.typeChirho === 'console') {
 				consoleLogsChirho = [...consoleLogsChirho, {
-					level: eventChirho.data.level,
-					args: eventChirho.data.args,
+					level: eventChirho.data.level as string,
+					args: eventChirho.data.args as string[],
 					timestamp: new Date().toLocaleTimeString()
 				}];
 			}
@@ -115,7 +133,7 @@
 		};
 	});
 
-	function updatePreviewChirho() {
+	function updatePreviewChirho(): void {
 		if (!previewIframeChirho) return;
 
 		// Clear console on each update
@@ -199,15 +217,15 @@
 		previewIframeChirho.srcdoc = docContentChirho;
 	}
 
-	function setTabChirho(tabChirho) {
+	function setTabChirho(tabChirho: TabTypeChirho): void {
 		activeTabChirho = tabChirho;
 	}
 
-	function clearConsoleChirho() {
+	function clearConsoleChirho(): void {
 		consoleLogsChirho = [];
 	}
 
-	function getLogColorChirho(level) {
+	function getLogColorChirho(level: string): string {
 		switch (level) {
 			case 'error': return 'text-red-400';
 			case 'warn': return 'text-yellow-400';
@@ -216,7 +234,7 @@
 		}
 	}
 
-	function getLogIconChirho(level) {
+	function getLogIconChirho(level: string): string {
 		switch (level) {
 			case 'error': return '✕';
 			case 'warn': return '⚠';

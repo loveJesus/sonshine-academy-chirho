@@ -1,10 +1,10 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 
-	let { data, form } = $props();
+	let { data, form }: { data: any; form: any } = $props();
 
 	let isSavingProfileChirho = $state(false);
 	let isSavingEmailChirho = $state(false);
@@ -20,7 +20,7 @@
 		selectedColorChirho = userColorChirho;
 	});
 
-	function getInitialsChirho(nameChirho) {
+	function getInitialsChirho(nameChirho: string | null | undefined): string {
 		if (!nameChirho) return '?';
 		const wordsChirho = nameChirho.split(' ');
 		if (wordsChirho.length >= 2) {
@@ -390,14 +390,14 @@
 						</svg>
 						<div>
 							<p class="font-medium text-slate-900">Google</p>
-							{#if data.linkedAccountsChirho.some(a => a.provider === 'google')}
+							{#if data.linkedAccountsChirho.some((a: any) => a.provider === 'google')}
 								<p class="text-xs text-green-600">Connected</p>
 							{:else}
 								<p class="text-xs text-slate-500">Not connected</p>
 							{/if}
 						</div>
 					</div>
-					{#if data.linkedAccountsChirho.some(a => a.provider === 'google')}
+					{#if data.linkedAccountsChirho.some((a: any) => a.provider === 'google')}
 						<span class="text-green-600">
 							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
 								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />

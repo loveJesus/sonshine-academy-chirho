@@ -1,11 +1,11 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 
-	let { data, form } = $props();
+	let { data, form }: { data: any; form: any } = $props();
 
 	// Form filter state - syncs with URL params via $effect
 	let searchValueChirho = $state('');
@@ -23,7 +23,7 @@
 		goto(`/admin-chirho/users-chirho?${paramsChirho.toString()}`);
 	}
 
-	function formatDateChirho(dateChirho) {
+	function formatDateChirho(dateChirho: Date | string | null): string {
 		if (!dateChirho) return 'N/A';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			year: 'numeric',
@@ -32,7 +32,7 @@
 		});
 	}
 
-	function getRoleBadgeClassChirho(roleChirho) {
+	function getRoleBadgeClassChirho(roleChirho: string): string {
 		switch (roleChirho) {
 			case 'platform_admin':
 				return 'bg-red-100 text-red-800';

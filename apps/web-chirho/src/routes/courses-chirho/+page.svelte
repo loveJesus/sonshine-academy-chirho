@@ -1,7 +1,7 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	// Main course - currently available
 	const mainCourseChirho = {
 		id: 'sonshine-coders-fundamentals',
@@ -60,7 +60,7 @@
 		}
 	];
 
-	function getLevelColorChirho(level) {
+	function getLevelColorChirho(level: string): string {
 		switch (level) {
 			case 'Beginner':
 				return 'bg-green-100 text-green-800';
@@ -73,8 +73,8 @@
 		}
 	}
 
-	function getColorClassesChirho(color) {
-		const colorsChirho = {
+	function getColorClassesChirho(color: string): string {
+		const colorsChirho: Record<string, string> = {
 			amber: 'from-amber-500 to-orange-500',
 			yellow: 'from-yellow-500 to-amber-500',
 			blue: 'from-blue-500 to-indigo-500',

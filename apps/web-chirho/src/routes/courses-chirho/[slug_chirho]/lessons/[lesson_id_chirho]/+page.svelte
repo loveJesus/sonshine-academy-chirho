@@ -1,11 +1,11 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 
-	let { data } = $props();
+	let { data }: { data: any } = $props();
 
 	// Video state
 	let videoCompletedChirho = $state(false);
@@ -44,7 +44,7 @@
 		}
 	});
 
-	function getLessonIconChirho(lessonTypeChirho) {
+	function getLessonIconChirho(lessonTypeChirho: string): string {
 		switch (lessonTypeChirho) {
 			case 'video':
 				return '🎬';
@@ -61,14 +61,14 @@
 		}
 	}
 
-	function formatTimeChirho(secondsChirho) {
+	function formatTimeChirho(secondsChirho: number | null): string {
 		if (!secondsChirho) return '0:00';
 		const minsChirho = Math.floor(secondsChirho / 60);
 		const secsChirho = secondsChirho % 60;
 		return `${minsChirho}:${secsChirho.toString().padStart(2, '0')}`;
 	}
 
-	async function markAsCompleteChirho() {
+	async function markAsCompleteChirho(): Promise<void> {
 		if (isMarkingCompleteChirho) return;
 		isMarkingCompleteChirho = true;
 

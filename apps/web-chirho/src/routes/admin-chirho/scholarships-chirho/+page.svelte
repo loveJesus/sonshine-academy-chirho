@@ -1,13 +1,13 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
+	import type { PageData, ActionData } from './$types';
 
-	let { data, form } = $props();
+	let { data, form }: { data: PageData; form: ActionData } = $props();
 
-	/** @param {string} statusChirho */
-	function getStatusColorChirho(statusChirho) {
+	function getStatusColorChirho(statusChirho: string): string {
 		switch (statusChirho) {
 			case 'pending':
 				return 'bg-amber-100 text-amber-700';
@@ -22,8 +22,7 @@
 		}
 	}
 
-	/** @param {Date | string | null} dateChirho */
-	function formatDateChirho(dateChirho) {
+	function formatDateChirho(dateChirho: Date | string | null | undefined): string {
 		if (!dateChirho) return '-';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			year: 'numeric',
@@ -198,7 +197,7 @@
 												<button
 													type="submit"
 													class="text-xs text-red-600 hover:text-red-800"
-													onclick={(e) => { if (!confirm('Revoke this scholarship?')) e.preventDefault(); }}
+													onclick={(e: Event) => { if (!confirm('Revoke this scholarship?')) e.preventDefault(); }}
 												>
 													Revoke
 												</button>
@@ -209,7 +208,7 @@
 											<button
 												type="submit"
 												class="text-xs text-slate-500 hover:text-slate-700"
-												onclick={(e) => { if (!confirm('Delete this application permanently?')) e.preventDefault(); }}
+												onclick={(e: Event) => { if (!confirm('Delete this application permanently?')) e.preventDefault(); }}
 											>
 												Delete
 											</button>

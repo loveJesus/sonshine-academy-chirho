@@ -1,18 +1,17 @@
 <!-- For God so loved the world, that he gave his only begotten Son,
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 
-	let { data, form } = $props();
+	let { data, form }: { data: any; form: any } = $props();
 
-	let expandedIdChirho = $state(null);
-	let editingNoteIdChirho = $state(null);
+	let expandedIdChirho = $state<string | null>(null);
+	let editingNoteIdChirho = $state<string | null>(null);
 	let noteTextChirho = $state('');
 
-	/** @param {string} typeChirho */
-	function getTypeIconChirho(typeChirho) {
+	function getTypeIconChirho(typeChirho: string): string {
 		switch (typeChirho) {
 			case 'bug':
 				return '🐛';
@@ -27,8 +26,7 @@
 		}
 	}
 
-	/** @param {string} typeChirho */
-	function getTypeColorChirho(typeChirho) {
+	function getTypeColorChirho(typeChirho: string): string {
 		switch (typeChirho) {
 			case 'bug':
 				return 'bg-red-100 text-red-800';
@@ -43,8 +41,7 @@
 		}
 	}
 
-	/** @param {string} statusChirho */
-	function getStatusColorChirho(statusChirho) {
+	function getStatusColorChirho(statusChirho: string): string {
 		switch (statusChirho) {
 			case 'new':
 				return 'bg-amber-100 text-amber-800';
@@ -59,8 +56,7 @@
 		}
 	}
 
-	/** @param {Date | string | null} dateChirho */
-	function formatDateChirho(dateChirho) {
+	function formatDateChirho(dateChirho: Date | string | null): string {
 		if (!dateChirho) return 'Unknown';
 		return new Date(dateChirho).toLocaleDateString('en-US', {
 			year: 'numeric',
@@ -71,22 +67,17 @@
 		});
 	}
 
-	/** @param {{ feedbackId: string; adminNotes: string | null }} feedbackChirho */
-	function startEditNoteChirho(feedbackChirho) {
+	function startEditNoteChirho(feedbackChirho: { feedbackId: string; adminNotes: string | null }): void {
 		editingNoteIdChirho = feedbackChirho.feedbackId;
 		noteTextChirho = feedbackChirho.adminNotes || '';
 	}
 
-	function cancelEditNoteChirho() {
+	function cancelEditNoteChirho(): void {
 		editingNoteIdChirho = null;
 		noteTextChirho = '';
 	}
 
-	/**
-	 * @param {string} paramChirho
-	 * @param {string} valueChirho
-	 */
-	function updateFilterChirho(paramChirho, valueChirho) {
+	function updateFilterChirho(paramChirho: string, valueChirho: string): void {
 		const urlChirho = new URL(window.location.href);
 		if (valueChirho === 'all') {
 			urlChirho.searchParams.delete(paramChirho);
@@ -169,7 +160,7 @@
 				<span class="text-sm text-slate-600">Status:</span>
 				<select
 					class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm"
-					onchange={(e) => updateFilterChirho('status', /** @type {HTMLSelectElement} */ (e.target).value)}
+					onchange={(eventChirho) => updateFilterChirho('status', (eventChirho.target as HTMLSelectElement).value)}
 					value={data.filtersChirho.status}
 				>
 					<option value="all">All</option>
@@ -236,7 +227,7 @@
 									<select
 										name="status"
 										class="text-xs border border-slate-300 rounded px-2 py-1"
-										onchange={(e) => e.target.form.requestSubmit()}
+										onchange={(e: Event) => (e.target as HTMLSelectElement)?.form?.requestSubmit()}
 									>
 										<option value="new" selected={feedbackItemChirho.status === 'new'}>New</option>
 										<option value="reviewed" selected={feedbackItemChirho.status === 'reviewed'}>Reviewed</option>
