@@ -60,7 +60,22 @@ export const actions: Actions = {
 
 		try {
 			// Gather all user data
-			const userDataChirho = {
+			const userDataChirho: {
+				exportDate: string;
+				account: {
+					userId: string;
+					username: string;
+					email: string;
+					displayName: string | null;
+					createdAt: Date | null;
+					questCoinsBalance: number | null;
+				};
+				courseEnrollments: Record<string, unknown>[];
+				questProgress: Record<string, unknown>[];
+				lessonProgress: Record<string, unknown>[];
+				feedback: Record<string, unknown>[];
+				coinTransactions: Record<string, unknown>[];
+			} = {
 				exportDate: new Date().toISOString(),
 				account: {
 					userId: userChirho.userId,

@@ -85,7 +85,7 @@
 - [x] Stripe subscription integration (checkout, webhooks, pricing page)
 - [x] Resend email integration (welcome, quest completion emails)
 - [x] freeCodeCamp-style progress tracking
-- [ ] Certificate generation
+- [x] Certificate generation (custom name, verification code, printable, public verify page)
 - [ ] Mentor/leadership tier system
 - [x] Quest import from JSON files (131 quests, 176 tests)
 - [x] Payload import (50 scripts imported)
@@ -93,9 +93,9 @@
 
 ### Video Courses
 - [x] YouTube video embedding per lesson
-- [ ] Video progress tracking (watched/unwatched)
+- [x] Video progress tracking (watched/unwatched) - localStorage persistence with resume prompt
 - [x] Video chapters/timestamps
-- [ ] Video playback speed controls (YouTube native)
+- [x] Video playback speed controls (YouTube native)
 - [ ] Take notes while watching
 
 ### Coding Flashcards
@@ -106,12 +106,12 @@
 - [ ] Share flashcard decks
 
 ### Feedback System (Universal Comment Bubble)
-- [ ] Floating feedback button on all pages
-- [ ] Context-aware (knows which video/quest/page)
-- [ ] Feedback types: Bug report, Suggestion, Question, Praise
+- [x] Floating feedback button on all pages (FeedbackBubbleChirho component)
+- [x] Context-aware (captures current page URL)
+- [x] Feedback types: Bug report, Suggestion, Question, Praise
 - [ ] Screenshot capture option
-- [ ] Admin dashboard for reviewing feedback
-- [ ] Status tracking (New, In Progress, Resolved)
+- [x] Admin dashboard for reviewing feedback (with search, CSV export, filtering)
+- [x] Status tracking (New, Reviewed, Resolved, Archived)
 - [ ] Upvoting popular suggestions
 
 ### Future Enhancements

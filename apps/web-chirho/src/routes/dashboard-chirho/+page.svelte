@@ -371,6 +371,9 @@
 			<div class="card">
 				<h3 class="font-semibold text-slate-900 mb-3">Quick Links</h3>
 				<div class="space-y-2 text-sm">
+					<a href="/certificates-chirho" class="text-blue-600 hover:underline block">
+						📜 My Certificates
+					</a>
 					<a href="/quest-coins-chirho" class="text-blue-600 hover:underline block">
 						🪙 Quest Coin Ledger
 					</a>

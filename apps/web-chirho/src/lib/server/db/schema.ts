@@ -879,6 +879,40 @@ export const userQuestProgressChirho = sqliteTable(
 );
 
 // ============================================================================
+// CERTIFICATES (Course completion certificates)
+// ============================================================================
+
+export const certificateChirho = sqliteTable('certificates_chirho', {
+	certificateId: text('certificate_id_chirho').primaryKey(),
+	userId: text('user_id_chirho')
+		.notNull()
+		.references(() => userChirho.userId, { onDelete: 'cascade' }),
+	courseId: text('course_id_chirho')
+		.notNull()
+		.references(() => courseChirho.courseId, { onDelete: 'cascade' }),
+
+	// Certificate details
+	recipientName: text('recipient_name_chirho').notNull(),
+	courseTitle: text('course_title_chirho').notNull(),
+	issueDate: integer('issue_date_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`),
+
+	// Verification
+	verificationCode: text('verification_code_chirho').notNull().unique(),
+
+	// Certificate metadata
+	completionPercentage: integer('completion_percentage_chirho').default(100),
+	questsCompleted: integer('quests_completed_chirho').default(0),
+	totalQuests: integer('total_quests_chirho').default(0),
+	coinsEarned: integer('coins_earned_chirho').default(0),
+
+	createdAt: integer('created_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`)
+});
+
+// ============================================================================
 // CONTACT SUBMISSIONS
 // ============================================================================
 
@@ -1069,3 +1103,5 @@ export type PromotionCode = typeof promotionCodeChirho.$inferSelect;
 export type FeatureSuggestion = typeof featureSuggestionChirho.$inferSelect;
 export type FeatureVote = typeof featureVoteChirho.$inferSelect;
 export type FeatureComment = typeof featureCommentChirho.$inferSelect;
+export type Certificate = typeof certificateChirho.$inferSelect;
+export type NewCertificate = typeof certificateChirho.$inferInsert;
