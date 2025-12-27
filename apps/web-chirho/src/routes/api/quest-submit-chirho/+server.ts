@@ -14,17 +14,20 @@ import {
 } from '$lib/server/db/schema';
 import { nanoid } from 'nanoid';
 
-// Simple hash function for transaction chain
-function createTransactionHashChirho(dataChirho: string, previousHashChirho: string): string {
-	// Simple hash for demo - in production use crypto.subtle
-	let hashChirho = 0;
-	const combinedChirho = previousHashChirho + dataChirho + Date.now().toString();
-	for (let iChirho = 0; iChirho < combinedChirho.length; iChirho++) {
-		const charChirho = combinedChirho.charCodeAt(iChirho);
-		hashChirho = ((hashChirho << 5) - hashChirho) + charChirho;
-		hashChirho = hashChirho & hashChirho;
-	}
-	return Math.abs(hashChirho).toString(16).padStart(40, '0');
+// Cryptographically secure hash function for transaction chain using SHA-256
+async function createTransactionHashChirho(dataChirho: string, previousHashChirho: string): Promise<string> {
+	const timestampChirho = Date.now().toString();
+	const combinedChirho = `${previousHashChirho}:${dataChirho}:${timestampChirho}`;
+
+	// Use Web Crypto API for SHA-256 hashing
+	const encodedChirho = new TextEncoder().encode(combinedChirho);
+	const hashBufferChirho = await crypto.subtle.digest('SHA-256', encodedChirho);
+
+	// Convert to hex string
+	const hashArrayChirho = Array.from(new Uint8Array(hashBufferChirho));
+	const hashHexChirho = hashArrayChirho.map(bChirho => bChirho.toString(16).padStart(2, '0')).join('');
+
+	return hashHexChirho;
 }
 
 export const POST: RequestHandler = async ({ request, locals }) => {
@@ -144,7 +147,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		// Create transaction record
 		const transactionIdChirho = `tx_${nanoid(16)}`;
 		const transactionDataChirho = `${locals.userChirho.username}:${questId}:${totalCoinsChirho}`;
-		const transactionHashChirho = createTransactionHashChirho(transactionDataChirho, previousHashChirho);
+		const transactionHashChirho = await createTransactionHashChirho(transactionDataChirho, previousHashChirho);
 
 		await locals.dbChirho.insert(questCoinTransactionChirho).values({
 			transactionId: transactionIdChirho,

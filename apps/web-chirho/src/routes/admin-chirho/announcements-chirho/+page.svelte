@@ -50,7 +50,7 @@
 	</div>
 
 	{#if form?.error}
-		<div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+		<div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert">
 			{form.error}
 		</div>
 	{/if}

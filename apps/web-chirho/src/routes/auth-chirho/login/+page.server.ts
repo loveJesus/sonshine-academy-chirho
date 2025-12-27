@@ -10,14 +10,15 @@ import {
 	createSessionChirho,
 	generateSessionTokenChirho,
 	setSessionTokenCookieChirho,
-	verifyPasswordChirho
+	verifyPasswordChirho,
+	getSafeRedirectUrlChirho
 } from '$lib/server/auth_chirho';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	// Redirect if already logged in
 	if (locals.userChirho) {
-		const redirectTo = url.searchParams.get('redirect') || '/dashboard-chirho';
-		redirect(302, redirectTo);
+		const redirectToChirho = getSafeRedirectUrlChirho(url.searchParams.get('redirect'));
+		redirect(302, redirectToChirho);
 	}
 	return {};
 };
@@ -96,8 +97,8 @@ export const actions: Actions = {
 			.set({ lastLoginAt: new Date() })
 			.where(eq(userChirho.userId, user.userId));
 
-		// Redirect
-		const redirectTo = url.searchParams.get('redirect') || '/dashboard-chirho';
-		redirect(302, redirectTo);
+		// Redirect safely
+		const redirectToChirho = getSafeRedirectUrlChirho(url.searchParams.get('redirect'));
+		redirect(302, redirectToChirho);
 	}
 };

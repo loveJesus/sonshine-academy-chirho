@@ -23,7 +23,7 @@
 
 		<div class="card">
 			{#if form?.errorChirho}
-				<div class="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+				<div class="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert">
 					{form.errorChirho}
 				</div>
 			{/if}

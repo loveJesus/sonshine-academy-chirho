@@ -7,6 +7,7 @@ import { eq, desc } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import type { Actions, PageServerLoad } from './$types';
 import { questChirho, questTestChirho } from '$lib/server/db/schema';
+import { isPlatformAdminChirho } from '$lib/server/auth_chirho';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	if (!locals.dbChirho) {
@@ -56,6 +57,11 @@ export const actions: Actions = {
 	importQuestChirho: async ({ request, locals }) => {
 		if (!locals.dbChirho || !locals.userChirho) {
 			return fail(401, { errorChirho: 'Unauthorized' });
+		}
+
+		// Verify admin authorization
+		if (!isPlatformAdminChirho(locals.userChirho)) {
+			return fail(403, { errorChirho: 'Forbidden: Admin access required' });
 		}
 
 		const formDataChirho = await request.formData();
@@ -123,6 +129,11 @@ export const actions: Actions = {
 			return fail(401, { errorChirho: 'Unauthorized' });
 		}
 
+		// Verify admin authorization
+		if (!isPlatformAdminChirho(locals.userChirho)) {
+			return fail(403, { errorChirho: 'Forbidden: Admin access required' });
+		}
+
 		const formDataChirho = await request.formData();
 		const questIdChirho = formDataChirho.get('questIdChirho')?.toString();
 
@@ -142,6 +153,11 @@ export const actions: Actions = {
 	toggleActiveChirho: async ({ request, locals }) => {
 		if (!locals.dbChirho || !locals.userChirho) {
 			return fail(401, { errorChirho: 'Unauthorized' });
+		}
+
+		// Verify admin authorization
+		if (!isPlatformAdminChirho(locals.userChirho)) {
+			return fail(403, { errorChirho: 'Forbidden: Admin access required' });
 		}
 
 		const formDataChirho = await request.formData();

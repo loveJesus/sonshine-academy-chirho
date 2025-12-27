@@ -21,6 +21,38 @@ const SESSION_RENEWAL_THRESHOLD_DAYS = 15;
 
 export const SESSION_COOKIE_NAME = 'sonshine-session-chirho';
 
+// Authorization helper - checks if user has admin role
+export function requirePlatformAdminChirho(userChirho: User | null): asserts userChirho is User {
+	if (!userChirho) {
+		throw new Error('NOT_AUTHENTICATED');
+	}
+	if (userChirho.role !== 'platform_admin') {
+		throw new Error('NOT_AUTHORIZED');
+	}
+}
+
+// Safe redirect validation - prevents open redirect attacks
+export function getSafeRedirectUrlChirho(redirectParamChirho: string | null, defaultUrlChirho: string = '/dashboard-chirho'): string {
+	if (!redirectParamChirho) {
+		return defaultUrlChirho;
+	}
+
+	// Only allow relative URLs that start with /
+	// Block protocol-relative URLs (//evil.com) and absolute URLs (http://evil.com)
+	const trimmedChirho = redirectParamChirho.trim();
+	if (!trimmedChirho.startsWith('/') || trimmedChirho.startsWith('//')) {
+		return defaultUrlChirho;
+	}
+
+	// Block URLs with embedded credentials or javascript
+	const lowerChirho = trimmedChirho.toLowerCase();
+	if (lowerChirho.includes('javascript:') || lowerChirho.includes('@')) {
+		return defaultUrlChirho;
+	}
+
+	return trimmedChirho;
+}
+
 // Generate a random session token
 export function generateSessionTokenChirho(): string {
 	const bytes = new Uint8Array(18);
@@ -129,17 +161,127 @@ export function deleteSessionTokenCookieChirho(event: RequestEvent): void {
 	});
 }
 
-// Hash a password using SHA-256 (in production, use bcrypt or argon2)
+// PBKDF2 configuration for password hashing
+const PBKDF2_ITERATIONS_CHIRHO = 100000;
+const PBKDF2_HASH_CHIRHO = 'SHA-256';
+const PBKDF2_KEY_LENGTH_CHIRHO = 32; // 256 bits
+
+// Hash a password using PBKDF2 (secure, suitable for Cloudflare Workers)
+// Format: pbkdf2$iterations$salt$hash (all base64url encoded where applicable)
 export async function hashPasswordChirho(password: string): Promise<string> {
-	const bytes = new TextEncoder().encode(password);
-	const hash = sha256(bytes);
-	return encodeHexLowerCase(hash);
+	// Generate random salt
+	const saltChirho = new Uint8Array(16);
+	crypto.getRandomValues(saltChirho);
+
+	// Import password as key material
+	const keyMaterialChirho = await crypto.subtle.importKey(
+		'raw',
+		new TextEncoder().encode(password),
+		'PBKDF2',
+		false,
+		['deriveBits']
+	);
+
+	// Derive key using PBKDF2
+	const derivedBitsChirho = await crypto.subtle.deriveBits(
+		{
+			name: 'PBKDF2',
+			salt: saltChirho,
+			iterations: PBKDF2_ITERATIONS_CHIRHO,
+			hash: PBKDF2_HASH_CHIRHO
+		},
+		keyMaterialChirho,
+		PBKDF2_KEY_LENGTH_CHIRHO * 8
+	);
+
+	// Encode salt and hash
+	const saltBase64Chirho = encodeBase64url(saltChirho);
+	const hashBase64Chirho = encodeBase64url(new Uint8Array(derivedBitsChirho));
+
+	// Return formatted hash string
+	return `pbkdf2$${PBKDF2_ITERATIONS_CHIRHO}$${saltBase64Chirho}$${hashBase64Chirho}`;
 }
 
-// Verify a password against a hash
-export async function verifyPasswordChirho(password: string, hash: string): Promise<boolean> {
-	const passwordHash = await hashPasswordChirho(password);
-	return passwordHash === hash;
+// Verify a password against a stored hash
+// Supports both new PBKDF2 format and legacy SHA-256 for migration
+export async function verifyPasswordChirho(password: string, storedHashChirho: string): Promise<boolean> {
+	// Check if it's the new PBKDF2 format
+	if (storedHashChirho.startsWith('pbkdf2$')) {
+		const partsChirho = storedHashChirho.split('$');
+		if (partsChirho.length !== 4) {
+			return false;
+		}
+
+		const iterationsChirho = parseInt(partsChirho[1], 10);
+		const saltBase64Chirho = partsChirho[2];
+		const hashBase64Chirho = partsChirho[3];
+
+		// Decode salt (base64url to Uint8Array)
+		const saltChirho = decodeBase64urlChirho(saltBase64Chirho);
+
+		// Import password as key material
+		const keyMaterialChirho = await crypto.subtle.importKey(
+			'raw',
+			new TextEncoder().encode(password),
+			'PBKDF2',
+			false,
+			['deriveBits']
+		);
+
+		// Derive key using same parameters
+		const derivedBitsChirho = await crypto.subtle.deriveBits(
+			{
+				name: 'PBKDF2',
+				salt: saltChirho.buffer as ArrayBuffer,
+				iterations: iterationsChirho,
+				hash: PBKDF2_HASH_CHIRHO
+			},
+			keyMaterialChirho,
+			PBKDF2_KEY_LENGTH_CHIRHO * 8
+		);
+
+		// Compare hashes (constant-time comparison)
+		const computedHashChirho = encodeBase64url(new Uint8Array(derivedBitsChirho));
+		return timingSafeEqualChirho(computedHashChirho, hashBase64Chirho);
+	}
+
+	// Legacy SHA-256 format (64 hex characters)
+	// This allows existing users to log in, then their password can be rehashed on next change
+	if (storedHashChirho.length === 64 && /^[a-f0-9]+$/.test(storedHashChirho)) {
+		const bytes = new TextEncoder().encode(password);
+		const hash = sha256(bytes);
+		const legacyHashChirho = encodeHexLowerCase(hash);
+		return timingSafeEqualChirho(legacyHashChirho, storedHashChirho);
+	}
+
+	return false;
+}
+
+// Decode base64url to Uint8Array
+function decodeBase64urlChirho(base64urlChirho: string): Uint8Array {
+	// Convert base64url to base64
+	const base64Chirho = base64urlChirho.replace(/-/g, '+').replace(/_/g, '/');
+	// Add padding if needed
+	const paddedChirho = base64Chirho + '='.repeat((4 - (base64Chirho.length % 4)) % 4);
+	// Decode
+	const binaryChirho = atob(paddedChirho);
+	const bytesChirho = new Uint8Array(binaryChirho.length);
+	for (let iChirho = 0; iChirho < binaryChirho.length; iChirho++) {
+		bytesChirho[iChirho] = binaryChirho.charCodeAt(iChirho);
+	}
+	return bytesChirho;
+}
+
+// Constant-time string comparison to prevent timing attacks
+function timingSafeEqualChirho(aChirho: string, bChirho: string): boolean {
+	if (aChirho.length !== bChirho.length) {
+		return false;
+	}
+	let resultChirho = 0;
+	for (let iChirho = 0; iChirho < aChirho.length; iChirho++) {
+		resultChirho |= aChirho.charCodeAt(iChirho) ^ bChirho.charCodeAt(iChirho);
+	}
+	return resultChirho === 0;
 }
 
 // Check if a user has a specific role or higher

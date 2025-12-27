@@ -6,6 +6,7 @@ import { fail } from '@sveltejs/kit';
 import { eq, desc } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 import { userChirho, organizationChirho } from '$lib/server/db/schema';
+import { isPlatformAdminChirho } from '$lib/server/auth_chirho';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	if (!locals.dbChirho) {
@@ -78,6 +79,11 @@ export const actions: Actions = {
 			return fail(401, { errorChirho: 'Unauthorized' });
 		}
 
+		// Verify admin authorization
+		if (!isPlatformAdminChirho(locals.userChirho)) {
+			return fail(403, { errorChirho: 'Forbidden: Admin access required' });
+		}
+
 		const formDataChirho = await request.formData();
 		const userIdChirho = formDataChirho.get('userIdChirho')?.toString();
 		const newRoleChirho = formDataChirho.get('roleChirho')?.toString();
@@ -106,6 +112,11 @@ export const actions: Actions = {
 	deleteUserChirho: async ({ request, locals }) => {
 		if (!locals.dbChirho || !locals.userChirho) {
 			return fail(401, { errorChirho: 'Unauthorized' });
+		}
+
+		// Verify admin authorization
+		if (!isPlatformAdminChirho(locals.userChirho)) {
+			return fail(403, { errorChirho: 'Forbidden: Admin access required' });
 		}
 
 		const formDataChirho = await request.formData();
