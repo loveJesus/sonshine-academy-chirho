@@ -96,7 +96,7 @@
 - [x] Video progress tracking (watched/unwatched) - localStorage persistence with resume prompt
 - [x] Video chapters/timestamps
 - [x] Video playback speed controls (YouTube native)
-- [ ] Take notes while watching
+- [x] Take notes while watching (collapsible notes panel, auto-save to localStorage)
 
 ### Coding Flashcards
 - [ ] Flashcard decks (JavaScript, HTML, CSS, etc.)

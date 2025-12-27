@@ -14,6 +14,12 @@
 	let showChaptersChirho = $state(false);
 	let isMarkingCompleteChirho = $state(false);
 
+	// Notes state
+	let showNotesChirho = $state(false);
+	let notesContentChirho = $state('');
+	let notesSavingChirho = $state(false);
+	let notesLastSavedChirho = $state<string | null>(null);
+
 	// Video progress tracking with YouTube IFrame API
 	let playerChirho: any = null;
 	let progressIntervalChirho: ReturnType<typeof setInterval> | null = null;
@@ -23,6 +29,51 @@
 
 	function getProgressKeyChirho(lessonIdChirho: string): string {
 		return `sonshine_video_progress_${lessonIdChirho}`;
+	}
+
+	function getNotesKeyChirho(lessonIdChirho: string): string {
+		return `sonshine_lesson_notes_${lessonIdChirho}`;
+	}
+
+	function loadNotesChirho(): void {
+		if (!browser || !data.lessonChirho?.lessonId) return;
+		try {
+			const savedNotesChirho = localStorage.getItem(getNotesKeyChirho(data.lessonChirho.lessonId));
+			if (savedNotesChirho) {
+				const parsedChirho = JSON.parse(savedNotesChirho);
+				notesContentChirho = parsedChirho.content || '';
+				notesLastSavedChirho = parsedChirho.savedAt || null;
+			}
+		} catch (errChirho) {
+			console.warn('Failed to load notes:', errChirho);
+		}
+	}
+
+	function saveNotesChirho(): void {
+		if (!browser || !data.lessonChirho?.lessonId) return;
+		notesSavingChirho = true;
+		try {
+			const notesDataChirho = {
+				content: notesContentChirho,
+				savedAt: new Date().toISOString(),
+				lessonTitle: data.lessonChirho.title
+			};
+			localStorage.setItem(getNotesKeyChirho(data.lessonChirho.lessonId), JSON.stringify(notesDataChirho));
+			notesLastSavedChirho = notesDataChirho.savedAt;
+		} catch (errChirho) {
+			console.warn('Failed to save notes:', errChirho);
+		} finally {
+			notesSavingChirho = false;
+		}
+	}
+
+	// Debounced auto-save for notes
+	let notesDebounceTimerChirho: ReturnType<typeof setTimeout> | null = null;
+	function handleNotesInputChirho(): void {
+		if (notesDebounceTimerChirho) {
+			clearTimeout(notesDebounceTimerChirho);
+		}
+		notesDebounceTimerChirho = setTimeout(saveNotesChirho, 1000);
 	}
 
 	function saveVideoProgressChirho(): void {
@@ -161,6 +212,9 @@
 
 	// Track lesson view on mount
 	onMount(async () => {
+		// Load saved notes
+		loadNotesChirho();
+
 		// Mark lesson as in_progress when viewed (if not already completed)
 		if (data.progressChirho?.status !== 'completed') {
 			try {
@@ -188,8 +242,13 @@
 		if (progressIntervalChirho) {
 			clearInterval(progressIntervalChirho);
 		}
-		// Save final progress before leaving
+		// Save final video progress before leaving
 		saveVideoProgressChirho();
+		// Save final notes before leaving
+		if (notesDebounceTimerChirho) {
+			clearTimeout(notesDebounceTimerChirho);
+		}
+		saveNotesChirho();
 	});
 
 	function getLessonIconChirho(lessonTypeChirho: string): string {
@@ -594,6 +653,61 @@
 							</ul>
 						</div>
 					{/if}
+
+					<!-- Lesson Notes -->
+					<div class="mt-6 pt-6 border-t border-slate-700">
+						<button
+							onclick={() => showNotesChirho = !showNotesChirho}
+							class="flex items-center justify-between w-full text-left"
+						>
+							<h3 class="text-sm font-medium text-slate-400 flex items-center gap-2">
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+								</svg>
+								My Notes
+								{#if notesContentChirho.length > 0}
+									<span class="text-xs bg-amber-600 text-white px-1.5 py-0.5 rounded-full">{notesContentChirho.split(/\s+/).filter(Boolean).length}</span>
+								{/if}
+							</h3>
+							<svg
+								class="w-4 h-4 text-slate-500 transition-transform {showNotesChirho ? 'rotate-180' : ''}"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+							</svg>
+						</button>
+
+						{#if showNotesChirho}
+							<div class="mt-3">
+								<textarea
+									bind:value={notesContentChirho}
+									oninput={handleNotesInputChirho}
+									placeholder="Take notes while watching... Your notes are saved automatically."
+									class="w-full h-40 bg-slate-700 border border-slate-600 rounded-lg p-3 text-sm text-slate-200 placeholder-slate-500 resize-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+								></textarea>
+								<div class="flex items-center justify-between mt-2 text-xs">
+									<span class="text-slate-500">
+										{#if notesSavingChirho}
+											<span class="flex items-center gap-1">
+												<svg class="animate-spin w-3 h-3" viewBox="0 0 24 24">
+													<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+													<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+												</svg>
+												Saving...
+											</span>
+										{:else if notesLastSavedChirho}
+											Saved
+										{:else}
+											Notes saved locally
+										{/if}
+									</span>
+									<span class="text-slate-500">{notesContentChirho.length} chars</span>
+								</div>
+							</div>
+						{/if}
+					</div>
 
 					<!-- Help Link -->
 					<div class="mt-8 pt-6 border-t border-slate-700">
