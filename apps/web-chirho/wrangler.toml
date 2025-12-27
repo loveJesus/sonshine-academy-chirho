@@ -29,13 +29,14 @@ bucket_name = "sonshine-coding-school-chirho"
 ENVIRONMENT = "production"
 
 # Durable Objects for real-time collaboration
-[[durable_objects.bindings]]
-name = "WORKSHOP_COLLAB_CHIRHO"
-class_name = "WorkshopCollabChirho"
+# TODO: Re-enable after setting up proper exports from SvelteKit adapter
+# [[durable_objects.bindings]]
+# name = "WORKSHOP_COLLAB_CHIRHO"
+# class_name = "WorkshopCollabChirho"
 
-[[migrations]]
-tag = "v1"
-new_classes = ["WorkshopCollabChirho"]
+# [[migrations]]
+# tag = "v1"
+# new_classes = ["WorkshopCollabChirho"]
 
 # Custom domain (configure after registering sonshinecoders.org)
 # [[routes]]
