@@ -794,6 +794,245 @@ export const feedbackChirho = sqliteTable('feedback_chirho', {
 });
 
 // ============================================================================
+// COURSE ENROLLMENTS (User-Course relationships)
+// ============================================================================
+
+export const courseEnrollmentChirho = sqliteTable(
+	'course_enrollments_chirho',
+	{
+		enrollmentId: text('enrollment_id_chirho').primaryKey(),
+		userId: text('user_id_chirho')
+			.notNull()
+			.references(() => userChirho.userId, { onDelete: 'cascade' }),
+		courseId: text('course_id_chirho')
+			.notNull()
+			.references(() => courseChirho.courseId, { onDelete: 'cascade' }),
+
+		// 'active', 'completed', 'dropped'
+		status: text('status_chirho').default('active'),
+		progressPercentage: integer('progress_percentage_chirho').default(0),
+
+		enrolledAt: integer('enrolled_at_chirho', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`),
+		completedAt: integer('completed_at_chirho', { mode: 'timestamp' }),
+		lastAccessedAt: integer('last_accessed_at_chirho', { mode: 'timestamp' })
+	},
+	(table) => [uniqueIndex('user_course_enrollment_idx_chirho').on(table.userId, table.courseId)]
+);
+
+// ============================================================================
+// LESSON PROGRESS (Per-lesson tracking)
+// ============================================================================
+
+export const lessonProgressChirho = sqliteTable(
+	'lesson_progress_chirho',
+	{
+		progressId: text('progress_id_chirho').primaryKey(),
+		userId: text('user_id_chirho')
+			.notNull()
+			.references(() => userChirho.userId, { onDelete: 'cascade' }),
+		lessonId: text('lesson_id_chirho')
+			.notNull()
+			.references(() => lessonChirho.lessonId, { onDelete: 'cascade' }),
+
+		// 'not_started', 'in_progress', 'completed'
+		status: text('status_chirho').default('not_started'),
+		completionPercentage: integer('completion_percentage_chirho').default(0),
+		videoWatchedSeconds: integer('video_watched_seconds_chirho').default(0),
+		videoCompleted: integer('video_completed_chirho', { mode: 'boolean' }).default(false),
+
+		startedAt: integer('started_at_chirho', { mode: 'timestamp' }),
+		completedAt: integer('completed_at_chirho', { mode: 'timestamp' }),
+		lastAccessedAt: integer('last_accessed_at_chirho', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => [uniqueIndex('user_lesson_progress_idx_chirho').on(table.userId, table.lessonId)]
+);
+
+// ============================================================================
+// USER QUEST PROGRESS
+// ============================================================================
+
+export const userQuestProgressChirho = sqliteTable(
+	'user_quest_progress_chirho',
+	{
+		progressId: text('progress_id_chirho').primaryKey(),
+		userId: text('user_id_chirho')
+			.notNull()
+			.references(() => userChirho.userId, { onDelete: 'cascade' }),
+		questId: text('quest_id_chirho')
+			.notNull()
+			.references(() => questChirho.questId, { onDelete: 'cascade' }),
+
+		// 'not_started', 'in_progress', 'completed'
+		status: text('status_chirho').default('not_started'),
+		attempts: integer('attempts_chirho').default(0),
+		viewedSolution: integer('viewed_solution_chirho', { mode: 'boolean' }).default(false),
+		coinsEarned: integer('coins_earned_chirho').default(0),
+
+		startedAt: integer('started_at_chirho', { mode: 'timestamp' }),
+		completedAt: integer('completed_at_chirho', { mode: 'timestamp' })
+	},
+	(table) => [uniqueIndex('user_quest_progress_idx_chirho').on(table.userId, table.questId)]
+);
+
+// ============================================================================
+// CONTACT SUBMISSIONS
+// ============================================================================
+
+export const contactSubmissionChirho = sqliteTable('contact_submissions_chirho', {
+	contactId: text('contact_id_chirho').primaryKey(),
+	userId: text('user_id_chirho').references(() => userChirho.userId, { onDelete: 'set null' }),
+
+	name: text('name_chirho').notNull(),
+	email: text('email_chirho').notNull(),
+	subject: text('subject_chirho').notNull(),
+	message: text('message_chirho').notNull(),
+	newsletterOptIn: integer('newsletter_opt_in_chirho', { mode: 'boolean' }).default(false),
+
+	// 'new', 'replied', 'resolved', 'spam'
+	status: text('status_chirho').default('new'),
+	adminNotes: text('admin_notes_chirho'),
+	repliedByUserId: text('replied_by_user_id_chirho'),
+	repliedAt: integer('replied_at_chirho', { mode: 'timestamp' }),
+
+	createdAt: integer('created_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`)
+});
+
+// ============================================================================
+// PROMOTIONAL CODES
+// ============================================================================
+
+export const promotionCodeChirho = sqliteTable('promotion_codes_chirho', {
+	codeId: text('code_id_chirho').primaryKey(),
+	code: text('code_chirho').notNull().unique(),
+	description: text('description_chirho'),
+
+	// 'percentage', 'fixed_amount', 'scholarship'
+	discountType: text('discount_type_chirho').notNull(),
+	discountValue: integer('discount_value_chirho').notNull(), // percentage (0-100) or cents
+
+	// Limits
+	maxRedemptions: integer('max_redemptions_chirho'),
+	currentRedemptions: integer('current_redemptions_chirho').default(0),
+	maxRedemptionsPerUser: integer('max_redemptions_per_user_chirho').default(1),
+
+	// Validity
+	startsAt: integer('starts_at_chirho', { mode: 'timestamp' }),
+	expiresAt: integer('expires_at_chirho', { mode: 'timestamp' }),
+	isActive: integer('is_active_chirho', { mode: 'boolean' }).notNull().default(true),
+
+	// Restrictions
+	minPurchaseCents: integer('min_purchase_cents_chirho'),
+	applicableCourseIds: text('applicable_course_ids_chirho'), // JSON array
+
+	createdByUserId: text('created_by_user_id_chirho'),
+	createdAt: integer('created_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`),
+	updatedAt: integer('updated_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`)
+});
+
+export const promotionCodeRedemptionChirho = sqliteTable('promotion_code_redemptions_chirho', {
+	redemptionId: text('redemption_id_chirho').primaryKey(),
+	codeId: text('code_id_chirho')
+		.notNull()
+		.references(() => promotionCodeChirho.codeId),
+	userId: text('user_id_chirho')
+		.notNull()
+		.references(() => userChirho.userId),
+	paymentId: text('payment_id_chirho'),
+
+	discountAppliedCents: integer('discount_applied_cents_chirho').notNull(),
+
+	redeemedAt: integer('redeemed_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`)
+});
+
+// ============================================================================
+// FEATURE SUGGESTIONS & VOTING
+// ============================================================================
+
+export const featureSuggestionChirho = sqliteTable('feature_suggestions_chirho', {
+	suggestionId: text('suggestion_id_chirho').primaryKey(),
+	userId: text('user_id_chirho')
+		.notNull()
+		.references(() => userChirho.userId, { onDelete: 'cascade' }),
+
+	title: text('title_chirho').notNull(),
+	description: text('description_chirho').notNull(),
+
+	// 'new_feature', 'improvement', 'content_request', 'other'
+	category: text('category_chirho').default('new_feature'),
+
+	// Vote counts (denormalized for performance)
+	upvotes: integer('upvotes_chirho').default(0),
+	downvotes: integer('downvotes_chirho').default(0),
+
+	// 'pending', 'under_review', 'planned', 'in_progress', 'completed', 'declined'
+	status: text('status_chirho').default('pending'),
+	adminResponse: text('admin_response_chirho'),
+	respondedByUserId: text('responded_by_user_id_chirho'),
+	respondedAt: integer('responded_at_chirho', { mode: 'timestamp' }),
+
+	isPublic: integer('is_public_chirho', { mode: 'boolean' }).default(true),
+
+	createdAt: integer('created_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`),
+	updatedAt: integer('updated_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`)
+});
+
+export const featureVoteChirho = sqliteTable(
+	'feature_votes_chirho',
+	{
+		voteId: text('vote_id_chirho').primaryKey(),
+		suggestionId: text('suggestion_id_chirho')
+			.notNull()
+			.references(() => featureSuggestionChirho.suggestionId, { onDelete: 'cascade' }),
+		userId: text('user_id_chirho')
+			.notNull()
+			.references(() => userChirho.userId, { onDelete: 'cascade' }),
+
+		// 1 for upvote, -1 for downvote
+		voteValue: integer('vote_value_chirho').notNull(),
+
+		createdAt: integer('created_at_chirho', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => [uniqueIndex('user_suggestion_vote_idx_chirho').on(table.userId, table.suggestionId)]
+);
+
+export const featureCommentChirho = sqliteTable('feature_comments_chirho', {
+	commentId: text('comment_id_chirho').primaryKey(),
+	suggestionId: text('suggestion_id_chirho')
+		.notNull()
+		.references(() => featureSuggestionChirho.suggestionId, { onDelete: 'cascade' }),
+	userId: text('user_id_chirho')
+		.notNull()
+		.references(() => userChirho.userId, { onDelete: 'cascade' }),
+
+	content: text('content_chirho').notNull(),
+
+	createdAt: integer('created_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`),
+	updatedAt: integer('updated_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`)
+});
+
+// ============================================================================
 // TYPE EXPORTS
 // ============================================================================
 
@@ -822,3 +1061,11 @@ export type Feedback = typeof feedbackChirho.$inferSelect;
 export type NewFeedback = typeof feedbackChirho.$inferInsert;
 export type BlogPost = typeof blogPostChirho.$inferSelect;
 export type NewBlogPost = typeof blogPostChirho.$inferInsert;
+export type CourseEnrollment = typeof courseEnrollmentChirho.$inferSelect;
+export type LessonProgress = typeof lessonProgressChirho.$inferSelect;
+export type UserQuestProgress = typeof userQuestProgressChirho.$inferSelect;
+export type ContactSubmission = typeof contactSubmissionChirho.$inferSelect;
+export type PromotionCode = typeof promotionCodeChirho.$inferSelect;
+export type FeatureSuggestion = typeof featureSuggestionChirho.$inferSelect;
+export type FeatureVote = typeof featureVoteChirho.$inferSelect;
+export type FeatureComment = typeof featureCommentChirho.$inferSelect;

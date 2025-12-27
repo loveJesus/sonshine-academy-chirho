@@ -268,12 +268,23 @@
 					<ul class="space-y-2 text-sm">
 						<li><a href="/pricing-chirho" class="hover:text-white no-underline">Pricing</a></li>
 						<li><a href="/help-chirho" class="hover:text-white no-underline">Help & FAQ</a></li>
+						<li><a href="/contact-chirho" class="hover:text-white no-underline">Contact Us</a></li>
 						<li><a href="/about-chirho" class="hover:text-white no-underline">About Us</a></li>
 					</ul>
 				</nav>
 			</div>
 
-			<div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm">
+			<!-- Legal Links Bar -->
+			<div class="mt-8 pt-6 border-t border-slate-800 flex flex-wrap justify-center gap-6 text-xs text-slate-500">
+				<a href="/privacy-chirho" class="hover:text-white no-underline">Privacy Policy</a>
+				<a href="/terms-chirho" class="hover:text-white no-underline">Terms of Service</a>
+				<a href="/contact-chirho" class="hover:text-white no-underline">Contact</a>
+				{#if data.userChirho}
+					<a href="/settings-chirho/data-chirho" class="hover:text-white no-underline">Your Data</a>
+				{/if}
+			</div>
+
+			<div class="mt-6 pt-6 border-t border-slate-800 text-center text-sm">
 				<p class="scripture-quote border-l-amber-400 text-slate-500">
 					"For God so loved the world that he gave his only begotten Son, that whosoever believeth
 					in him should not perish, but have everlasting life." — John 3:16 (KJV)
