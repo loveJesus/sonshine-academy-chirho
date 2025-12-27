@@ -372,6 +372,14 @@
 	<!-- Quest Header -->
 	<header class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-8">
 		<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+			<!-- Breadcrumb -->
+			<nav class="mb-4" aria-label="Breadcrumb">
+				<ol class="flex items-center gap-2 text-sm text-slate-400">
+					<li><a href="/quests-chirho" class="hover:text-white no-underline">Quests</a></li>
+					<li><span aria-hidden="true">/</span></li>
+					<li class="text-white truncate max-w-xs">{data.questChirho.title}</li>
+				</ol>
+			</nav>
 			<div class="flex items-center justify-between mb-4">
 				<a href="/quests-chirho" class="text-slate-400 hover:text-white flex items-center gap-2 no-underline">
 					<span>←</span> Back to Quests

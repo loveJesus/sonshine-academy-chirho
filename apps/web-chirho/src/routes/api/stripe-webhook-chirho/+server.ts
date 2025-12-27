@@ -59,27 +59,27 @@ export const POST: RequestHandler = async ({ request, locals, platform }) => {
 					})
 					.where(eq(userChirho.userId, userIdChirho));
 
-				console.log(`Payment completed for user ${userIdChirho}, tier: ${tierIdChirho}`);
+				// Payment recorded successfully
 			}
 			break;
 		}
 
 		case 'customer.subscription.updated': {
-			const subscriptionChirho = eventChirho.data.object;
 			// Handle subscription updates (upgrades, downgrades)
-			console.log('Subscription updated:', subscriptionChirho.id);
+			// const subscriptionChirho = eventChirho.data.object;
+			// TODO: Implement subscription update handling
 			break;
 		}
 
 		case 'customer.subscription.deleted': {
-			const subscriptionChirho = eventChirho.data.object;
 			// Handle subscription cancellation
-			console.log('Subscription cancelled:', subscriptionChirho.id);
+			// const subscriptionChirho = eventChirho.data.object;
+			// TODO: Implement subscription cancellation handling
 			break;
 		}
 
 		default:
-			console.log(`Unhandled event type: ${eventChirho.type}`);
+			// Unhandled event types are silently ignored
 	}
 
 	return json({ received: true });

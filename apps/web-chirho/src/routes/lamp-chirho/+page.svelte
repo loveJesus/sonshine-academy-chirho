@@ -25,12 +25,10 @@
 
 	function handleProgressChirho(dataChirho: { percent: number }): void {
 		progressChirho = dataChirho.percent;
-		console.log('Video progress:', Math.round(dataChirho.percent) + '%');
 	}
 
 	function handleCompleteChirho(): void {
 		isCompletedChirho = true;
-		console.log('Video completed! User has watched 90% or more.');
 	}
 </script>
 

@@ -75,10 +75,9 @@ export const actions: Actions = {
 							user.displayName || user.username,
 							resetUrl
 						);
-					} else {
-						// Log for debugging in development
-						console.log('Password reset URL (email not configured):', resetUrl);
 					}
+					// If email not configured, token is still created and will work
+					// Email service will be enabled once RESEND_API_KEY is configured
 				} catch (errorChirho) {
 					console.error('Error creating password reset token:', errorChirho);
 					// Don't expose error to user

@@ -139,12 +139,11 @@ Keep coding for His glory!`
 	let isCompleteChirho = $state(false);
 
 	function handleChangeChirho(cellsChirho: typeof demoCellsChirho): void {
-		console.log('Cells changed:', cellsChirho);
+		// Cells updated - could be used for auto-save in the future
 	}
 
 	function handleCompleteChirho(): void {
 		isCompleteChirho = true;
-		console.log('All cells completed!');
 	}
 </script>
 

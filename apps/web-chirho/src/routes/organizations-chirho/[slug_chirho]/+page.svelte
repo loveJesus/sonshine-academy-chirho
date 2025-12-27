@@ -31,6 +31,15 @@
 </svelte:head>
 
 <div class="max-w-4xl mx-auto py-12 px-4">
+	<!-- Breadcrumb -->
+	<nav class="mb-8" aria-label="Breadcrumb">
+		<ol class="flex items-center gap-2 text-sm text-slate-500">
+			<li><a href="/organizations-chirho" class="hover:text-slate-900 no-underline">Organizations</a></li>
+			<li><span aria-hidden="true">/</span></li>
+			<li class="text-slate-900">{data.organizationChirho.name}</li>
+		</ol>
+	</nav>
+
 	<!-- Organization Header -->
 	<div class="text-center mb-12">
 		{#if data.organizationChirho.logoUrl}

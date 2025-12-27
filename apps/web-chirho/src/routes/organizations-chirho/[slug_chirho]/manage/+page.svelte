@@ -59,6 +59,17 @@
 </svelte:head>
 
 <div class="max-w-6xl mx-auto py-8 px-4">
+	<!-- Breadcrumb -->
+	<nav class="mb-6" aria-label="Breadcrumb">
+		<ol class="flex items-center gap-2 text-sm text-slate-500">
+			<li><a href="/organizations-chirho" class="hover:text-slate-900 no-underline">Organizations</a></li>
+			<li><span aria-hidden="true">/</span></li>
+			<li><a href="/organizations-chirho/{data.organizationChirho.slug}" class="hover:text-slate-900 no-underline">{data.organizationChirho.name}</a></li>
+			<li><span aria-hidden="true">/</span></li>
+			<li class="text-slate-900">Manage</li>
+		</ol>
+	</nav>
+
 	<div class="mb-8">
 		<div class="flex items-center gap-3 mb-2">
 			<span class="text-4xl">🏛️</span>
