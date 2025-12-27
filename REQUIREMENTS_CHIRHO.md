@@ -84,7 +84,7 @@
 - [x] Quests listing page
 - [x] Stripe subscription integration (checkout, webhooks, pricing page)
 - [x] Resend email integration (welcome, quest completion emails)
-- [ ] freeCodeCamp-style progress tracking
+- [x] freeCodeCamp-style progress tracking
 - [ ] Certificate generation
 - [ ] Mentor/leadership tier system
 - [x] Quest import from JSON files (131 quests, 176 tests)

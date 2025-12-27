@@ -2,6 +2,8 @@
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
 <script lang="ts">
+	import CurriculumProgressChirho from '$lib/components/CurriculumProgressChirho.svelte';
+
 	let { data }: { data: any } = $props();
 
 	function formatDateChirho(dateChirho: Date | string | null | undefined): string {
@@ -80,6 +82,17 @@
 			{/each}
 		</div>
 	{/if}
+
+	<!-- Curriculum Progress -->
+	<div class="mb-8">
+		<CurriculumProgressChirho
+			completedLessons={data.statsChirho.completedLessons}
+			totalLessons={data.statsChirho.totalLessons}
+			completedQuests={data.statsChirho.completedQuests}
+			totalQuests={data.statsChirho.totalQuests}
+			currentWeek={currentWeekChirho}
+		/>
+	</div>
 
 	<!-- Stats Grid -->
 	<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

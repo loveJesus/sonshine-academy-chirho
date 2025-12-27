@@ -18,6 +18,7 @@
 	let allTestsPassedChirho = $state(false);
 	let errorMessageChirho = $state('');
 	let submissionResultChirho = $state<any>(null);
+	let submissionErrorChirho = $state('');
 	let isSubmittingChirho = $state(false);
 
 	// Reset state when quest changes (handles navigation)
@@ -31,6 +32,7 @@
 			allTestsPassedChirho = false;
 			errorMessageChirho = '';
 			submissionResultChirho = null;
+			submissionErrorChirho = '';
 			isSubmittingChirho = false;
 		}
 	});
@@ -183,14 +185,17 @@
 					const resultDataChirho: any = await responseChirho.json();
 					if (responseChirho.ok) {
 						submissionResultChirho = resultDataChirho;
+						submissionErrorChirho = '';
 						// Refresh layout data to update coin balance in header
 						if (!resultDataChirho.alreadyCompleted) {
 							invalidateAll();
 						}
 					} else {
+						submissionErrorChirho = resultDataChirho.error || 'Failed to submit quest completion. Please try again.';
 						console.error('Submission error:', resultDataChirho.error);
 					}
 				} catch (submitErrChirho: any) {
+					submissionErrorChirho = 'Network error: Could not submit quest. Please check your connection and try again.';
 					console.error('Failed to submit quest:', submitErrChirho);
 				}
 				isSubmittingChirho = false;
@@ -403,7 +408,20 @@
 							{/each}
 						</div>
 
-						{#if allTestsPassedChirho}
+						{#if submissionErrorChirho}
+							<div class="mt-6 p-4 bg-red-100 border border-red-300 rounded-xl text-red-800 text-center" role="alert">
+								<div class="text-lg font-semibold mb-1">⚠️ Submission Error</div>
+								<div class="text-sm">{submissionErrorChirho}</div>
+								<button
+									onclick={() => runTestsChirho()}
+									class="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+								>
+									Try Again
+								</button>
+							</div>
+						{/if}
+
+						{#if allTestsPassedChirho && !submissionErrorChirho}
 							<div class="mt-6 p-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl text-white text-center">
 								{#if isSubmittingChirho}
 									<div class="text-lg">Saving your progress...</div>

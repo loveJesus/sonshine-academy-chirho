@@ -24,6 +24,15 @@ export const actions: Actions = {
 			return fail(400, { errorChirho: 'Feedback text is required' });
 		}
 
+		// Validate text length (min 10 chars, max 2000 chars)
+		const trimmedTextChirho = feedbackTextChirho.trim();
+		if (trimmedTextChirho.length < 10) {
+			return fail(400, { errorChirho: 'Feedback must be at least 10 characters long' });
+		}
+		if (trimmedTextChirho.length > 2000) {
+			return fail(400, { errorChirho: 'Feedback must be less than 2000 characters' });
+		}
+
 		// Validate feedback type
 		const validTypesChirho = ['bug', 'suggestion', 'question', 'praise'];
 		if (!validTypesChirho.includes(feedbackTypeChirho)) {
@@ -47,9 +56,9 @@ export const actions: Actions = {
 				feedbackId: feedbackIdChirho,
 				userId: userIdChirho,
 				feedbackType: feedbackTypeChirho,
-				feedbackText: feedbackTextChirho.trim(),
-				pageUrl: typeof pageUrlChirho === 'string' ? pageUrlChirho : null,
-				userAgent: typeof userAgentChirho === 'string' ? userAgentChirho : null,
+				feedbackText: trimmedTextChirho,
+				pageUrl: typeof pageUrlChirho === 'string' ? pageUrlChirho.slice(0, 500) : null,
+				userAgent: typeof userAgentChirho === 'string' ? userAgentChirho.slice(0, 500) : null,
 				status: 'new'
 			});
 

@@ -11,7 +11,11 @@
 	let isSubmittingChirho = $state(false);
 	let showSuccessChirho = $state(false);
 
+	const MAX_CHARS_CHIRHO = 2000;
+	const MIN_CHARS_CHIRHO = 10;
 	const currentUrlChirho = $derived(page.url.pathname);
+	const charCountChirho = $derived(feedbackTextChirho.trim().length);
+	const isValidLengthChirho = $derived(charCountChirho >= MIN_CHARS_CHIRHO && charCountChirho <= MAX_CHARS_CHIRHO);
 
 	const feedbackTypesChirho = [
 		{ value: 'bug', label: 'Bug Report', icon: '🐛', color: 'red' as const },
@@ -134,10 +138,24 @@
 							name="feedbackTextChirho"
 							bind:value={feedbackTextChirho}
 							required
+							minlength={MIN_CHARS_CHIRHO}
+							maxlength={MAX_CHARS_CHIRHO}
 							rows="3"
 							class="w-full text-sm rounded-lg border-slate-300 focus:border-amber-500 focus:ring-amber-500"
 							placeholder={feedbackTypeChirho === 'bug' ? 'What happened? What did you expect?' : 'Share your thoughts...'}
 						></textarea>
+						<div class="flex justify-between text-xs mt-1">
+							<span class={charCountChirho < MIN_CHARS_CHIRHO ? 'text-amber-600' : 'text-slate-400'}>
+								{#if charCountChirho < MIN_CHARS_CHIRHO}
+									{MIN_CHARS_CHIRHO - charCountChirho} more chars needed
+								{:else}
+									Min: {MIN_CHARS_CHIRHO}
+								{/if}
+							</span>
+							<span class={charCountChirho > MAX_CHARS_CHIRHO ? 'text-red-600 font-medium' : 'text-slate-400'}>
+								{charCountChirho}/{MAX_CHARS_CHIRHO}
+							</span>
+						</div>
 					</div>
 
 					<!-- Context Info -->
@@ -148,7 +166,7 @@
 					<!-- Submit Button -->
 					<button
 						type="submit"
-						disabled={isSubmittingChirho || !feedbackTextChirho.trim()}
+						disabled={isSubmittingChirho || !isValidLengthChirho}
 						class="w-full py-2 px-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
 					>
 						{#if isSubmittingChirho}
