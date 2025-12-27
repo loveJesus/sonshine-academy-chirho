@@ -10,11 +10,14 @@
 		{ href: '/admin-chirho', label: 'Dashboard', icon: '📊' },
 		{ href: '/admin-chirho/users-chirho', label: 'Users', icon: '👥' },
 		{ href: '/admin-chirho/organizations-chirho', label: 'Organizations', icon: '🏛️' },
+		{ href: '/admin-chirho/cohorts-chirho', label: 'Cohorts', icon: '👨‍👩‍👧‍👦' },
 		{ href: '/admin-chirho/courses-chirho', label: 'Courses', icon: '📚' },
 		{ href: '/admin-chirho/quests-chirho', label: 'Quests', icon: '⚔️' },
-		{ href: '/admin-chirho/payloads-chirho', label: 'Payloads', icon: '📦' },
+		{ href: '/admin-chirho/payloads-chirho', label: 'Manna', icon: '🍞' },
 		{ href: '/admin-chirho/vps-chirho', label: 'VPS Nodes', icon: '🖥️' },
 		{ href: '/admin-chirho/payments-chirho', label: 'Payments', icon: '💳' },
+		{ href: '/admin-chirho/scholarships-chirho', label: 'Scholarships', icon: '🎓' },
+		{ href: '/admin-chirho/feedback-chirho', label: 'Feedback', icon: '💬' },
 		{ href: '/admin-chirho/announcements-chirho', label: 'Announcements', icon: '📢' },
 		{ href: '/admin-chirho/blog-chirho', label: 'Blog Posts', icon: '📝' }
 	];

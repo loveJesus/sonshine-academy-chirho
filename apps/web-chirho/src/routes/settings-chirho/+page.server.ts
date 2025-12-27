@@ -6,6 +6,7 @@ import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
 import { userChirho, oauthAccountChirho } from '$lib/server/db/schema';
+import { hashPasswordChirho, verifyPasswordChirho } from '$lib/server/auth_chirho';
 
 // Available background colors for profile
 const BACKGROUND_COLORS_CHIRHO = [
@@ -44,10 +45,14 @@ export const load: PageServerLoad = async ({ locals }) => {
 		linkedAccountsChirho = oauthAccountsChirho;
 	}
 
+	// Check if user has a password set (vs OAuth-only)
+	const hasPasswordChirho = !!locals.userChirho.passwordHash;
+
 	return {
 		userChirho: locals.userChirho,
 		linkedAccountsChirho,
-		backgroundColorsChirho: BACKGROUND_COLORS_CHIRHO
+		backgroundColorsChirho: BACKGROUND_COLORS_CHIRHO,
+		hasPasswordChirho
 	};
 };
 
@@ -133,6 +138,74 @@ export const actions: Actions = {
 		} catch (errorChirho) {
 			console.error('Error updating email:', errorChirho);
 			return fail(500, { error: 'Failed to update email' });
+		}
+	},
+
+	changePassword: async ({ request, locals }) => {
+		if (!locals.userChirho || !locals.dbChirho) {
+			return fail(401, { errorPasswordChirho: 'Not authenticated' });
+		}
+
+		// Check if user has a password (OAuth users need to set one first)
+		const usersChirho = await locals.dbChirho
+			.select({ passwordHash: userChirho.passwordHash })
+			.from(userChirho)
+			.where(eq(userChirho.userId, locals.userChirho.userId))
+			.limit(1);
+
+		const currentUserChirho = usersChirho[0];
+		const hasPasswordChirho = !!currentUserChirho?.passwordHash;
+
+		const formDataChirho = await request.formData();
+		const currentPasswordChirho = formDataChirho.get('currentPassword') as string;
+		const newPasswordChirho = formDataChirho.get('newPassword') as string;
+		const confirmPasswordChirho = formDataChirho.get('confirmPassword') as string;
+
+		// Validate new password
+		if (!newPasswordChirho || newPasswordChirho.length < 8) {
+			return fail(400, { errorPasswordChirho: 'New password must be at least 8 characters' });
+		}
+
+		if (newPasswordChirho !== confirmPasswordChirho) {
+			return fail(400, { errorPasswordChirho: 'Passwords do not match' });
+		}
+
+		// If user has a password, verify current password
+		if (hasPasswordChirho) {
+			if (!currentPasswordChirho) {
+				return fail(400, { errorPasswordChirho: 'Current password is required' });
+			}
+
+			const isValidChirho = await verifyPasswordChirho(
+				currentPasswordChirho,
+				currentUserChirho.passwordHash!
+			);
+
+			if (!isValidChirho) {
+				return fail(400, { errorPasswordChirho: 'Current password is incorrect' });
+			}
+		}
+
+		try {
+			const newHashChirho = await hashPasswordChirho(newPasswordChirho);
+
+			await locals.dbChirho
+				.update(userChirho)
+				.set({
+					passwordHash: newHashChirho,
+					updatedAt: new Date()
+				})
+				.where(eq(userChirho.userId, locals.userChirho.userId));
+
+			return {
+				successPasswordChirho: true,
+				messagePasswordChirho: hasPasswordChirho
+					? 'Password changed successfully!'
+					: 'Password set successfully! You can now sign in with your email and password.'
+			};
+		} catch (errorChirho) {
+			console.error('Error changing password:', errorChirho);
+			return fail(500, { errorPasswordChirho: 'Failed to change password' });
 		}
 	}
 };

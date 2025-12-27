@@ -157,7 +157,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	try {
-		const bodyChirho = await request.json();
+		const bodyChirho = (await request.json()) as {
+			lessonId?: string;
+			status?: string;
+			completionPercentage?: number;
+			videoWatchedSeconds?: number;
+			videoCompleted?: boolean;
+		};
 		const { lessonId, status, completionPercentage, videoWatchedSeconds, videoCompleted } = bodyChirho;
 
 		if (!lessonId) {
@@ -173,7 +179,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			)
 			.limit(1);
 
-		const nowChirho = Math.floor(Date.now() / 1000);
+		const nowChirho = new Date();
 
 		if (existingChirho.length > 0) {
 			// Update existing record

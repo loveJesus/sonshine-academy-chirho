@@ -38,7 +38,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	try {
-		const bodyChirho = await request.json();
+		const bodyChirho = (await request.json()) as {
+			questId?: string;
+			submittedCode?: string;
+			testResults?: Array<{ passed: boolean }>;
+			viewedSolution?: boolean;
+		};
 		const { questId, submittedCode, testResults, viewedSolution } = bodyChirho;
 
 		if (!questId || !submittedCode || !testResults) {
@@ -189,7 +194,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 	}
 
 	try {
-		const bodyChirho = await request.json();
+		const bodyChirho = (await request.json()) as { questId?: string };
 		const { questId } = bodyChirho;
 
 		if (!questId) {

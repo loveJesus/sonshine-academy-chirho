@@ -7,7 +7,13 @@ import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import { eq } from 'drizzle-orm';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { DbChirho } from './db';
-import { sessionChirho, userChirho, type Session, type User } from './db/schema';
+import {
+	sessionChirho,
+	userChirho,
+	passwordResetTokenChirho,
+	type Session,
+	type User
+} from './db/schema';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 const SESSION_DURATION_DAYS = 30;
@@ -164,4 +170,107 @@ export function isAdminChirho(user: User | null): boolean {
 // Check if a user is a platform admin
 export function isPlatformAdminChirho(user: User | null): boolean {
 	return hasRoleChirho(user, 'platform_admin');
+}
+
+// ============================================================================
+// PASSWORD RESET FUNCTIONS
+// ============================================================================
+
+const PASSWORD_RESET_TOKEN_DURATION_HOURS = 1;
+
+// Generate a password reset token
+export function generatePasswordResetTokenChirho(): string {
+	const bytes = new Uint8Array(32);
+	crypto.getRandomValues(bytes);
+	return encodeBase64url(bytes);
+}
+
+// Hash the reset token
+function hashResetTokenChirho(token: string): string {
+	const bytes = new TextEncoder().encode(token);
+	const hash = sha256(bytes);
+	return encodeHexLowerCase(hash);
+}
+
+// Create a password reset token for a user
+export async function createPasswordResetTokenChirho(
+	db: DbChirho,
+	userId: string
+): Promise<string> {
+	// Invalidate any existing tokens for this user
+	await db.delete(passwordResetTokenChirho).where(eq(passwordResetTokenChirho.userId, userId));
+
+	const token = generatePasswordResetTokenChirho();
+	const tokenHash = hashResetTokenChirho(token);
+	const tokenId = crypto.randomUUID();
+	const expiresAt = new Date(Date.now() + PASSWORD_RESET_TOKEN_DURATION_HOURS * 60 * 60 * 1000);
+
+	await db.insert(passwordResetTokenChirho).values({
+		tokenId,
+		userId,
+		tokenHash,
+		expiresAt
+	});
+
+	return token;
+}
+
+// Validate a password reset token
+export async function validatePasswordResetTokenChirho(
+	db: DbChirho,
+	token: string
+): Promise<{ valid: boolean; userId?: string; tokenId?: string }> {
+	const tokenHash = hashResetTokenChirho(token);
+
+	const results = await db
+		.select()
+		.from(passwordResetTokenChirho)
+		.where(eq(passwordResetTokenChirho.tokenHash, tokenHash))
+		.limit(1);
+
+	if (results.length === 0) {
+		return { valid: false };
+	}
+
+	const resetToken = results[0];
+
+	// Check if token is expired
+	if (Date.now() >= resetToken.expiresAt.getTime()) {
+		// Clean up expired token
+		await db
+			.delete(passwordResetTokenChirho)
+			.where(eq(passwordResetTokenChirho.tokenId, resetToken.tokenId));
+		return { valid: false };
+	}
+
+	// Check if token was already used
+	if (resetToken.usedAt) {
+		return { valid: false };
+	}
+
+	return { valid: true, userId: resetToken.userId, tokenId: resetToken.tokenId };
+}
+
+// Use a password reset token (mark as used and update password)
+export async function usePasswordResetTokenChirho(
+	db: DbChirho,
+	tokenId: string,
+	userId: string,
+	newPassword: string
+): Promise<boolean> {
+	const passwordHash = await hashPasswordChirho(newPassword);
+
+	// Update password
+	await db.update(userChirho).set({ passwordHash }).where(eq(userChirho.userId, userId));
+
+	// Mark token as used
+	await db
+		.update(passwordResetTokenChirho)
+		.set({ usedAt: new Date() })
+		.where(eq(passwordResetTokenChirho.tokenId, tokenId));
+
+	// Invalidate all sessions for security
+	await invalidateAllUserSessionsChirho(db, userId);
+
+	return true;
 }

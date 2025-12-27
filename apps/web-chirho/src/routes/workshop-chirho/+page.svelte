@@ -2,7 +2,16 @@
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
 <script>
+	import { page } from '$app/state';
 	import WorkshopChirho from '$lib/components/WorkshopChirho.svelte';
+	import WorkshopCollabChirho from '$lib/components/WorkshopCollabChirho.svelte';
+
+	// Collaboration state
+	let collaborativeModeChirho = $state(false);
+	const sessionIdChirho = $derived(
+		page.url.searchParams.get('session') || 'demo-' + Math.random().toString(36).substring(2, 8)
+	);
+	const userIdChirho = 'user-' + Math.random().toString(36).substring(2, 8);
 
 	const exampleHtmlChirho = `<div class="card">
   <h1>Welcome to the Workshop!</h1>
@@ -130,20 +139,61 @@ button.addEventListener('click', () => {
 <section class="py-12 bg-slate-100">
 	<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="mb-6">
-			<h2 class="text-2xl font-bold text-slate-900 mb-2">Try It Out</h2>
-			<p class="text-slate-600">
-				Edit the code below and click the Preview tab to see your changes.
-				This example creates an interactive greeting card!
-			</p>
+			<div class="flex flex-wrap items-start justify-between gap-4">
+				<div>
+					<h2 class="text-2xl font-bold text-slate-900 mb-2">Try It Out</h2>
+					<p class="text-slate-600">
+						Edit the code below and click the Preview tab to see your changes.
+						This example creates an interactive greeting card!
+					</p>
+				</div>
+				<!-- Collaboration Toggle -->
+				<div class="bg-white rounded-lg shadow-sm p-3">
+					<label class="flex items-center gap-2 cursor-pointer">
+						<input
+							type="checkbox"
+							bind:checked={collaborativeModeChirho}
+							class="w-5 h-5 rounded border-slate-300 text-amber-500 focus:ring-amber-500"
+						/>
+						<span class="text-sm font-medium text-slate-700">Real-time Collaboration</span>
+					</label>
+					{#if collaborativeModeChirho}
+						<div class="mt-2 text-xs text-slate-500">
+							Session: <code class="bg-slate-100 px-1 rounded">{sessionIdChirho}</code>
+							<button
+								type="button"
+								onclick={() => navigator.clipboard.writeText(window.location.origin + '/workshop-chirho?session=' + sessionIdChirho)}
+								class="ml-2 text-blue-600 hover:text-blue-800"
+							>
+								Copy Link
+							</button>
+						</div>
+					{/if}
+				</div>
+			</div>
 		</div>
 
-		<WorkshopChirho
-			initialHtmlChirho={exampleHtmlChirho}
-			initialCssChirho={exampleCssChirho}
-			initialJsChirho={exampleJsChirho}
-			onchange={handleChangeChirho}
-			height="450px"
-		/>
+		{#if collaborativeModeChirho}
+			<WorkshopCollabChirho
+				sessionIdChirho={sessionIdChirho}
+				userIdChirho={userIdChirho}
+				displayNameChirho="Student"
+				initialHtmlChirho={exampleHtmlChirho}
+				initialCssChirho={exampleCssChirho}
+				initialJsChirho={exampleJsChirho}
+				onchange={handleChangeChirho}
+				height="450px"
+				collaborativeChirho={true}
+			/>
+		{:else}
+			<WorkshopChirho
+				initialHtmlChirho={exampleHtmlChirho}
+				initialCssChirho={exampleCssChirho}
+				initialJsChirho={exampleJsChirho}
+				onchange={handleChangeChirho}
+				height="450px"
+			/>
+		{/if}
 
 		<div class="mt-6 p-4 bg-white rounded-lg border border-slate-200">
 			<h3 class="font-semibold text-slate-900 mb-2">Tips for this Workshop:</h3>

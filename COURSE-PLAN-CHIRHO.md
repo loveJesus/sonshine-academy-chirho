@@ -245,11 +245,13 @@ sonshine-payloads-chirho/
 2. [x] Add syntax highlighting to admin quest editor (CodeEditorChirho)
 3. [x] Implement quest pagination with category grouping
 4. [x] Port CodePen workspace component (WorkshopChirho)
-5. [ ] Design video intro template
-6. [ ] Upload existing payloads to R2
-7. [ ] Create course structure in database (modules, sessions, lessons)
-8. [ ] Add Lamp (video) player component with progress tracking
-9. [ ] Create admin interface for Manna (payload) management
+5. [x] Add Lamp (video) player component with progress tracking
+6. [x] Create admin interface for Manna (payload) management
+7. [x] Create course structure in database (modules, sessions, lessons)
+8. [x] Add visual pathway component (Jupyter notebook style for JavaScript)
+9. [ ] Design video intro template (hyper-realistic 3D)
+10. [ ] Upload existing payloads to R2
+11. [x] Add real-time collaboration to Workshop (Durable Objects + WebSocket)
 
 ---
 

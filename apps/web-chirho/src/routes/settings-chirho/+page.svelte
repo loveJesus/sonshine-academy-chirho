@@ -8,7 +8,11 @@
 
 	let isSavingProfileChirho = $state(false);
 	let isSavingEmailChirho = $state(false);
+	let isSavingPasswordChirho = $state(false);
 	let selectedColorChirho = $state('#3B82F6');
+	let showCurrentPasswordChirho = $state(false);
+	let showNewPasswordChirho = $state(false);
+	let showConfirmPasswordChirho = $state(false);
 
 	// Sync color with user data (tracks changes)
 	const userColorChirho = $derived(data.userChirho.backgroundColor || '#3B82F6');
@@ -218,6 +222,150 @@
 						class="bg-slate-900 hover:bg-slate-800 disabled:bg-slate-400 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
 					>
 						{isSavingEmailChirho ? 'Saving...' : 'Update Email'}
+					</button>
+				</div>
+			</form>
+		</section>
+
+		<!-- Security / Password Section -->
+		<section class="bg-white rounded-xl shadow-sm border border-slate-200 mb-6">
+			<div class="px-6 py-4 border-b border-slate-200">
+				<h2 class="text-lg font-semibold text-slate-900">Security</h2>
+				<p class="text-sm text-slate-500">
+					{#if data.hasPasswordChirho}
+						Change your password
+					{:else}
+						Set a password to enable email/password login
+					{/if}
+				</p>
+			</div>
+
+			{#if form?.successPasswordChirho}
+				<div class="mx-6 mt-6 bg-green-50 border border-green-200 rounded-lg p-4" role="alert">
+					<p class="text-green-800">{form.messagePasswordChirho}</p>
+				</div>
+			{/if}
+			{#if form?.errorPasswordChirho}
+				<div class="mx-6 mt-6 bg-red-50 border border-red-200 rounded-lg p-4" role="alert">
+					<p class="text-red-800">{form.errorPasswordChirho}</p>
+				</div>
+			{/if}
+
+			<form
+				method="POST"
+				action="?/changePassword"
+				use:enhance={() => {
+					isSavingPasswordChirho = true;
+					return async ({ update }) => {
+						await update();
+						isSavingPasswordChirho = false;
+					};
+				}}
+				class="p-6 space-y-4"
+			>
+				{#if data.hasPasswordChirho}
+					<!-- Current Password (only if user has a password) -->
+					<div>
+						<label for="currentPassword" class="block text-sm font-medium text-slate-700 mb-1">
+							Current Password
+						</label>
+						<div class="relative">
+							<input
+								type={showCurrentPasswordChirho ? 'text' : 'password'}
+								id="currentPassword"
+								name="currentPassword"
+								autocomplete="current-password"
+								class="w-full px-4 py-2 pr-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+								placeholder="Enter your current password"
+								disabled={isSavingPasswordChirho}
+							/>
+							<button
+								type="button"
+								onclick={() => showCurrentPasswordChirho = !showCurrentPasswordChirho}
+								class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+								aria-label={showCurrentPasswordChirho ? 'Hide password' : 'Show password'}
+							>
+								{showCurrentPasswordChirho ? '🙈' : '👁️'}
+							</button>
+						</div>
+					</div>
+				{:else}
+					<div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-800 text-sm">
+						<p>You signed up using Google. Set a password below to also enable email/password login.</p>
+					</div>
+				{/if}
+
+				<!-- New Password -->
+				<div>
+					<label for="newPassword" class="block text-sm font-medium text-slate-700 mb-1">
+						{data.hasPasswordChirho ? 'New Password' : 'Password'}
+					</label>
+					<div class="relative">
+						<input
+							type={showNewPasswordChirho ? 'text' : 'password'}
+							id="newPassword"
+							name="newPassword"
+							required
+							minlength="8"
+							autocomplete="new-password"
+							class="w-full px-4 py-2 pr-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+							placeholder="At least 8 characters"
+							disabled={isSavingPasswordChirho}
+						/>
+						<button
+							type="button"
+							onclick={() => showNewPasswordChirho = !showNewPasswordChirho}
+							class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+							aria-label={showNewPasswordChirho ? 'Hide password' : 'Show password'}
+						>
+							{showNewPasswordChirho ? '🙈' : '👁️'}
+						</button>
+					</div>
+					<p class="text-xs text-slate-500 mt-1">Must be at least 8 characters</p>
+				</div>
+
+				<!-- Confirm New Password -->
+				<div>
+					<label for="confirmPassword" class="block text-sm font-medium text-slate-700 mb-1">
+						Confirm {data.hasPasswordChirho ? 'New ' : ''}Password
+					</label>
+					<div class="relative">
+						<input
+							type={showConfirmPasswordChirho ? 'text' : 'password'}
+							id="confirmPassword"
+							name="confirmPassword"
+							required
+							minlength="8"
+							autocomplete="new-password"
+							class="w-full px-4 py-2 pr-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+							placeholder="Confirm your password"
+							disabled={isSavingPasswordChirho}
+						/>
+						<button
+							type="button"
+							onclick={() => showConfirmPasswordChirho = !showConfirmPasswordChirho}
+							class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+							aria-label={showConfirmPasswordChirho ? 'Hide password' : 'Show password'}
+						>
+							{showConfirmPasswordChirho ? '🙈' : '👁️'}
+						</button>
+					</div>
+				</div>
+
+				<!-- Save Button -->
+				<div class="pt-2">
+					<button
+						type="submit"
+						disabled={isSavingPasswordChirho}
+						class="bg-slate-900 hover:bg-slate-800 disabled:bg-slate-400 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+					>
+						{#if isSavingPasswordChirho}
+							Saving...
+						{:else if data.hasPasswordChirho}
+							Change Password
+						{:else}
+							Set Password
+						{/if}
 					</button>
 				</div>
 			</form>

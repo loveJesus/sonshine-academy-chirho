@@ -87,9 +87,14 @@
 				</div>
 
 				<div>
-					<label for="password" class="block text-sm font-medium text-slate-700 mb-1">
-						Password
-					</label>
+					<div class="flex items-center justify-between mb-1">
+						<label for="password" class="block text-sm font-medium text-slate-700">
+							Password
+						</label>
+						<a href="/auth-chirho/forgot-password" class="text-sm text-blue-600 hover:text-blue-800">
+							Forgot password?
+						</a>
+					</div>
 					<input
 						type="password"
 						id="password"

@@ -179,10 +179,19 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					}
 				}
 
-				// Get session info
+				// Get session info with module info
 				const sessionResultChirho = await locals.dbChirho
-					.select()
+					.select({
+						sessionId: courseSessionChirho.sessionId,
+						moduleId: courseSessionChirho.moduleId,
+						title: courseSessionChirho.title,
+						description: courseSessionChirho.description,
+						orderIndex: courseSessionChirho.orderIndex,
+						moduleTitle: courseModuleChirho.title,
+						weekNumber: courseModuleChirho.weekNumber
+					})
 					.from(courseSessionChirho)
+					.leftJoin(courseModuleChirho, eq(courseSessionChirho.moduleId, courseModuleChirho.moduleId))
 					.where(eq(courseSessionChirho.sessionId, lessonDataChirho.sessionId))
 					.limit(1);
 

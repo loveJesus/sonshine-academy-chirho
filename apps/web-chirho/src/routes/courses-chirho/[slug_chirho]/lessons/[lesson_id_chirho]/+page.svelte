@@ -101,33 +101,72 @@
 </svelte:head>
 
 <div class="min-h-screen bg-slate-900">
-	<!-- Top Navigation Bar -->
-	<nav class="bg-slate-800 border-b border-slate-700 px-4 py-3">
-		<div class="max-w-6xl mx-auto flex items-center justify-between">
-			<div class="flex items-center gap-4">
-				<a
-					href="/courses-chirho/{data.courseChirho.slug}"
-					class="text-slate-400 hover:text-white flex items-center gap-2 no-underline text-sm"
-				>
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-					</svg>
-					Back to Course
-				</a>
-				<span class="text-slate-600">|</span>
-				<span class="text-slate-300 text-sm">{data.courseChirho.title}</span>
-			</div>
-
-			<!-- Progress indicator -->
-			<div class="flex items-center gap-4">
-				{#if data.progressChirho?.status === 'completed' || videoCompletedChirho}
-					<span class="text-green-400 flex items-center gap-1 text-sm">
-						<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+	<!-- Breadcrumb Navigation -->
+	<nav class="bg-slate-800 border-b border-slate-700" aria-label="Breadcrumb">
+		<div class="max-w-6xl mx-auto px-4 py-3">
+			<div class="flex flex-wrap items-center justify-between gap-2">
+				<!-- Breadcrumb Trail -->
+				<ol class="flex flex-wrap items-center gap-1 text-sm">
+					<li class="flex items-center">
+						<a href="/" class="text-slate-400 hover:text-white no-underline">Home</a>
+						<svg class="w-4 h-4 text-slate-600 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 						</svg>
-						Completed
-					</span>
-				{/if}
+					</li>
+					<li class="flex items-center">
+						<a href="/courses-chirho" class="text-slate-400 hover:text-white no-underline">Courses</a>
+						<svg class="w-4 h-4 text-slate-600 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						</svg>
+					</li>
+					<li class="flex items-center">
+						<a href="/courses-chirho/{data.courseChirho.slug}" class="text-slate-400 hover:text-white no-underline truncate max-w-[150px]" title={data.courseChirho.title}>
+							{data.courseChirho.title}
+						</a>
+						<svg class="w-4 h-4 text-slate-600 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						</svg>
+					</li>
+					{#if data.sessionChirho?.moduleTitle}
+						<li class="flex items-center">
+							<span class="text-slate-500 truncate max-w-[120px]" title={data.sessionChirho.moduleTitle}>
+								{#if data.sessionChirho.weekNumber}
+									Week {data.sessionChirho.weekNumber}
+								{:else}
+									{data.sessionChirho.moduleTitle}
+								{/if}
+							</span>
+							<svg class="w-4 h-4 text-slate-600 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+							</svg>
+						</li>
+					{/if}
+					{#if data.sessionChirho?.title}
+						<li class="flex items-center">
+							<span class="text-slate-500 truncate max-w-[120px]" title={data.sessionChirho.title}>
+								{data.sessionChirho.title}
+							</span>
+							<svg class="w-4 h-4 text-slate-600 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+							</svg>
+						</li>
+					{/if}
+					<li class="text-amber-400 font-medium truncate max-w-[200px]" title={data.lessonChirho.title} aria-current="page">
+						{data.lessonChirho.title}
+					</li>
+				</ol>
+
+				<!-- Status indicator -->
+				<div class="flex items-center gap-4">
+					{#if data.progressChirho?.status === 'completed' || videoCompletedChirho}
+						<span class="text-green-400 flex items-center gap-1 text-sm">
+							<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+							</svg>
+							Completed
+						</span>
+					{/if}
+				</div>
 			</div>
 		</div>
 	</nav>

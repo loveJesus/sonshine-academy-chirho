@@ -151,6 +151,80 @@ export async function sendWelcomeEmailChirho(
 	}
 }
 
+export function getPasswordResetEmailChirho(
+	usernameChirho: string,
+	resetUrlChirho: string
+): { subject: string; html: string } {
+	return {
+		subject: 'Reset Your Password - Sonshine Christian Code Academy',
+		html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #1e293b; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="text-align: center; margin-bottom: 30px;">
+    <span style="font-size: 48px;">🔑</span>
+    <h1 style="color: #0f172a; margin: 10px 0;">Password Reset Request</h1>
+  </div>
+
+  <p>Hi <strong>${usernameChirho}</strong>,</p>
+
+  <p>We received a request to reset your password for your Sonshine Christian Code Academy account. If you didn't make this request, you can safely ignore this email.</p>
+
+  <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin: 20px 0; text-align: center;">
+    <p style="margin: 0 0 15px 0; color: #475569;">Click the button below to reset your password:</p>
+    <a href="${resetUrlChirho}" style="display: inline-block; background: linear-gradient(135deg, #f59e0b, #f97316); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+      Reset My Password
+    </a>
+  </div>
+
+  <p style="color: #64748b; font-size: 14px;">This link will expire in 1 hour for security reasons.</p>
+
+  <p style="color: #64748b; font-size: 14px;">If the button doesn't work, copy and paste this link into your browser:<br>
+  <a href="${resetUrlChirho}" style="color: #3b82f6; word-break: break-all;">${resetUrlChirho}</a></p>
+
+  <div style="background: #f8fafc; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; font-style: italic;">
+    "The Lord is my shepherd; I shall not want." — Psalm 23:1
+  </div>
+
+  <p style="color: #64748b; font-size: 14px; margin-top: 30px; text-align: center;">
+    If you didn't request this, please contact us immediately.<br>
+    — The Sonshine Team<br>
+    <strong>JESUS CHRIST IS LORD</strong>
+  </p>
+</body>
+</html>
+`
+	};
+}
+
+export async function sendPasswordResetEmailChirho(
+	configChirho: EmailConfigChirho,
+	toEmailChirho: string,
+	usernameChirho: string,
+	resetUrlChirho: string
+): Promise<boolean> {
+	try {
+		const resendChirho = createEmailClientChirho(configChirho);
+		const templateChirho = getPasswordResetEmailChirho(usernameChirho, resetUrlChirho);
+
+		await resendChirho.emails.send({
+			from: `${configChirho.fromName} <${configChirho.fromEmail}>`,
+			to: toEmailChirho,
+			subject: templateChirho.subject,
+			html: templateChirho.html
+		});
+
+		return true;
+	} catch (errorChirho) {
+		console.error('Failed to send password reset email:', errorChirho);
+		return false;
+	}
+}
+
 export async function sendQuestCompletionEmailChirho(
 	configChirho: EmailConfigChirho,
 	toEmailChirho: string,

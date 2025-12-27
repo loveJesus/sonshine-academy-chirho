@@ -64,6 +64,20 @@ export const sessionChirho = sqliteTable('sessions_chirho', {
 	ipAddress: text('ip_address_chirho')
 });
 
+// Password reset tokens
+export const passwordResetTokenChirho = sqliteTable('password_reset_tokens_chirho', {
+	tokenId: text('token_id_chirho').primaryKey(),
+	userId: text('user_id_chirho')
+		.notNull()
+		.references(() => userChirho.userId, { onDelete: 'cascade' }),
+	tokenHash: text('token_hash_chirho').notNull(),
+	expiresAt: integer('expires_at_chirho', { mode: 'timestamp' }).notNull(),
+	usedAt: integer('used_at_chirho', { mode: 'timestamp' }),
+	createdAt: integer('created_at_chirho', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`)
+});
+
 // OAuth provider accounts for Google, etc.
 export const oauthAccountChirho = sqliteTable('oauth_accounts_chirho', {
 	oauthAccountId: text('oauth_account_id_chirho').primaryKey(),
@@ -324,9 +338,18 @@ export const payloadChirho = sqliteTable('payloads_chirho', {
 	description: text('description_chirho'),
 	version: text('version_chirho').default('1.0.0'),
 
-	scriptContent: text('script_content_chirho').notNull(),
+	// Week & Session for Manna organization
+	weekNumber: integer('week_number_chirho'),
+	sessionNumber: integer('session_number_chirho'),
+
+	// R2 storage
+	r2Key: text('r2_key_chirho'),
+	fileCount: integer('file_count_chirho').default(0),
+	totalSizeBytes: integer('total_size_bytes_chirho').default(0),
+
+	scriptContent: text('script_content_chirho'),
 	scriptType: text('script_type_chirho').default('bash'),
-	executionCommand: text('execution_command_chirho').notNull(),
+	executionCommand: text('execution_command_chirho'),
 
 	generatesHtml: integer('generates_html_chirho', { mode: 'boolean' }).default(false),
 	generatesCss: integer('generates_css_chirho', { mode: 'boolean' }).default(false),
@@ -337,6 +360,9 @@ export const payloadChirho = sqliteTable('payloads_chirho', {
 	// 'callback', 'file_check', 'screenshot', 'manual'
 	verificationType: text('verification_type_chirho'),
 	verificationConfigJson: text('verification_config_json_chirho'),
+
+	// Auto-execute for Manna
+	autoExecute: integer('auto_execute_chirho', { mode: 'boolean' }).default(true),
 
 	orderIndex: integer('order_index_chirho').default(0),
 	isActive: integer('is_active_chirho', { mode: 'boolean' }).notNull().default(true),
@@ -774,6 +800,7 @@ export const feedbackChirho = sqliteTable('feedback_chirho', {
 export type User = typeof userChirho.$inferSelect;
 export type NewUser = typeof userChirho.$inferInsert;
 export type Session = typeof sessionChirho.$inferSelect;
+export type PasswordResetToken = typeof passwordResetTokenChirho.$inferSelect;
 export type OAuthAccount = typeof oauthAccountChirho.$inferSelect;
 export type NewOAuthAccount = typeof oauthAccountChirho.$inferInsert;
 export type Organization = typeof organizationChirho.$inferSelect;

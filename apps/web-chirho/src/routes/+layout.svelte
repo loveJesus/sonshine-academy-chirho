@@ -4,6 +4,7 @@
 <script>
 	import '../app.css';
 	import FeedbackBubbleChirho from '$lib/components/FeedbackBubbleChirho.svelte';
+	import NavigationProgressChirho from '$lib/components/NavigationProgressChirho.svelte';
 
 	let { children, data } = $props();
 
@@ -44,6 +45,9 @@
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
+	<!-- Navigation Progress Indicator -->
+	<NavigationProgressChirho />
+
 	<!-- Skip to main content link for keyboard users -->
 	<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-amber-500 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">
 		Skip to main content
@@ -83,6 +87,16 @@
 							href="/workshop-chirho"
 							class="text-slate-600 hover:text-slate-900 no-underline flex items-center gap-1">
 							<span class="text-sm">🛠️</span> Workshop
+						</a>
+						<a
+							href="/lamp-chirho"
+							class="text-slate-600 hover:text-slate-900 no-underline flex items-center gap-1">
+							<span class="text-sm">🔦</span> Lamp
+						</a>
+						<a
+							href="/pathway-chirho"
+							class="text-slate-600 hover:text-slate-900 no-underline flex items-center gap-1">
+							<span class="text-sm">📓</span> Pathway
 						</a>
 						<a
 							href="/leaderboard-chirho"
@@ -157,6 +171,12 @@
 							<a href="/quests-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2" onclick={closeMobileMenuChirho}>Quests</a>
 							<a href="/workshop-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
 								<span>🛠️</span> Workshop
+							</a>
+							<a href="/lamp-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
+								<span>🔦</span> Lamp (Videos)
+							</a>
+							<a href="/pathway-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
+								<span>📓</span> Pathway (Interactive)
 							</a>
 							<a href="/leaderboard-chirho" class="block text-slate-600 hover:text-slate-900 no-underline py-2 flex items-center gap-2" onclick={closeMobileMenuChirho}>
 								<span>🏆</span> Leaderboard

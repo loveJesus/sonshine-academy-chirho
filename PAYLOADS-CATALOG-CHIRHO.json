@@ -1,0 +1,569 @@
+{
+  "description": "Catalog of all 52 educational payloads for Sonshine Christian Code Academy",
+  "course": "Sonshine Programming Class 2025",
+  "scripture": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life. - John 3:16",
+  "payloads": [
+    {
+      "week": 2,
+      "session": 1,
+      "title": "Color Changer",
+      "scripture": "John 1:5",
+      "description": "Basic HTML/CSS/JS introduction - students create a dynamic color-changing page",
+      "type": "tutorial",
+      "technologies": ["HTML", "CSS", "JavaScript"],
+      "fileSize": "4.6KB"
+    },
+    {
+      "week": 2,
+      "session": 2,
+      "title": "Jesus Walks on Water",
+      "scripture": "John 3:16, Matthew 14",
+      "description": "Tutorial teaching conditional logic and user input with a Biblical narrative",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Conditionals"],
+      "fileSize": "6.4KB"
+    },
+    {
+      "week": 2,
+      "session": 3,
+      "title": "The Beatitudes",
+      "scripture": "John 3:16, Matthew 5",
+      "description": "Tutorial introducing loops and arrays using the Beatitudes",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Arrays", "Loops"],
+      "fileSize": "5.8KB"
+    },
+    {
+      "week": 3,
+      "session": 1,
+      "title": "The Lord's Prayer",
+      "scripture": "John 3:16, Matthew 6",
+      "description": "Tutorial on working with objects in JavaScript using the Lord's Prayer structure",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Objects"],
+      "fileSize": "6.1KB"
+    },
+    {
+      "week": 3,
+      "session": 2,
+      "title": "Scripture Memory Card",
+      "scripture": "1 Peter 5:7",
+      "description": "Interactive verse card with animations and scripture display",
+      "type": "tutorial",
+      "technologies": ["HTML", "CSS", "JavaScript", "DOM", "Animations"],
+      "fileSize": "7.3KB"
+    },
+    {
+      "week": 3,
+      "session": 3,
+      "title": "The Names of God",
+      "scripture": "John 3:16",
+      "description": "Tutorial exploring data structures using the various names of God in Scripture",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Objects", "Arrays"],
+      "fileSize": "6.9KB"
+    },
+    {
+      "week": 4,
+      "session": 1,
+      "title": "The Ten Commandments",
+      "scripture": "John 3:16, Exodus 20",
+      "description": "Tutorial on advanced array methods using the Ten Commandments",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Array Methods"],
+      "fileSize": "7.5KB"
+    },
+    {
+      "week": 4,
+      "session": 2,
+      "title": "The Good Samaritan",
+      "scripture": "John 3:16, Luke 10:25-37",
+      "description": "Tutorial teaching error handling and try-catch blocks through a parable",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Error Handling"],
+      "fileSize": "8.2KB"
+    },
+    {
+      "week": 4,
+      "session": 3,
+      "title": "The Sower and the Seeds",
+      "scripture": "John 3:16, Matthew 13:1-23",
+      "description": "Tutorial on randomness and probability using the parable of the sower",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Random", "Math"],
+      "fileSize": "7.8KB"
+    },
+    {
+      "week": 5,
+      "session": 1,
+      "title": "RSA Encryption Demo",
+      "scripture": "John 3:16",
+      "description": "Complex interactive RSA encryption visualization with Tone.js audio feedback",
+      "type": "tutorial",
+      "technologies": ["HTML", "CSS", "JavaScript", "Tone.js", "Cryptography"],
+      "fileSize": "17KB"
+    },
+    {
+      "week": 5,
+      "session": 2,
+      "title": "The Fruits of the Spirit",
+      "scripture": "John 3:16, Galatians 5:22-23",
+      "description": "Tutorial teaching async/await and promises using Biblical fruits metaphor",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Async/Await"],
+      "fileSize": "9.1KB"
+    },
+    {
+      "week": 5,
+      "session": 3,
+      "title": "The Gifts of the Spirit",
+      "scripture": "John 3:16, 1 Corinthians 12",
+      "description": "Tutorial on module imports and exports using spiritual gifts concept",
+      "type": "tutorial",
+      "technologies": ["JavaScript", "Bun", "Modules"],
+      "fileSize": "8.6KB"
+    },
+    {
+      "week": 6,
+      "session": 1,
+      "title": "The Tabernacle Dimensions",
+      "scripture": "John 3:16, Exodus 25-27",
+      "description": "Tutorial introducing HTML and basic webpage structure with Biblical architecture",
+      "type": "tutorial",
+      "technologies": ["HTML", "CSS", "JavaScript"],
+      "fileSize": "10.2KB"
+    },
+    {
+      "week": 6,
+      "session": 2,
+      "title": "The Beatitudes Interactive",
+      "scripture": "John 3:16, Matthew 5:3-12",
+      "description": "Tutorial on DOM manipulation and event listeners with interactive Beatitudes",
+      "type": "tutorial",
+      "technologies": ["HTML", "CSS", "JavaScript", "DOM"],
+      "fileSize": "11.5KB"
+    },
+    {
+      "week": 6,
+      "session": 3,
+      "title": "Memory Verse Quiz",
+      "scripture": "John 3:16",
+      "description": "Tutorial building an interactive quiz app for memorizing Bible verses",
+      "type": "tutorial",
+      "technologies": ["HTML", "CSS", "JavaScript", "DOM"],
+      "fileSize": "12.3KB"
+    },
+    {
+      "week": 7,
+      "session": 1,
+      "title": "Sowing to the Spirit (3D Car Game)",
+      "scripture": "John 3:16, Galatians 6:7-8",
+      "description": "3D driving game using Three.js - avoid temptation cars, stay under speed limit. NEEDS WORK - user reported issues.",
+      "type": "fun_game",
+      "technologies": ["HTML", "CSS", "JavaScript", "Three.js", "Tone.js", "WebGL"],
+      "fileSize": "21KB",
+      "notes": "User indicated this didn't work well and could be modified"
+    },
+    {
+      "week": 7,
+      "session": 2,
+      "title": "The Genealogy of Christ",
+      "scripture": "John 3:16, Matthew 1",
+      "description": "Tutorial on database relationships using Christ's genealogy",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "SQL", "Foreign Keys"],
+      "fileSize": "10.8KB"
+    },
+    {
+      "week": 7,
+      "session": 3,
+      "title": "The Book of Acts Timeline",
+      "scripture": "John 3:16, Acts",
+      "description": "Tutorial on database queries and filtering using Acts timeline data",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "SQL Queries"],
+      "fileSize": "11.4KB"
+    },
+    {
+      "week": 8,
+      "session": 1,
+      "title": "The Twelve Tribes",
+      "scripture": "John 3:16, Genesis 49",
+      "description": "Tutorial on one-to-many database relationships using the twelve tribes",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "SQL", "Relationships"],
+      "fileSize": "10.6KB"
+    },
+    {
+      "week": 8,
+      "session": 2,
+      "title": "Cloud of Witnesses",
+      "scripture": "John 3:16, Hebrews 12:1",
+      "description": "Tutorial teaching many-to-many database relationships with Biblical heroes",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "SQL", "Junction Tables"],
+      "fileSize": "12.1KB"
+    },
+    {
+      "week": 8,
+      "session": 3,
+      "title": "Paul's Missionary Journeys",
+      "scripture": "John 3:16, Acts 13-28",
+      "description": "Tutorial on complex SQL joins using Paul's missionary journey data",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "SQL Joins"],
+      "fileSize": "11.9KB"
+    },
+    {
+      "week": 9,
+      "session": 1,
+      "title": "A Light on a Hill",
+      "scripture": "John 3:16, Matthew 5:14",
+      "description": "Tutorial creating first web server with Bun.serve(). Introduction to client-server architecture",
+      "type": "tutorial",
+      "technologies": ["Bun", "HTTP Server", "HTML"],
+      "fileSize": "8.3KB"
+    },
+    {
+      "week": 9,
+      "session": 2,
+      "title": "Book of Remembrance",
+      "scripture": "John 3:16, Malachi 3:16",
+      "description": "Tutorial building a guestbook web application with form handling and database storage",
+      "type": "tutorial",
+      "technologies": ["Bun", "HTTP Server", "SQLite", "Forms"],
+      "fileSize": "13.5KB"
+    },
+    {
+      "week": 9,
+      "session": 3,
+      "title": "Living Word",
+      "scripture": "John 3:16, Hebrews 4:12",
+      "description": "Tutorial creating a Bible verse reader server with dynamic content",
+      "type": "tutorial",
+      "technologies": ["Bun", "HTTP Server", "SQLite", "Dynamic HTML"],
+      "fileSize": "14.2KB"
+    },
+    {
+      "week": 10,
+      "session": 1,
+      "title": "Bible Jeopardy",
+      "scripture": "John 3:16",
+      "description": "Real-time multiplayer trivia game using WebSockets - includes Bun server and SQLite database",
+      "type": "fun_game",
+      "technologies": ["Bun", "WebSocket", "SQLite", "HTML", "CSS", "JavaScript"],
+      "fileSize": "24KB"
+    },
+    {
+      "week": 10,
+      "session": 2,
+      "title": "Personal Bible Commentary",
+      "scripture": "John 3:16",
+      "description": "Tutorial creating a web app to add personal notes to Bible verses",
+      "type": "tutorial",
+      "technologies": ["Bun", "HTTP Server", "SQLite", "CRUD"],
+      "fileSize": "15.3KB"
+    },
+    {
+      "week": 10,
+      "session": "2b",
+      "title": "Parable Linker",
+      "scripture": "John 3:16",
+      "description": "Console tool to explore and link related Bible parables",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "Console App"],
+      "fileSize": "9.8KB"
+    },
+    {
+      "week": 10,
+      "session": 3,
+      "title": "Promise Box",
+      "scripture": "John 3:16",
+      "description": "Tutorial building a REST API server to serve random Bible promises",
+      "type": "tutorial",
+      "technologies": ["Bun", "REST API", "SQLite", "JSON"],
+      "fileSize": "12.7KB"
+    },
+    {
+      "week": 11,
+      "session": 1,
+      "title": "Proverbs Wisdom Jar",
+      "scripture": "John 3:16, Proverbs",
+      "description": "Tutorial building a full-stack web app to collect and display Proverbs",
+      "type": "tutorial",
+      "technologies": ["Bun", "HTTP Server", "SQLite", "Full-stack"],
+      "fileSize": "17.4KB"
+    },
+    {
+      "week": 11,
+      "session": 2,
+      "title": "Don't Sin Darts",
+      "scripture": "John 3:16",
+      "description": "Fun dart-throwing game with sin/righteousness theme. Includes Project 2 boilerplate setup",
+      "type": "fun_game",
+      "technologies": ["Canvas", "JavaScript", "Tone.js", "Bun", "SQLite"],
+      "fileSize": "18.6KB"
+    },
+    {
+      "week": 11,
+      "session": 3,
+      "title": "Noah's Ark Sort",
+      "scripture": "John 3:16, Genesis 6-9",
+      "description": "Fun matching game where players sort animals onto Noah's Ark",
+      "type": "fun_game",
+      "technologies": ["Canvas", "JavaScript", "Tone.js"],
+      "fileSize": "15.2KB"
+    },
+    {
+      "week": 12,
+      "session": 1,
+      "title": "Jacob's Ladder",
+      "scripture": "John 3:16, Genesis 28:12",
+      "description": "Fun timing-based game where players help Jacob climb a ladder. Deliberately difficult with adjustable settings",
+      "type": "fun_game",
+      "technologies": ["Canvas", "JavaScript", "Tone.js"],
+      "fileSize": "12.3KB"
+    },
+    {
+      "week": 12,
+      "session": "1-davidleluya",
+      "title": "David's Aim",
+      "scripture": "John 3:16, 1 Samuel 17",
+      "description": "Fun slingshot aiming game where David faces Goliath. Includes adjustable difficulty",
+      "type": "fun_game",
+      "technologies": ["Canvas", "JavaScript", "Tone.js", "Physics"],
+      "fileSize": "8.9KB"
+    },
+    {
+      "week": 12,
+      "session": 2,
+      "title": "Day of Pentecost",
+      "scripture": "John 3:16, Acts 2:4,8",
+      "description": "Fix-the-code debugging challenge about speaking in tongues - fixing a hardcoded variable bug",
+      "type": "fix_the_code",
+      "technologies": ["HTML", "JavaScript", "Tone.js", "Confetti.js"],
+      "fileSize": "9.5KB"
+    },
+    {
+      "week": 12,
+      "session": 3,
+      "title": "The Broken Cistern",
+      "scripture": "John 3:16, Jeremiah 2:13",
+      "description": "Debugging challenge to fix a SQL query selecting from wrong table name",
+      "type": "fix_the_code",
+      "technologies": ["Bun", "SQLite", "JavaScript"],
+      "fileSize": "6.7KB"
+    },
+    {
+      "week": 13,
+      "session": 1,
+      "title": "The Ducky Mafia Investigation",
+      "scripture": "John 3:16, Ephesians 5:11-12",
+      "description": "Security investigation challenge - students crack plaintext passwords stored in database",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "HTTP Server", "Security"],
+      "fileSize": "13.6KB"
+    },
+    {
+      "week": 13,
+      "session": 2,
+      "title": "The Securer Board",
+      "scripture": "John 3:16, Proverbs 26:11",
+      "description": "Security challenge - students use MD5 reverse lookup to crack hashed passwords",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "HTTP Server", "MD5", "Security"],
+      "fileSize": "15.1KB"
+    },
+    {
+      "week": 13,
+      "session": 3,
+      "title": "The Securer-er-er Board",
+      "scripture": "John 3:16, 2 Corinthians 10:12",
+      "description": "Security challenge - students write brute-force tool to crack salted MD5 passwords",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "HTTP Server", "MD5", "Salt", "Brute-force"],
+      "fileSize": "20.1KB"
+    },
+    {
+      "week": 13,
+      "session": "3a",
+      "title": "The Securer-er-er Board (Enhanced)",
+      "scripture": "John 3:16, 2 Corinthians 10:12",
+      "description": "Enhanced version of salted MD5 brute-force challenge with improved password cracker",
+      "type": "tutorial",
+      "technologies": ["Bun", "SQLite", "HTTP Server", "MD5", "Salt", "Brute-force"],
+      "fileSize": "19.2KB"
+    },
+    {
+      "week": 14,
+      "session": 1,
+      "title": "SQL Injection Investigation",
+      "scripture": "John 3:16, Proverbs 1:7",
+      "description": "Security tutorial teaching SQL injection attacks on vulnerable login system",
+      "type": "tutorial",
+      "technologies": ["SQL Injection", "Security", "Database"],
+      "fileSize": "9.5KB"
+    },
+    {
+      "week": 14,
+      "session": 3,
+      "title": "Discerning the Weather",
+      "scripture": "John 3:16, Matthew 16:3",
+      "description": "Fix-the-code challenge using weather API - students fix coordinates and format time strings",
+      "type": "fix_the_code",
+      "technologies": ["HTML", "JavaScript", "Fetch API", "Public API"],
+      "fileSize": "11.4KB"
+    },
+    {
+      "week": 15,
+      "session": 1,
+      "title": "Gibeon Sun Timer",
+      "scripture": "John 3:16, Psalm 19:1",
+      "description": "Fix-the-code challenge using sunrise/sunset API - students fix location and format times",
+      "type": "fix_the_code",
+      "technologies": ["HTML", "JavaScript", "Fetch API", "Date API"],
+      "fileSize": "9.1KB"
+    },
+    {
+      "week": 15,
+      "session": 2,
+      "title": "Scripture Counselor",
+      "scripture": "John 3:16",
+      "description": "Fun interactive game where players match Bible verses to people's problems",
+      "type": "fun_game",
+      "technologies": ["HTML", "JavaScript", "Web Audio API"],
+      "fileSize": "25.4KB"
+    },
+    {
+      "week": 15,
+      "session": 3,
+      "title": "The Narrow Path",
+      "scripture": "John 3:16, Matthew 7:14",
+      "description": "Fix-the-code Canvas challenge game where player adjusts size to fit through narrow gaps",
+      "type": "fix_the_code",
+      "technologies": ["Canvas", "JavaScript", "Keyboard Input"],
+      "fileSize": "9.8KB"
+    },
+    {
+      "week": 16,
+      "session": 1,
+      "title": "The Helper: Building Project 2",
+      "scripture": "John 3:16, John 14:26",
+      "description": "Tutorial teaching students how to use AI coding assistant (Grok) to build Project 2",
+      "type": "tutorial",
+      "technologies": ["Grok CLI", "AI Assistant", "Bun"],
+      "fileSize": "5.6KB"
+    },
+    {
+      "week": 16,
+      "session": 2,
+      "title": "Guest Instructor: Dayron",
+      "scripture": "John 3:16, 1 Timothy 4:12",
+      "description": "Guest instructor session with special Quest Coin challenge",
+      "type": "tutorial",
+      "technologies": ["Grok CLI", "AI Coding"],
+      "fileSize": "4.3KB"
+    },
+    {
+      "week": 16,
+      "session": 3,
+      "title": "Rightly Dividing",
+      "scripture": "John 3:16, 2 Timothy 2:15",
+      "description": "Fix-the-code word puzzle game about correctly dividing Bible terms",
+      "type": "fix_the_code",
+      "technologies": ["HTML", "JavaScript", "Tone.js", "Confetti.js"],
+      "fileSize": "11.0KB"
+    },
+    {
+      "week": 17,
+      "session": 1,
+      "title": "Operation: Decrypt the Scroll",
+      "scripture": "John 3:16, Proverbs 25:2",
+      "description": "Interactive Linux command-line tutorial using sed, tr, base64 to decode encrypted message",
+      "type": "tutorial",
+      "technologies": ["Linux CLI", "sed", "tr", "base64", "HTML"],
+      "fileSize": "8.7KB"
+    },
+    {
+      "week": 17,
+      "session": 2,
+      "title": "Feeding the Multitude",
+      "scripture": "John 3:16, Matthew 14:16",
+      "description": "Fun game collecting bread/fish. Includes Project 3 boilerplate (Bible verse sharing app)",
+      "type": "fun_game",
+      "technologies": ["Canvas", "Tone.js", "Bun", "SQLite", "REST API"],
+      "fileSize": "21.2KB"
+    },
+    {
+      "week": 17,
+      "session": 3,
+      "title": "The Lighthouse",
+      "scripture": "John 3:16, Matthew 5:16, Psalm 119:105",
+      "description": "Fun game with physics-based light beam control to guide ships safely",
+      "type": "fun_game",
+      "technologies": ["Canvas", "JavaScript", "Tone.js", "Physics"],
+      "fileSize": "18.1KB"
+    },
+    {
+      "week": 18,
+      "session": 1,
+      "title": "Fisher of Men",
+      "scripture": "John 3:16, Matthew 4:19",
+      "description": "Fun fishing game with pendulum physics mechanics",
+      "type": "fun_game",
+      "technologies": ["Canvas", "JavaScript", "Tone.js", "Pendulum Physics"],
+      "fileSize": "18.4KB"
+    },
+    {
+      "week": 18,
+      "session": 2,
+      "title": "The Faithful Servant's Award",
+      "scripture": "John 3:16, 2 Timothy 4:7",
+      "description": "Fix-the-code graduation certificate generator - students fix hardcoded name variable bug",
+      "type": "fix_the_code",
+      "technologies": ["Canvas", "JavaScript", "Tone.js", "Confetti.js", "Google Fonts"],
+      "fileSize": "10.7KB"
+    }
+  ],
+  "statistics": {
+    "totalPayloads": 52,
+    "byType": {
+      "tutorial": 28,
+      "fun_game": 14,
+      "fix_the_code": 10
+    },
+    "byWeek": {
+      "week02": 3,
+      "week03": 3,
+      "week04": 3,
+      "week05": 3,
+      "week06": 3,
+      "week07": 3,
+      "week08": 3,
+      "week09": 3,
+      "week10": 4,
+      "week11": 3,
+      "week12": 4,
+      "week13": 4,
+      "week14": 2,
+      "week15": 3,
+      "week16": 3,
+      "week17": 3,
+      "week18": 2
+    },
+    "technologiesUsed": [
+      "HTML", "CSS", "JavaScript", "Bun", "SQLite", "Three.js", "Tone.js",
+      "Canvas", "WebSocket", "Fetch API", "REST API", "Confetti.js", "MD5",
+      "Linux CLI", "Grok CLI"
+    ]
+  },
+  "needsWork": [
+    {
+      "week": 7,
+      "session": 1,
+      "title": "Sowing to the Spirit (3D Car Game)",
+      "issue": "User reported it didn't work well - consider simplifying or replacing",
+      "suggestion": "The 3D mechanics may be too complex. Could convert to a simpler 2D driving game or fix the Three.js issues."
+    }
+  ]
+}
