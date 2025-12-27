@@ -13,7 +13,7 @@
 		orderIndex: number;
 		difficultyLevel: string;
 		questType: string;
-		baseCoins: number;
+		coinReward: number;
 	}
 
 	// Pagination

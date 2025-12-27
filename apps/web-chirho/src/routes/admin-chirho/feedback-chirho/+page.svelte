@@ -4,12 +4,54 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 	let { data, form }: { data: any; form: any } = $props();
 
 	let expandedIdChirho = $state<string | null>(null);
 	let editingNoteIdChirho = $state<string | null>(null);
 	let noteTextChirho = $state('');
+	let searchQueryChirho = $state('');
+
+	// Filter feedback by search query
+	const filteredFeedbackChirho = $derived(
+		searchQueryChirho.trim()
+			? data.feedbackChirho.filter((fChirho: any) =>
+				fChirho.feedbackText.toLowerCase().includes(searchQueryChirho.toLowerCase()) ||
+				(fChirho.userName && fChirho.userName.toLowerCase().includes(searchQueryChirho.toLowerCase())) ||
+				(fChirho.userEmail && fChirho.userEmail.toLowerCase().includes(searchQueryChirho.toLowerCase()))
+			)
+			: data.feedbackChirho
+	);
+
+	// Export feedback to CSV
+	function exportToCsvChirho(): void {
+		if (!browser) return;
+
+		const headersChirho = ['Date', 'Type', 'Status', 'User', 'Email', 'Page', 'Feedback', 'Admin Notes'];
+		const rowsChirho = data.feedbackChirho.map((fChirho: any) => [
+			new Date(fChirho.createdAt).toISOString(),
+			fChirho.feedbackType,
+			fChirho.status,
+			fChirho.userName || fChirho.userUsername || 'Anonymous',
+			fChirho.userEmail || '',
+			fChirho.pageUrl || '',
+			`"${(fChirho.feedbackText || '').replace(/"/g, '""')}"`,
+			`"${(fChirho.adminNotes || '').replace(/"/g, '""')}"`
+		]);
+
+		const csvContentChirho = [
+			headersChirho.join(','),
+			...rowsChirho.map((rChirho: string[]) => rChirho.join(','))
+		].join('\n');
+
+		const blobChirho = new Blob([csvContentChirho], { type: 'text/csv;charset=utf-8;' });
+		const linkChirho = document.createElement('a');
+		linkChirho.href = URL.createObjectURL(blobChirho);
+		linkChirho.download = `sonshine-feedback-${new Date().toISOString().split('T')[0]}.csv`;
+		linkChirho.click();
+		URL.revokeObjectURL(linkChirho.href);
+	}
 
 	function getTypeIconChirho(typeChirho: string): string {
 		switch (typeChirho) {
@@ -95,6 +137,15 @@
 			<h1 class="text-2xl font-bold text-slate-900">Feedback Management</h1>
 			<p class="text-slate-600">Review and manage user feedback</p>
 		</div>
+		<button
+			onclick={exportToCsvChirho}
+			class="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors"
+		>
+			<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+			</svg>
+			Export CSV
+		</button>
 	</div>
 
 	<!-- Stats Cards -->
@@ -155,7 +206,20 @@
 
 	<!-- Filters -->
 	<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-		<div class="flex items-center gap-4">
+		<div class="flex flex-wrap items-center gap-4">
+			<!-- Search Input -->
+			<label class="flex items-center gap-2 flex-1 min-w-[200px]">
+				<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+				</svg>
+				<input
+					type="text"
+					bind:value={searchQueryChirho}
+					placeholder="Search feedback, users, emails..."
+					class="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+				/>
+			</label>
+
 			<label class="flex items-center gap-2">
 				<span class="text-sm text-slate-600">Status:</span>
 				<select
@@ -170,27 +234,38 @@
 					<option value="archived">Archived</option>
 				</select>
 			</label>
-			{#if data.filtersChirho.status !== 'all' || data.filtersChirho.type !== 'all'}
+			{#if data.filtersChirho.status !== 'all' || data.filtersChirho.type !== 'all' || searchQueryChirho.trim()}
 				<button
-					onclick={() => goto('/admin-chirho/feedback-chirho')}
+					onclick={() => { searchQueryChirho = ''; goto('/admin-chirho/feedback-chirho'); }}
 					class="text-sm text-blue-600 hover:text-blue-800"
 				>
 					Clear filters
 				</button>
+			{/if}
+
+			<!-- Result count -->
+			{#if searchQueryChirho.trim() && filteredFeedbackChirho.length !== data.feedbackChirho.length}
+				<span class="text-sm text-slate-500">
+					{filteredFeedbackChirho.length} of {data.feedbackChirho.length} results
+				</span>
 			{/if}
 		</div>
 	</div>
 
 	<!-- Feedback List -->
 	<div class="bg-white rounded-lg shadow-sm border border-slate-200">
-		{#if data.feedbackChirho.length === 0}
+		{#if filteredFeedbackChirho.length === 0}
 			<div class="p-8 text-center text-slate-500">
 				<div class="text-4xl mb-2">📭</div>
-				<p>No feedback found matching your filters.</p>
+				{#if searchQueryChirho.trim()}
+					<p>No feedback found matching "{searchQueryChirho}".</p>
+				{:else}
+					<p>No feedback found matching your filters.</p>
+				{/if}
 			</div>
 		{:else}
 			<div class="divide-y divide-slate-200">
-				{#each data.feedbackChirho as feedbackItemChirho}
+				{#each filteredFeedbackChirho as feedbackItemChirho}
 					<div class="p-4">
 						<!-- Header Row -->
 						<div class="flex items-start justify-between gap-4">

@@ -3,6 +3,7 @@
      John 3:16 (KJV) -->
 <script lang="ts">
 	import CurriculumProgressChirho from '$lib/components/CurriculumProgressChirho.svelte';
+	import WelcomeModalChirho from '$lib/components/WelcomeModalChirho.svelte';
 
 	let { data }: { data: any } = $props();
 
@@ -393,3 +394,6 @@
 		</p>
 	</div>
 </div>
+
+<!-- Welcome Modal for New Users -->
+<WelcomeModalChirho usernameChirho={data.userChirho?.displayName || data.userChirho?.username || 'Friend'} />

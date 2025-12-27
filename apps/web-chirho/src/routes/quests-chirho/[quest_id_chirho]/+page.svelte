@@ -3,6 +3,7 @@
      John 3:16 (KJV) -->
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
+	import { browser } from '$app/environment';
 	import MarkdownTextChirho from '$lib/components/MarkdownTextChirho.svelte';
 	import CodeEditorChirho from '$lib/components/CodeEditorChirho.svelte';
 
@@ -21,11 +22,94 @@
 	let submissionErrorChirho = $state('');
 	let isSubmittingChirho = $state(false);
 
+	// Auto-save state
+	let lastSavedChirho = $state<Date | null>(null);
+	let showDraftRecoveryChirho = $state(false);
+	let savedDraftChirho = $state<{ code: string; savedAt: string } | null>(null);
+	let autoSaveTimeoutChirho: ReturnType<typeof setTimeout> | null = null;
+
+	// Generate storage key for this quest
+	function getDraftKeyChirho(questIdChirho: string): string {
+		return `sonshine_quest_draft_${questIdChirho}`;
+	}
+
+	// Save draft to localStorage
+	function saveDraftChirho(): void {
+		if (!browser || !currentQuestIdChirho) return;
+
+		const keyChirho = getDraftKeyChirho(currentQuestIdChirho);
+		const starterCodeChirho = data.questChirho.starterCode || '';
+
+		// Only save if code differs from starter code
+		if (codeChirho !== starterCodeChirho) {
+			const draftChirho = {
+				code: codeChirho,
+				savedAt: new Date().toISOString()
+			};
+			try {
+				localStorage.setItem(keyChirho, JSON.stringify(draftChirho));
+				lastSavedChirho = new Date();
+			} catch (errChirho) {
+				console.warn('Failed to save draft:', errChirho);
+			}
+		} else {
+			// Remove draft if code matches starter
+			try {
+				localStorage.removeItem(keyChirho);
+			} catch (errChirho) {
+				// Ignore
+			}
+		}
+	}
+
+	// Load draft from localStorage
+	function loadDraftChirho(questIdChirho: string): { code: string; savedAt: string } | null {
+		if (!browser) return null;
+
+		const keyChirho = getDraftKeyChirho(questIdChirho);
+		try {
+			const storedChirho = localStorage.getItem(keyChirho);
+			if (storedChirho) {
+				return JSON.parse(storedChirho);
+			}
+		} catch (errChirho) {
+			console.warn('Failed to load draft:', errChirho);
+		}
+		return null;
+	}
+
+	// Clear draft from localStorage
+	function clearDraftChirho(): void {
+		if (!browser || !currentQuestIdChirho) return;
+
+		const keyChirho = getDraftKeyChirho(currentQuestIdChirho);
+		try {
+			localStorage.removeItem(keyChirho);
+		} catch (errChirho) {
+			// Ignore
+		}
+		savedDraftChirho = null;
+		showDraftRecoveryChirho = false;
+	}
+
+	// Restore saved draft
+	function restoreDraftChirho(): void {
+		if (savedDraftChirho) {
+			codeChirho = savedDraftChirho.code;
+			lastSavedChirho = new Date(savedDraftChirho.savedAt);
+		}
+		showDraftRecoveryChirho = false;
+	}
+
+	// Dismiss draft recovery prompt
+	function dismissDraftChirho(): void {
+		clearDraftChirho();
+	}
+
 	// Reset state when quest changes (handles navigation)
 	$effect(() => {
 		if (data.questChirho.questId !== currentQuestIdChirho) {
 			currentQuestIdChirho = data.questChirho.questId;
-			codeChirho = data.questChirho.starterCode || '';
 			testResultsChirho = [];
 			showSolutionChirho = false;
 			viewedSolutionChirho = false;
@@ -34,7 +118,40 @@
 			submissionResultChirho = null;
 			submissionErrorChirho = '';
 			isSubmittingChirho = false;
+			lastSavedChirho = null;
+
+			// Check for saved draft
+			const draftChirho = loadDraftChirho(data.questChirho.questId);
+			if (draftChirho && draftChirho.code !== (data.questChirho.starterCode || '')) {
+				savedDraftChirho = draftChirho;
+				showDraftRecoveryChirho = true;
+				codeChirho = data.questChirho.starterCode || '';
+			} else {
+				savedDraftChirho = null;
+				showDraftRecoveryChirho = false;
+				codeChirho = data.questChirho.starterCode || '';
+			}
 		}
+	});
+
+	// Auto-save when code changes (debounced)
+	$effect(() => {
+		// Track code changes for auto-save
+		const currentCodeChirho = codeChirho;
+
+		if (autoSaveTimeoutChirho) {
+			clearTimeout(autoSaveTimeoutChirho);
+		}
+
+		autoSaveTimeoutChirho = setTimeout(() => {
+			saveDraftChirho();
+		}, 2000); // Save after 2 seconds of inactivity
+
+		return () => {
+			if (autoSaveTimeoutChirho) {
+				clearTimeout(autoSaveTimeoutChirho);
+			}
+		};
 	});
 
 	function getDifficultyColorChirho(difficulty: string): string {
@@ -55,6 +172,8 @@
 		testResultsChirho = [];
 		errorMessageChirho = '';
 		allTestsPassedChirho = false;
+		clearDraftChirho(); // Clear saved draft when resetting
+		lastSavedChirho = null;
 	}
 
 	async function toggleSolutionChirho(): Promise<void> {
@@ -186,6 +305,8 @@
 					if (responseChirho.ok) {
 						submissionResultChirho = resultDataChirho;
 						submissionErrorChirho = '';
+						// Clear saved draft on successful completion
+						clearDraftChirho();
 						// Refresh layout data to update coin balance in header
 						if (!resultDataChirho.alreadyCompleted) {
 							invalidateAll();
@@ -334,11 +455,51 @@
 
 			<!-- Right Column: Code Editor -->
 			<div class="space-y-6">
+				<!-- Draft Recovery Prompt -->
+				{#if showDraftRecoveryChirho && savedDraftChirho}
+					<div class="bg-blue-50 border border-blue-200 rounded-xl p-4" role="alert">
+						<div class="flex items-start gap-3">
+							<span class="text-2xl">📝</span>
+							<div class="flex-1">
+								<div class="font-semibold text-blue-900">Saved Draft Found!</div>
+								<p class="text-sm text-blue-700 mt-1">
+									You have unsaved work from {new Date(savedDraftChirho.savedAt).toLocaleString()}.
+									Would you like to restore it?
+								</p>
+								<div class="flex gap-2 mt-3">
+									<button
+										onclick={restoreDraftChirho}
+										class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+									>
+										Restore Draft
+									</button>
+									<button
+										onclick={dismissDraftChirho}
+										class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm rounded-lg transition-colors"
+									>
+										Start Fresh
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				{/if}
+
 				<!-- Code Editor -->
 				<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
 					<div class="bg-slate-800 text-white px-4 py-2 flex items-center justify-between">
 						<span class="font-mono text-sm">code.js</span>
-						<div class="flex items-center gap-2">
+						<div class="flex items-center gap-3">
+							<!-- Auto-save indicator -->
+							{#if lastSavedChirho}
+								<span class="text-xs text-slate-400 flex items-center gap-1">
+									<span class="text-green-400">✓</span> Saved
+								</span>
+							{:else if codeChirho !== (data.questChirho.starterCode || '')}
+								<span class="text-xs text-amber-400 flex items-center gap-1">
+									<span class="animate-pulse">●</span> Unsaved
+								</span>
+							{/if}
 							<button
 								onclick={resetCodeChirho}
 								class="text-xs px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded"

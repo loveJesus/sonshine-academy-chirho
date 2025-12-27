@@ -2,8 +2,9 @@
      that whosoever believeth in him should not perish, but have everlasting life.
      John 3:16 (KJV) -->
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 	let { data }: { data: any } = $props();
 
@@ -12,6 +13,139 @@
 	let videoProgressChirho = $state(0);
 	let showChaptersChirho = $state(false);
 	let isMarkingCompleteChirho = $state(false);
+
+	// Video progress tracking with YouTube IFrame API
+	let playerChirho: any = null;
+	let progressIntervalChirho: ReturnType<typeof setInterval> | null = null;
+	let savedProgressChirho = $state<number | null>(null);
+	let showResumePromptChirho = $state(false);
+	let videoDurationChirho = $state(0);
+
+	function getProgressKeyChirho(lessonIdChirho: string): string {
+		return `sonshine_video_progress_${lessonIdChirho}`;
+	}
+
+	function saveVideoProgressChirho(): void {
+		if (!browser || !playerChirho || !data.lessonChirho?.lessonId) return;
+		try {
+			const currentTimeChirho = playerChirho.getCurrentTime?.();
+			const durationChirho = playerChirho.getDuration?.();
+			if (currentTimeChirho && durationChirho && currentTimeChirho > 5) {
+				const progressDataChirho = {
+					time: Math.floor(currentTimeChirho),
+					duration: Math.floor(durationChirho),
+					savedAt: new Date().toISOString(),
+					percent: Math.round((currentTimeChirho / durationChirho) * 100)
+				};
+				localStorage.setItem(
+					getProgressKeyChirho(data.lessonChirho.lessonId),
+					JSON.stringify(progressDataChirho)
+				);
+				videoProgressChirho = progressDataChirho.percent;
+			}
+		} catch (errChirho) {
+			console.warn('Failed to save video progress:', errChirho);
+		}
+	}
+
+	function loadSavedProgressChirho(): void {
+		if (!browser || !data.lessonChirho?.lessonId) return;
+		try {
+			const savedChirho = localStorage.getItem(getProgressKeyChirho(data.lessonChirho.lessonId));
+			if (savedChirho) {
+				const parsedChirho = JSON.parse(savedChirho);
+				// Only show resume if progress is meaningful (more than 30 seconds, less than 95% complete)
+				if (parsedChirho.time > 30 && parsedChirho.percent < 95) {
+					savedProgressChirho = parsedChirho.time;
+					videoProgressChirho = parsedChirho.percent;
+					showResumePromptChirho = true;
+				}
+			}
+		} catch (errChirho) {
+			console.warn('Failed to load video progress:', errChirho);
+		}
+	}
+
+	function resumeFromSavedChirho(): void {
+		if (playerChirho && savedProgressChirho) {
+			playerChirho.seekTo(savedProgressChirho, true);
+			playerChirho.playVideo();
+		}
+		showResumePromptChirho = false;
+	}
+
+	function startFromBeginningChirho(): void {
+		showResumePromptChirho = false;
+		if (browser && data.lessonChirho?.lessonId) {
+			localStorage.removeItem(getProgressKeyChirho(data.lessonChirho.lessonId));
+		}
+	}
+
+	function clearVideoProgressChirho(): void {
+		if (!browser || !data.lessonChirho?.lessonId) return;
+		localStorage.removeItem(getProgressKeyChirho(data.lessonChirho.lessonId));
+	}
+
+	function initYouTubePlayerChirho(): void {
+		if (!browser || !data.videoChirho?.youtubeVideoId) return;
+
+		// Load YouTube IFrame API if not loaded
+		if (!window.YT) {
+			const tagChirho = document.createElement('script');
+			tagChirho.src = 'https://www.youtube.com/iframe_api';
+			const firstScriptChirho = document.getElementsByTagName('script')[0];
+			firstScriptChirho.parentNode?.insertBefore(tagChirho, firstScriptChirho);
+
+			window.onYouTubeIframeAPIReady = createPlayerChirho;
+		} else {
+			createPlayerChirho();
+		}
+	}
+
+	function createPlayerChirho(): void {
+		if (!browser || !data.videoChirho?.youtubeVideoId) return;
+
+		playerChirho = new window.YT.Player('youtube-player-chirho', {
+			videoId: data.videoChirho.youtubeVideoId,
+			playerVars: {
+				rel: 0,
+				modestbranding: 1,
+				enablejsapi: 1
+			},
+			events: {
+				onReady: onPlayerReadyChirho,
+				onStateChange: onPlayerStateChangeChirho
+			}
+		});
+	}
+
+	function onPlayerReadyChirho(eventChirho: any): void {
+		videoDurationChirho = eventChirho.target.getDuration() || 0;
+		loadSavedProgressChirho();
+
+		// Start progress tracking interval
+		progressIntervalChirho = setInterval(saveVideoProgressChirho, 5000);
+	}
+
+	function onPlayerStateChangeChirho(eventChirho: any): void {
+		// YT.PlayerState.ENDED = 0
+		if (eventChirho.data === 0) {
+			clearVideoProgressChirho();
+			videoProgressChirho = 100;
+		}
+		// YT.PlayerState.PLAYING = 1
+		if (eventChirho.data === 1) {
+			showResumePromptChirho = false;
+		}
+	}
+
+	// Declare global YT type
+	declare global {
+		interface Window {
+			YT: any;
+			onYouTubeIframeAPIReady: () => void;
+		}
+	}
 
 	// Parse video chapters if available
 	let chaptersChirho = $derived(() => {
@@ -42,6 +176,20 @@
 				console.error('Failed to track lesson progress:', errorChirho);
 			}
 		}
+
+		// Initialize YouTube player for video lessons
+		if (data.lessonChirho.lessonType === 'video' && data.videoChirho) {
+			initYouTubePlayerChirho();
+		}
+	});
+
+	// Cleanup on destroy
+	onDestroy(() => {
+		if (progressIntervalChirho) {
+			clearInterval(progressIntervalChirho);
+		}
+		// Save final progress before leaving
+		saveVideoProgressChirho();
 	});
 
 	function getLessonIconChirho(lessonTypeChirho: string): string {
@@ -177,15 +325,47 @@
 			<main class="lg:col-span-2">
 				<!-- Video Player -->
 				{#if data.lessonChirho.lessonType === 'video' && data.videoChirho}
-					<div class="aspect-video bg-black">
-						<iframe
-							src="https://www.youtube.com/embed/{data.videoChirho.youtubeVideoId}?rel=0&modestbranding=1"
-							title={data.videoChirho.title || data.lessonChirho.title}
-							class="w-full h-full"
-							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowfullscreen
-						></iframe>
+					<div class="relative">
+						<div class="aspect-video bg-black">
+							<div id="youtube-player-chirho" class="w-full h-full"></div>
+						</div>
+
+						<!-- Video Progress Bar -->
+						{#if videoProgressChirho > 0 && videoProgressChirho < 100}
+							<div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-700">
+								<div
+									class="h-full bg-amber-500 transition-all duration-300"
+									style="width: {videoProgressChirho}%"
+								></div>
+							</div>
+						{/if}
+
+						<!-- Resume Prompt -->
+						{#if showResumePromptChirho}
+							<div class="absolute inset-0 bg-black/80 flex items-center justify-center z-10">
+								<div class="bg-slate-800 rounded-xl p-6 max-w-sm text-center shadow-xl border border-slate-700">
+									<div class="text-4xl mb-3">▶️</div>
+									<h3 class="text-lg font-semibold text-white mb-2">Continue Watching?</h3>
+									<p class="text-slate-400 text-sm mb-4">
+										You were at {formatTimeChirho(savedProgressChirho)} ({videoProgressChirho}% complete)
+									</p>
+									<div class="flex gap-3 justify-center">
+										<button
+											onclick={startFromBeginningChirho}
+											class="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+										>
+											Start Over
+										</button>
+										<button
+											onclick={resumeFromSavedChirho}
+											class="px-6 py-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors"
+										>
+											Resume
+										</button>
+									</div>
+								</div>
+							</div>
+						{/if}
 					</div>
 				{/if}
 
@@ -377,6 +557,19 @@
 									<span class="text-slate-500">Platform</span>
 									<span class="text-slate-300">YouTube</span>
 								</div>
+								{#if videoProgressChirho > 0}
+									<div class="flex justify-between items-center">
+										<span class="text-slate-500">Progress</span>
+										<span class="text-amber-400 font-medium">{videoProgressChirho}%</span>
+									</div>
+									<!-- Progress bar -->
+									<div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+										<div
+											class="h-full bg-amber-500 transition-all duration-300"
+											style="width: {videoProgressChirho}%"
+										></div>
+									</div>
+								{/if}
 							</div>
 						</div>
 					{/if}
