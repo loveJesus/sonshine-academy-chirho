@@ -12,7 +12,7 @@
 	let currentStepChirho = $state(0);
 	let isVisibleChirho = $state(true);
 
-	const stepsChirho = [
+	const stepsChirho = $derived([
 		{
 			icon: '☀️',
 			title: 'Welcome to Sonshine!',
@@ -43,7 +43,7 @@
 			description: "That's all you need to know to get started! Begin with the courses, tackle some quests, and remember - every expert was once a beginner.",
 			verse: '"Being confident of this very thing, that he which hath begun a good work in you will perform it until the day of Jesus Christ." — Philippians 1:6'
 		}
-	];
+	]);
 
 	function nextStepChirho() {
 		if (currentStepChirho < stepsChirho.length - 1) {
